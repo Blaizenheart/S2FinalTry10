@@ -40,16 +40,13 @@ public class Spell // several child classes - attackSpell, buffSpell, healingSpe
     public void cast(Entity caster) // self
     {
         MainPanel.updatePanel(caster.getName() + " casts " + name + " on themselves!");
-        // ADD MORE CODE HERE
     }
     public void cast(Entity caster, Entity target) // single target
     {
         MainPanel.updatePanel(caster.getName() + " casts " + name + " on " + target.getName() + "!");
-        // ADD MORE CODE HERE
     }
     public void cast(Entity caster, Entity[] targets) // im too lazy to make code to have this format grammatically
     {
         MainPanel.updatePanel(caster.getName() + " casts " + name + "!");
-        // ADD MORE CODE HERE
     }
 }

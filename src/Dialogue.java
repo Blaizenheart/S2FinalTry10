@@ -53,7 +53,29 @@ public class Dialogue
             // DAIN DIALOGUES
             if (target.getName().equals("Dain"))
             {
-                if (!flags[0]) // NOT MET DAIN YET
+                if (!ObjectFactory.player.isAlive()) // PLAYER IS DEAD
+                {
+                    MainPanel.clearPanel2();
+                    ImgFinder.updateImage(ObjectFactory.dain);
+                    if (knowDain)
+                    {
+                        MainPanel.updatePanel("You awaken to see Dain peering over you." +
+                                "\n \"Oh good, you're awake. I was beginning to worry I'd lost you.\"" +
+                                "\n1) Did you save me?");
+                        currentDialogue = 10;
+                    }
+                    else // dont know dain yet
+                    {
+                        MainPanel.updatePanel("You awaken to see a pale man peering over you." +
+                                "\n \"Oh good, you're awake. I was beginning to worry I'd lost you.\"" +
+                                "\n1) Who are you?" +
+                                "\n2) What happened?");
+                        currentDialogue = 11;
+                    }
+                    ObjectFactory.player.addHp(1);
+                    ObjectFactory.player.alive = true;
+                }
+                else if (!flags[0]) // NOT MET DAIN YET
                 {
                     currentDialogue = 0;
                     MainPanel.updatePanel("You approach the eyepatched man." +
@@ -480,8 +502,6 @@ public class Dialogue
                         waitInput = true;
                     }
                     break;
-                default:
-                    break;
                 case 8: // FIRST TIME TALKING TO HENRY
                     if (input.equals("1"))
                     {
@@ -514,6 +534,52 @@ public class Dialogue
                         flags[8] = true;
                         waitInput = true;
                     }
+                    break;
+                case 10: // DEATH
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("\"Of course I did.\" He says. \"Why wouldn't I?\"");
+                        if (!Party.getParty().contains(ObjectFactory.dain)) // dain isn't in party yet
+                        {
+                            MainPanel.updatePanel("If you don't mind... I'll join you for now. It seems like you could use a doctor.");
+                            flags[1] = true;
+                            ObjectFactory.roomA.removePerson(ObjectFactory.dain);
+                            Party.addMember(ObjectFactory.dain);
+                        }
+                        waitInput = true;
+                    }
+                    break;
+                case 11: // DEATH (but you dont know dain yet)
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("\"I am a doctor.\" He explains. \"My name is Dain.\"");
+                        if (!Party.getParty().contains(ObjectFactory.dain)) // dain isn't in party yet
+                        {
+                            MainPanel.updatePanel("If you don't mind... I'll join you for now. It seems like you could use a doctor.");
+                            flags[1] = true;
+                            ObjectFactory.roomA.removePerson(ObjectFactory.dain);
+                            Party.addMember(ObjectFactory.dain);
+                        }
+                        flags[0] = true;
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("\"I found you here unconscious,\" he explains. \"My name is Dain, by the way. I'm a doctor.\"");
+                        if (!Party.getParty().contains(ObjectFactory.dain)) // dain isn't in party yet
+                        {
+                            MainPanel.updatePanel("If you don't mind... I'll join you for now. It seems like you could use a doctor.");
+                            flags[1] = true;
+                            ObjectFactory.roomA.removePerson(ObjectFactory.dain);
+                            Party.addMember(ObjectFactory.dain);
+                        }
+                        flags[0] = true;
+                        waitInput = true;
+                    }
+                    knowDain = true;
+                    break;
+                default:
+                    break;
             }
             if (waitInput)
             {

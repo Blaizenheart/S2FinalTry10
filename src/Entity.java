@@ -249,6 +249,11 @@ public class Entity // two child classes, Person and Monster
         this.statusEffects.remove(statusEffect);
     }
 
+    public void clearStatus()
+    {
+        statusEffects.clear();
+    }
+
     public void addWeakTypes(String weakTypes)
     {
         this.weakTypes.add(weakTypes);
@@ -304,8 +309,7 @@ public class Entity // two child classes, Person and Monster
         }
         else
         {
-
-            // algorithm to determine attack damage ?
+            // algorithm to determine attack damage
             int baseDmg = atk + weapon.rollDmg(); // adds entity's base atk with the weapons atk
             // checks target's weak/imm/res types
             if (target.getImmTypes().contains(weapon.getDamageType())) // weapon damage type matches immunity
@@ -315,9 +319,17 @@ public class Entity // two child classes, Person and Monster
             }
             else if (target.getResTypes().contains(weapon.getDamageType()))
             {
+                if (this.getStatusEffects().contains("blessed"))
+                {
+                    baseDmg += ObjectFactory.d4.roll(1);
+                }
                 baseDmg /= 2; // divided by two
                 MainPanel.updatePanel(target.getName() + " is resistant to " + weapon.getDamageType() + "!");
                 baseDmg -= (int) Math.ceil(baseDmg - (baseDmg * (target.getDef() * 0.01)));
+                if (this.getStatusEffects().contains("resistant"))
+                {
+                    baseDmg -= ObjectFactory.d4.roll(1);
+                }
                 if (baseDmg <= 0)
                 {
                     baseDmg = 1;
@@ -325,13 +337,22 @@ public class Entity // two child classes, Person and Monster
             }
             else if (target.getWeakTypes().contains(weapon.getDamageType()))
             {
-                baseDmg *= 2; // divided by two
+                if (this.getStatusEffects().contains("blessed"))
+                {
+                    baseDmg += ObjectFactory.d4.roll(1);
+                }
+                baseDmg *= 2; // multiplied by two
                 MainPanel.updatePanel(target.getName() + " is weak against " + weapon.getDamageType() + "!");
                 baseDmg -= (int) Math.ceil(baseDmg - (baseDmg * (target.getDef() * 0.01)));
+                if (this.getStatusEffects().contains("resistant"))
+                {
+                    baseDmg -= ObjectFactory.d4.roll(1);
+                }
                 if (baseDmg <= 0)
                 {
                     baseDmg = 1;
                 }
+
             }
             MainPanel.updatePanel(target.getName() + " takes " + baseDmg + " " + weapon.getDamageType() + " damage!");
             target.subHp(baseDmg);
@@ -345,6 +366,10 @@ public class Entity // two child classes, Person and Monster
         output += name.toUpperCase() + "\n"; // name
         output += "HP: " + currentHp + "/" + maxHp + "\n"; // hp
         output += "MP: " + currentMp + "/" + maxMp + "\n"; // mp
+        for (String status: statusEffects)
+        {
+            output += " [" + status.toUpperCase() + "] "; // status effects
+        }
         return output;
     }
 
@@ -357,10 +382,10 @@ public class Entity // two child classes, Person and Monster
         }
         else
         {
-            output = name.toUpperCase() + " SPELLS:";
+            output = name.toUpperCase() + " SPELLS:\n";
             for (Spell spell: spells)
             {
-                output += "\n\t" + spell.getName();
+                output += "<" + spell.getName() + ">\t";
             }
         }
         return output;
@@ -407,7 +432,7 @@ public class Entity // two child classes, Person and Monster
             }
             output += "\n";
         }
-        output += "SPELLS:";
+        output += "SPELLS:\n";
         if (spells.isEmpty())
         {
             output += " NONE";
@@ -416,7 +441,7 @@ public class Entity // two child classes, Person and Monster
         {
             for (Spell spell: spells)
             {
-                output += "\n" + spell.getName();
+                output += "<" + spell.getName() + ">\t";
             }
         }
         return output;

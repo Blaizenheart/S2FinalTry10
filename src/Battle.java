@@ -1,20 +1,25 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Battle
 {
     // instance variables
+    private static Random rand = new Random();
     private static ArrayList<Person> party;
     private static ArrayList<Monster> enemyParty;
     private static int activeChar; // 0 1 2 3
     private static int turn; // counts turns
     private static boolean inBattle;
     private static boolean partyTurn; // if it's the party's turn to act
+    private static ArrayList<Status> statuses = new ArrayList<>(); // keeps track of all the status effects on the entities in the battle
 
     // constructor
     public Battle(ArrayList<Person> party, ArrayList<Monster> enemyParty, boolean ambushed)
     {
         Battle.party = party;
         Battle.enemyParty = enemyParty;
+        statuses = new ArrayList<>();
         activeChar = 0;
         inBattle = true;
         turn = 0;
@@ -72,13 +77,58 @@ public class Battle
         return output;
     }
 
+    public static int getTurn() // returns the number of turns
+    {
+        return turn;
+    }
+
     // setters
     public static void setInBattle(boolean state)
     {
         inBattle = state;
     }
 
+    public static void addBattleStatus(Status status)
+    {
+        statuses.add(status);
+    }
+
     // brain methods
+
+    public static void statusUpdate() // checks statuses to remove any if they're ended already
+    {
+        for (int i = 0; i < statuses.size(); i++)
+        {
+            if (statuses.get(i).getEndingTurn() <= turn) // status expired
+            {
+                statuses.get(i).getTarget().removeStatusEffect(statuses.get(i).getStatus()); // removes the status
+                statuses.remove(i);
+            }
+        }
+        checkStatus();
+        Battle.printStatus(); // updates status
+    }
+
+    public static void checkStatus() // checks the status of each ally/enemy at the beginning of the party/enemy turn
+    {
+        Entity target;
+        String status;
+        for (int i = 0; i < statuses.size(); i++)
+        {
+            target = statuses.get(i).getTarget();
+            status = statuses.get(i).getStatus();
+            // poisoned, charmed, bleeding ?
+            if (status.equals("poisoned"))
+            {
+                MainPanel.updatePanel(target.getName() + " takes " + rand.nextInt(5) + " poison damage!");
+            }
+            else if (status.equals("bleeding"))
+            {
+                MainPanel.updatePanel(target.getName() + " takes " + rand.nextInt(5) + " damage from bleeding!");
+            }
+        }
+    }
+
     public static void processCommand(String input)
     {
         boolean found = false;
@@ -107,7 +157,6 @@ public class Battle
                     party.get(activeChar).attack(enemyParty.get(0));
                 }
                 activeChar++;
-                turn++;
             }
             else if (input.equals("spells") || input.equals("spell"))
             {
@@ -129,28 +178,54 @@ public class Battle
                 {
                     if (spell instanceof HealingSpell)
                     {
-                        for (Person person: party)
+                        if (spell.getAoe()) // affects all
                         {
-                            if (input.contains(person.getName().toLowerCase()))
+                            if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
                             {
-                                target = person;
-                                if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                                for (Person person: party)
                                 {
+                                    target = person;
                                     spell.cast(party.get(activeChar), target);
                                     casted = true;
                                 }
-                                else
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("Not enough MP!");
+                            }
+                        }
+                        else
+                        {
+                            // searches for target within party
+                            for (Person person: party)
+                            {
+                                if (input.contains(person.getName().toLowerCase()))
                                 {
-                                    MainPanel.updatePanel("Not enough MP!");
+                                    target = person;
+                                    if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                                    {
+                                        spell.cast(party.get(activeChar), target);
+                                        casted = true;
+                                    }
+                                    else
+                                    {
+                                        MainPanel.updatePanel("Not enough MP!");
+                                    }
                                 }
                             }
                         }
                         if (target == null)
                         {
-                            // target has not been specified, assume cast on self
+                            MainPanel.updatePanel("Please specify a target.");
+                        }
+                    }
+                    else if (spell instanceof DebuffSpell)
+                    {
+                        if (spell.getAoe()) // affects all
+                        {
                             if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
                             {
-                                spell.cast(party.get(activeChar));
+                                spell.cast(party.get(activeChar), (Entity) List.of(enemyParty));
                                 casted = true;
                             }
                             else
@@ -158,16 +233,71 @@ public class Battle
                                 MainPanel.updatePanel("Not enough MP!");
                             }
                         }
+                        else
+                        {
+                            for (Monster monster: enemyParty)
+                            {
+                                if (input.contains(monster.getName().toLowerCase()))
+                                {
+                                    target = monster;
+                                    if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                                    {
+                                        spell.cast(party.get(activeChar), target);
+                                        casted = true;
+                                    }
+                                    else
+                                    {
+                                        MainPanel.updatePanel("Not enough MP!");
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        if (target == null)
+                        {
+                            MainPanel.updatePanel("Specify who you want to cast it on!");
+                        }
                     }
-                    /* ADD MORE CODE HERE SHAYLA
-                    if (spell instanceof BuffSpell) // prolly combine with healing spell
-                    { // whole purpose is to either check party or enemy party for the spell target
-
-                    }
-                    if (spell instanceof DebuffSpell)
+                    if (spell instanceof BuffSpell)
                     {
-
+                        if (spell.getAoe())
+                        {
+                            if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                            {
+                                spell.cast(party.get(activeChar), (Entity) List.of(party));
+                                casted = true;
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("Not enough MP!");
+                            }
+                        }
+                        else
+                        {
+                            for (Person person: party)
+                            {
+                                if (input.contains(person.getName().toLowerCase()))
+                                {
+                                    target = person;
+                                    if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                                    {
+                                        spell.cast(party.get(activeChar), target);
+                                        casted = true;
+                                    }
+                                    else
+                                    {
+                                        MainPanel.updatePanel("Not enough MP!");
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        if (target == null)
+                        {
+                            MainPanel.updatePanel("Specify who you want to cast it on!");
+                        }
                     }
+                    /*
                     if (spell instanceof AttackSpell)
                     {
 
@@ -176,7 +306,6 @@ public class Battle
                     if (casted) // only increments if spell was sucessfully cast
                     {
                         activeChar++;
-                        turn++;
                     }
                 }
                 else
@@ -187,12 +316,10 @@ public class Battle
             else if (input.contains("item"))
             {
                 activeChar++;
-                turn++;
             }
             else if (input.contains("run") || input.contains("flee"))
             {
                 activeChar++;
-                turn++;
             }
             else if (input.contains("help"))
             {
@@ -224,6 +351,7 @@ public class Battle
         if (activeChar == party.size())
         {
             partyTurn = false;
+            turn++;
             activeChar = 0;
             enemyTurn();
         }
@@ -241,6 +369,8 @@ public class Battle
             }
         }
         partyTurn = true;
+        statusUpdate();
+        Battle.printStatus(); // updates status
         startTurn();
     }
 
@@ -260,6 +390,10 @@ public class Battle
                 person.addXp(totalXP);
             }
             MainPanel.updatePanel("Party gained " + totalXP + " XP!");
+            for (Person person: party)
+            {
+                person.clearStatus(); // fixes all statuses
+            }
         }
         for (Monster monster: enemyParty)
         {
@@ -267,6 +401,12 @@ public class Battle
             {
                 Main.currentRoom.removeMonster(monster); // removes dead monsters from room
             }
+            //ADD MORE CODE HERE FOR CORPSES
+        }
+        if (!win)
+        {
+            Dialogue.setInDialogue(true);
+            Dialogue.getDialogue(Main.currentRoom, ObjectFactory.dain);
         }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
@@ -276,13 +416,13 @@ public class Battle
     public static void printStatus() // updates output area 2 with the status of party and enemies
     {
         String output = "";
-        output += "YOUR PARTY:\n";
+        output += "YOUR PARTY-------------------------\n";
         for (Person person: getParty())
         {
             output += person.printBattle() + "\n";
         }
         output += "\n";
-        output += "ENEMY PARTY:\n";
+        output += "ENEMY PARTY------------------------\n";
         for (Monster monster: getEnemyParty())
         {
             output += monster.printBattle() + "\n";
@@ -298,10 +438,6 @@ public class Battle
             if (enemyPartyDead())
             {
                 endBattle(true); // we won!
-            }
-            else if (!ObjectFactory.player.isAlive()) // player is dead, battle ends
-            {
-                endBattle(false);
             }
             else
             {

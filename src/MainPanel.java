@@ -13,12 +13,13 @@ public class MainPanel extends JPanel
     private static JTextField inputField;
     private static JTextArea outputArea;
     private static JTextPane xtraArea;
-    private static JScrollPane scroll;
+    private static JScrollPane scroll, scroll2;
     private static Border padding;
     public static Font font;
     public static Color dark = new Color(CustomColors.black.getRGB());
     public static Color light = new Color(CustomColors.white.getRGB());
     public static String palette;
+    private static Timer timer;
 
     public MainPanel()
     {
@@ -54,6 +55,7 @@ public class MainPanel extends JPanel
         xtraArea.setEnabled (false);
 
         scroll = new JScrollPane(outputArea); // now we can scroll the output up and down
+        scroll2 = new JScrollPane(xtraArea);
 
         setPreferredSize(new Dimension(1200, 750));
         setLayout(null);
@@ -61,12 +63,12 @@ public class MainPanel extends JPanel
         // adds to the main panel
         add(inputField);
         add(scroll);
-        add(xtraArea);
+        add(scroll2);
 
         // sets the bounds for the different components
         inputField.setBounds (0, 500, 1200, 250);
         scroll.setBounds (400, 0, 800, 500);
-        xtraArea.setBounds (0, 0, 400, 500);
+        scroll2.setBounds (0, 0, 400, 500);
 
         // ACTION LISTENERS
         // for when the player inputs commands in the text area
@@ -93,12 +95,38 @@ public class MainPanel extends JPanel
                 }
             }
         });
-
     }
 
     public static void updatePanel(String text) // updates the output area
     {
         outputArea.setText(outputArea.getText() + "\n" + text);
+    }
+
+    public static void typePanel(String text, Runnable callback) // types the text
+    {
+        String original = outputArea.getText();
+        timer = new Timer(1, new ActionListener()
+        {
+            int index = 0;
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (index > text.length())
+                {
+                    timer.stop();
+                    if (callback != null)
+                    {
+                        callback.run();
+                    }
+                }
+                else
+                {
+                    outputArea.setText(original + "\n" + text.substring(0, index));
+                    index++;
+                }
+            }
+        });
+        timer.start();
     }
 
     public static void clearPanel2() // updates the second output area

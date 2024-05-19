@@ -33,8 +33,13 @@ public class ObjectFactory
     public static HealingSpell massCureWounds = new HealingSpell("Mass Cure Wounds", "Heals the entire party for 1d8 hp.",
             15, d8, 1,true);
     public static DebuffSpell charm = new DebuffSpell("Charm Person", "Charms an enemy, making them immobile for 1d4 rounds.",
-            d4, 5, "charm", false);
-    public static ArrayList<Spell> gameSpells = new ArrayList<Spell>(List.of(massCureWounds,cureWounds)); // arraylist holding weapons
+            5, "charm", false, 2);
+    public static BuffSpell bless = new BuffSpell("Bless", "Blesses an ally by increasing their attack by 1d4.",
+            2, "blessed", false, 2);
+    public static BuffSpell resistance = new BuffSpell("Resistance", "Increases an ally's resistance to attack by 1d4.",
+            2, "resistant", true, 2);
+
+    public static ArrayList<Spell> gameSpells = new ArrayList<Spell>(List.of(massCureWounds, cureWounds, charm, bless, resistance)); // arraylist holding weapons
 
     // PEOPLE
     public static Person player = new Person("Adventurer", "Despite everything, it's still you.",
@@ -42,9 +47,9 @@ public class ObjectFactory
             dagger, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(pretzel)),
             new ArrayList<>());
     public static Person dain = new Person("Dain","a human with ghostly pale skin and dark hair who dons an eyepatch over his left eye",
-            true, 1,0,20,20,5,3, 10,10,10, dagger,
+            true, 1,0,20,20,5,3, 10,20,20, dagger,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-            new ArrayList<>(List.of(cureWounds)));
+            new ArrayList<>(List.of(cureWounds, bless, resistance)));
     public static Person everest = new Person("Everest","a halfling with milky skin and white hair that reeks of liquor",
             true, 1,0,20,20,3,5, 15,0,0, shortsword,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -68,7 +73,7 @@ public class ObjectFactory
     // MONSTERS
     public static Monster testDummy = new Monster("Wolf", "A large wolf with sharp fangs.", true, 1,0,50,
             50,5,5,10,0, 0, claws, new ArrayList<>(), new ArrayList<>(),
-            new ArrayList<>(), new ArrayList<>(), List.of(dagger), new ArrayList<>());
+            new ArrayList<>(), new ArrayList<>(), List.of(dagger), new ArrayList<>(), "bleeding", 30, 3);
     public static ArrayList<Monster> gameMonsters = new ArrayList<Monster>(List.of(testDummy));
 
     // ROOMS (im going to die)

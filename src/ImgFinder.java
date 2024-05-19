@@ -20,7 +20,7 @@ public class ImgFinder
                 default -> MainPanel.updatePanel2(new ImageIcon("img/adventurer.png"));
             }
         }
-        if (name.equals("Dain"))
+        else if (name.equals("Dain"))
         {
             switch (MainPanel.palette)
             {
@@ -137,6 +137,161 @@ public class ImgFinder
         {
             System.out.println("error retrieving image!!");
         }
+    }
 
+    public static void openMap(Room room)
+    {
+        if (room == ObjectFactory.roomA)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/a.png"));
+        }
+        else if (room == ObjectFactory.roomAA)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/aa.png"));
+        }
+        else if (room == ObjectFactory.roomAB)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/ab.png"));
+        }
+        else if (room == ObjectFactory.roomAC)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/ac.png"));
+        }
+        else if (room == ObjectFactory.roomAD)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/ad.png"));
+        }
+        else if (room == ObjectFactory.roomAE)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/ae.png"));
+        }
+        else if (room == ObjectFactory.roomAF)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/af.png"));
+        }
+        else if (room == ObjectFactory.roomB)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/b.png"));
+        }
+        else if (room == ObjectFactory.roomC)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/c.png"));
+        }
+        else if (room == ObjectFactory.roomD)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/d.png"));
+        }
+        else if (room == ObjectFactory.roomE)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/e.png"));
+        }
+        else if (room == ObjectFactory.roomF)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/f.png"));
+        }
+        else if (room == ObjectFactory.roomG)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/g.png"));
+        }
+        else if (room == ObjectFactory.roomH)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/h.png"));
+        }
+        else if (room == ObjectFactory.hall1)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/hall1.png"));
+        }
+        else if (room == ObjectFactory.hall2)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/hall2.png"));
+        }
+        else if (room == ObjectFactory.hall3)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/hall3.png"));
+        }
+        else if (room == ObjectFactory.hall4)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/hall4.png"));
+        }
+        else if (room == ObjectFactory.hall5)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/hall5.png"));
+        }
+        else if (room == ObjectFactory.roomI)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/i.png"));
+        }
+        else if (room == ObjectFactory.roomJ)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/j.png"));
+        }
+        else if (room == ObjectFactory.roomK)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/k.png"));
+        }
+        else if (room == ObjectFactory.roomL)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/l.png"));
+        }
+        else if (room == ObjectFactory.roomM)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/m.png"));
+        }
+        else if (room == ObjectFactory.roomN)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/n.png"));
+        }
+        else if (room == ObjectFactory.roomO)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/o.png"));
+        }
+        else if (room == ObjectFactory.roomP)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/p.png"));
+        }
+        else if (room == ObjectFactory.roomQ)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/q.png"));
+        }
+        else if (room == ObjectFactory.roomR)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/r.png"));
+        }
+        else if (room == ObjectFactory.roomS)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/s.png"));
+        }
+        else if (room == ObjectFactory.roomT)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/t.png"));
+        }
+        else if (room == ObjectFactory.roomU)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/u.png"));
+        }
+        else if (room == ObjectFactory.roomV)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/v.png"));
+        }
+        else if (room == ObjectFactory.roomW)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/w.png"));
+        }
+        else if (room == ObjectFactory.roomX)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/x.png"));
+        }
+        else if (room == ObjectFactory.roomY)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/y.png"));
+        }
+        else if (room == ObjectFactory.roomZ)
+        {
+            MainPanel.updatePanel2(new ImageIcon("mapImg/z.png"));
+        }
+        else
+        {
+            System.out.println("error retrieving map image!!");
+        }
     }
 }

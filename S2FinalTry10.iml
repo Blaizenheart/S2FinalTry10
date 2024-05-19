@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/requiem" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/stepalange-font" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/screenImg" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/mapImg" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

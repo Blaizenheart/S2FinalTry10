@@ -10,7 +10,7 @@ public class Main
     private static final int FPS = 60; // frames per second
 
     private static CardLayout cl; // card layout to manage different screens
-    private static JPanel mainPanel, deathPanel, badEnd1Panel; // panels will be added here
+    private static JPanel mainPanel, badEnd1Panel; // panels will be added here
 
     private static ArrayList<String> inputLog = new ArrayList<String>(); // log of inputs
 
@@ -29,14 +29,10 @@ public class Main
 
             cl = new CardLayout(); // creates a new card layout
             mainPanel = new JPanel(cl); // creates new panel with card layout
-            deathPanel = new JPanel();
             badEnd1Panel = new JPanel();
 
             mainPanel.add(MainPanel.main, "Main Panel"); // adds the main panel
-            deathPanel.add(Screen.getScreen(1));
-            mainPanel.add(deathPanel, "Death Panel");
             badEnd1Panel.add(Screen.getScreen(2));
-            mainPanel.add(deathPanel, "Bad End 1 Panel");
             //more panels here for different endings ??!?!?!?!? or graphics ig
 
             frame.add(mainPanel); // adds the card panel to the frame
@@ -66,18 +62,10 @@ public class Main
     {
         Timer timer = new Timer(1000 / FPS, e ->
         {
-            // these things will be run constantly
-            // probably use this to check if certain conditions are met...
-            if (Battle.inBattle())
-            {
-                Battle.printStatus(); // updates status
-            }
             if (!ObjectFactory.player.isAlive()) // dead...
             {
-                cl.show(mainPanel,"Death Panel");
-                Screen.playGraphic1();
-                ObjectFactory.player.addHp(1);
-                ObjectFactory.player.alive = true;
+                MainPanel.updatePanel(ObjectFactory.player.getName() + " is knocked out! Battle ends!");
+                Battle.endBattle(false);
             }
         });
         timer.start();
@@ -91,6 +79,7 @@ public class Main
     //process the different commands that can be inputted into the input area of the GUI
     public static void processCommand (String input)
     {
+        MainPanel.clearPanel2();
         MainPanel.updatePanel(">" + input + "\n"); // records the user's input
         inputLog.add(input);
         String prevInput = "";
@@ -112,6 +101,7 @@ public class Main
                     "\nuse/eat/consume/drink: use an item" +
                     "\nlook: prints a description of the room" +
                     "\nmove north/south/east/west: move in that direction" +
+                    "\nmap: displays the map and where you are" +
                     "\ntalk: talks to someone in the room or in your party" +
                     "\nopen/close: opens/closes something" +
                     "\nexamine: prints description of a person in your party" +
@@ -145,6 +135,11 @@ public class Main
         if (input.contains("inventory") || input.contains("inv") || input.equals("i"))
         {
             MainPanel.updatePanel(ObjectFactory.player.printInv());
+        }
+
+        if (input.contains("map"))
+        {
+            ImgFinder.openMap(currentRoom);
         }
 
         if (input.contains("spell") || input.contains("cast"))
@@ -468,7 +463,7 @@ public class Main
                 else
                 {
                     MainPanel.updatePanel("Make sure you aren't making any typos, and that the object you are trying to use exists" +
-                            "in your inventory or in this room.");
+                            " in your inventory or in this room.");
                 }
             }
         }
