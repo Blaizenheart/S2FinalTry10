@@ -297,13 +297,46 @@ public class Battle
                             MainPanel.updatePanel("Specify who you want to cast it on!");
                         }
                     }
-                    /*
                     if (spell instanceof AttackSpell)
                     {
-
+                        if (spell.getAoe()) // affects all
+                        {
+                            if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                            {
+                                spell.cast(party.get(activeChar), (Entity) List.of(enemyParty));
+                                casted = true;
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("Not enough MP!");
+                            }
+                        }
+                        else
+                        {
+                            for (Monster monster: enemyParty)
+                            {
+                                if (input.contains(monster.getName().toLowerCase()))
+                                {
+                                    target = monster;
+                                    if (party.get(activeChar).getCurrentMp() >= spell.getMpCost())
+                                    {
+                                        spell.cast(party.get(activeChar), target);
+                                        casted = true;
+                                    }
+                                    else
+                                    {
+                                        MainPanel.updatePanel("Not enough MP!");
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        if (target == null)
+                        {
+                            MainPanel.updatePanel("Specify who you want to cast it on!");
+                        }
                     }
-                     */
-                    if (casted) // only increments if spell was sucessfully cast
+                    if (casted) // only increments if spell was successfully cast
                     {
                         activeChar++;
                     }
@@ -313,13 +346,57 @@ public class Battle
                     MainPanel.updatePanel("Please specify what spell you want to use. (Ex: use spell cure wounds on dain)");
                 }
             }
-            else if (input.contains("item"))
+            else if (input.contains("item") || input.contains("use") || input.contains("eat"))
             {
+                Consumable item = null;
+                for (Consumable cons : ObjectFactory.gameConsumables)
+                {
+                    if (input.contains(cons.getName().toLowerCase()))
+                    {
+                        item = cons;
+                    }
+                }
+                if (target == null)
+                {
+                    if (item == null)
+                    {
+                        MainPanel.updatePanel("Please specify what item you want to use, and who you want to use it on.");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("Please specify who you want to use it on.");
+                    }
+                }
+                else
+                {
+                    if (item == null)
+                    {
+                        MainPanel.updatePanel("Please specify what item you want to use.");
+                    }
+                    else
+                    {
+                        // have target & item
+                        item.use(target);
+                    }
+                }
                 activeChar++;
+            }
+            else if (input.contains("inventory") || input.contains("inv") || input.equals("i"))
+            {
+                MainPanel.updatePanel(ObjectFactory.player.printInv());
             }
             else if (input.contains("run") || input.contains("flee"))
             {
-                activeChar++;
+                if (rand.nextInt(101) > 50)
+                {
+                    MainPanel.updatePanel("You fled from the battle!");
+                    fleeBattle();
+                }
+                else
+                {
+                    MainPanel.updatePanel("You were unable to flee!");
+                    activeChar = party.size(); // party ends turn
+                }
             }
             else if (input.contains("help"))
             {
@@ -374,8 +451,30 @@ public class Battle
         startTurn();
     }
 
+    public static void fleeBattle()
+    {
+        int totalXP = 0;
+        inBattle = false;
+        for (Monster monster: enemyParty)
+        {
+            if (!monster.isAlive())
+            {
+                Main.currentRoom.removeMonster(monster); // removes dead monsters from room
+                totalXP += monster.getLvl() * 20;
+            }
+            //ADD MORE CODE HERE FOR CORPSES
+        }
+        for (Person person : party)
+        {
+            person.addXp(totalXP);
+        }
+        MainPanel.clearPanel2();
+        MainPanel.updateColors();
+    }
+
     public static void endBattle(boolean win)
     {
+        int goldEarned = 0;
         inBattle = false;
         if (win)
         {
@@ -397,9 +496,10 @@ public class Battle
         }
         for (Monster monster: enemyParty)
         {
+            goldEarned += rand.nextInt(15)+5;
             if (!monster.isAlive())
             {
-                Main.currentRoom.removeMonster(monster); // removes dead monsters from room
+                monster.setName(monster.getName() + " Corpse"); // turns into corpse
             }
             //ADD MORE CODE HERE FOR CORPSES
         }
@@ -408,6 +508,8 @@ public class Battle
             Dialogue.setInDialogue(true);
             Dialogue.getDialogue(Main.currentRoom, ObjectFactory.dain);
         }
+        MainPanel.updatePanel("You earned " + goldEarned + " gold!");
+        Main.addGold(goldEarned);
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
     }
@@ -416,7 +518,8 @@ public class Battle
     public static void printStatus() // updates output area 2 with the status of party and enemies
     {
         String output = "";
-        output += "YOUR PARTY-------------------------\n";
+        output += "[ATTACK] [CAST] [ITEM] [FLEE]" +
+                "\nYOUR PARTY-------------------------\n";
         for (Person person: getParty())
         {
             output += person.printBattle() + "\n";

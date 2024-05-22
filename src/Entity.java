@@ -403,7 +403,7 @@ public class Entity // two child classes, Person and Monster
             output = "INVENTORY:";
             for (Item item: inv)
             {
-                output += "\n\t" + item.getName();
+                output += "\n  " + item.getName();
             }
         }
         return output;
@@ -418,6 +418,10 @@ public class Entity // two child classes, Person and Monster
         output += "XP: " + xp + "/" + lvl*100 + "\n";
         output += "HP: " + currentHp + "/" + maxHp + "\n"; // hp
         output += "MP: " + currentMp + "/" + maxMp + "\n"; // mp
+        if (this == ObjectFactory.player)
+        {
+            output += "GOLD: " + Main.getGold() + "\n";
+        }
         output += "WEAPON: " + weapon.getName() + ", " + weapon.getDamageType() + " damage\n";
         output += "STATUS(ES): ";
         if (statusEffects.isEmpty())
@@ -432,13 +436,14 @@ public class Entity // two child classes, Person and Monster
             }
             output += "\n";
         }
-        output += "SPELLS:\n";
+        output += "SPELLS:";
         if (spells.isEmpty())
         {
             output += " NONE";
         }
         else
         {
+            output += "\n";
             for (Spell spell: spells)
             {
                 output += "<" + spell.getName() + ">\t";

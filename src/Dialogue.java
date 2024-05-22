@@ -258,6 +258,15 @@ public class Dialogue
                     MainPanel.updatePanel("\n1) Will you join us?" +
                            "\n2) What are you selling?");
                 }
+                else
+                {
+                    MainPanel.updatePanel("Saltine greets you with a cheerful wave. \"I have pretzels, fresh out of the oven!\"" +
+                            "\n1) Show me your wares." +
+                            "\n2) Is everything okay?" +
+                            "\n3) What's on your mind?" +
+                            "\n4) Tell me about yourself.");
+                    currentDialogue = 12;
+                }
             }
         }
     }
@@ -578,6 +587,11 @@ public class Dialogue
                     }
                     knowDain = true;
                     break;
+                case 12:
+                    if (input.equals("2"))
+                    {
+
+                    }
                 default:
                     break;
             }

@@ -18,6 +18,8 @@ public class Main
     private static boolean toggle = false; // secret passive aggressive mode
     public static Timer timer;
 
+    private static int gold = 0;
+
     public static void main(String[] args) // main method
     {
         SwingUtilities.invokeLater(() ->
@@ -57,6 +59,20 @@ public class Main
         });
     } // end main method
 
+    public static void addGold(int gold)
+    {
+        gold += gold;
+    }
+
+    public static void subGold(int gold)
+    {
+        gold -= gold;
+    }
+
+    public static int getGold()
+    {
+        return gold;
+    }
 
     public static void gameLoop() // update the GUI's text box
     {
@@ -104,7 +120,7 @@ public class Main
                     "\nmap: displays the map and where you are" +
                     "\ntalk: talks to someone in the room or in your party" +
                     "\nopen/close: opens/closes something" +
-                    "\nexamine: prints description of a person in your party" +
+                    "\nexamine: prints description of a person/item/monster" +
                     "\nparty: check up on the people in your party" +
                     "\ninventory/inv/i: prints your inventory"+
                     "\ntoggle: turns on/off passive aggressive and possibly hateful flavor text"); // ADD MORE
@@ -220,92 +236,175 @@ public class Main
 
         if (input.contains("examine"))
         {
-            if (input.contains("self"))
+            if (input.contains("person"))
             {
-                MainPanel.updatePanel(ObjectFactory.player.examine());
-                ImgFinder.updateImage((Person) ObjectFactory.player);
-                timer = new Timer(3000, new ActionListener()
+                if (input.contains("self"))
                 {
-                    int step = 0;
-                    @Override
-                    public void actionPerformed(ActionEvent e)
+                    MainPanel.updatePanel(ObjectFactory.player.examine());
+                    ImgFinder.updateImage((Person) ObjectFactory.player);
+                    timer = new Timer(3000, new ActionListener()
                     {
-                        step++;
-                        if (step == 1)
+                        int step = 0;
+                        @Override
+                        public void actionPerformed(ActionEvent e)
                         {
-                            MainPanel.clearPanel2();
-                            timer.stop();
+                            step++;
+                            if (step == 1)
+                            {
+                                MainPanel.clearPanel2();
+                                timer.stop();
+                            }
+                        }
+                    });
+                    timer.start();
+                }
+                else
+                {
+                    boolean found = false;
+                    Person target = null;
+                    for (Person person: Party.getParty()) // sees if the person is in the party
+                    {
+                        if (input.contains(person.getName().toLowerCase()))
+                        {
+                            found = true;
+                            target = person;
+                            break;
                         }
                     }
-                });
-                timer.start();
+                    for (Person person: currentRoom.getPeople()) // sees if the person is in the room
+                    {
+                        if (input.contains(person.getName().toLowerCase()))
+                        {
+                            found = true;
+                            target = person;
+                            break;
+                        }
+                    }
+                    if (found)
+                    {
+                        if (target == ObjectFactory.player)
+                        {
+                            if (toggle)
+                            {
+                                MainPanel.updatePanel("There's no one to talk to but yourself, you know.");
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("No one to talk to but yourself.");
+                            }
+                        }
+                        else
+                        {
+                            ImgFinder.updateImage((Person) target);
+                            MainPanel.updatePanel(target.examine());
+                            timer = new Timer(3000, new ActionListener()
+                            {
+                                int step = 0;
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    step++;
+                                    if (step == 1)
+                                    {
+                                        MainPanel.clearPanel2();
+                                        timer.stop();
+                                    }
+                                }
+                            });
+                            timer.start();
+                        }
+                    }
+                    else
+                    {
+                        if (toggle)
+                        {
+                            MainPanel.updatePanel("What are you talking about? You can't examine someone who doesn't exist or isn't in your party.");
+                        }
+                        else
+                        {
+                            MainPanel.updatePanel("That person doesn't exist or isn't in your party.");
+                        }
+                    }
+                }
             }
-            else
+            else if (input.contains("item"))
             {
                 boolean found = false;
-                Person target = null;
-                for (Person person: Party.getParty()) // sees if the person is in the party
+                Item target = null;
+                for (Item item: ObjectFactory.player.getInv()) // sees if the item is in inventory
                 {
-                    if (input.contains(person.getName().toLowerCase()))
+                    if (input.contains(item.getName().toLowerCase()))
                     {
                         found = true;
-                        target = person;
+                        target = item;
                         break;
                     }
                 }
-                for (Person person: currentRoom.getPeople()) // sees if the person is in the party
+                for (Item item: currentRoom.getItems()) // sees if item is in room
                 {
-                    if (input.contains(person.getName().toLowerCase()))
+                    if (input.contains(item.getName().toLowerCase()))
                     {
                         found = true;
-                        target = person;
+                        target = item;
                         break;
                     }
                 }
                 if (found)
                 {
-                    if (target == ObjectFactory.player)
-                    {
-                        if (toggle)
-                        {
-                            MainPanel.updatePanel("There's no one to talk to but yourself, you know.");
-                        }
-                        else
-                        {
-                            MainPanel.updatePanel("No one to talk to but yourself.");
-                        }
-                    }
-                    else
-                    {
-                        ImgFinder.updateImage((Person) target);
-                        MainPanel.updatePanel(target.examine());
-                        timer = new Timer(3000, new ActionListener()
-                        {
-                            int step = 0;
-                            @Override
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                step++;
-                                if (step == 1)
-                                {
-                                    MainPanel.clearPanel2();
-                                    timer.stop();
-                                }
-                            }
-                        });
-                        timer.start();
-                    }
+                    MainPanel.updatePanel(target.getDesc());
                 }
                 else
                 {
                     if (toggle)
                     {
-                        MainPanel.updatePanel("What are you talking about? You can't examine someone who doesn't exist or isn't in your party.");
+                        MainPanel.updatePanel("What are you talking about? You can't examine something that doesn't exist or isn't in the room.");
                     }
                     else
                     {
-                        MainPanel.updatePanel("That person doesn't exist or isn't in your party.");
+                        MainPanel.updatePanel("That item doesn't exist or isn't in the room.");
                     }
+                }
+            }
+            else if (input.contains("monster"))
+            {
+                boolean found = false;
+                Monster target = null;
+                for (Monster monster: currentRoom.getMonsters()) // sees if monster is in room
+                {
+                    if (input.contains(monster.getName().toLowerCase()))
+                    {
+                        found = true;
+                        target = monster;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    MainPanel.updatePanel(target.getDesc());
+                }
+                else
+                {
+                    if (toggle)
+                    {
+                        MainPanel.updatePanel("What are you talking about? You can't examine a monster that isn't in the room.");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("That monster doesn't exist or isn't in the room.");
+                    }
+                }
+            }
+            else
+            {
+                if (toggle)
+                {
+                    MainPanel.updatePanel("Why can't you just specify whether it is a \"person\", " +
+                            "\"item\", or \"monster\" that you're trying to examine?");
+                }
+                else
+                {
+                    MainPanel.updatePanel("Please specify whether it is a \"person\", " +
+                            "\"item\", or \"monster\" that you're trying to examine.");
                 }
             }
         }
@@ -473,8 +572,31 @@ public class Main
         {
             if (!currentRoom.getMonsters().isEmpty())
             {
-                new Battle(Party.getParty(), new ArrayList<Monster>(currentRoom.getMonsters()), false);
-                MainPanel.updateColorsBattle();
+                ArrayList<Monster> enemies = new ArrayList<Monster>();
+                // populates list with alive monsters
+                for (Monster monster: currentRoom.getMonsters())
+                {
+                    if (monster.isAlive())
+                    {
+                        enemies.add(monster);
+                    }
+                }
+                if (enemies.isEmpty()) //current room is filled w/ only corpses
+                {
+                    if (toggle)
+                    {
+                        MainPanel.updatePanel("You've already murdered everything in this room! Did you forget?");
+                    } else
+                    {
+                        MainPanel.updatePanel("There are only corpses in this room.");
+                    }
+                }
+                else
+                {
+                    // starts battle
+                    new Battle(Party.getParty(), new ArrayList<Monster>(currentRoom.getMonsters()), false);
+                    MainPanel.updateColorsBattle();
+                }
             }
             else
             {
@@ -484,6 +606,82 @@ public class Main
                 } else
                 {
                     MainPanel.updatePanel("There aren't any monsters in this room.");
+                }
+            }
+        }
+
+        // searching through corpses
+        if (input.contains("search") || input.contains("loot"))
+        {
+            ArrayList<Monster> corpses = new ArrayList<Monster>();
+            Monster target = null;
+            // populates list with corpses
+            for (Monster monster : currentRoom.getMonsters())
+            {
+                if (monster.getName().contains("Corpse"))
+                {
+                    corpses.add(monster);
+                }
+            }
+            for (Monster monster : corpses)
+            {
+                if (input.contains(monster.getName()) || input.contains(monster.getName().substring(monster.getName().length()-7).trim()))
+                {
+                    target = monster;
+                }
+            }
+            if (target.getInv().isEmpty())
+            {
+                MainPanel.updatePanel("The corpse holds nothing of worth.");
+            }
+            else
+            {
+                MainPanel.updatePanel("You found:");
+                for (Item item: target.getInv())
+                {
+                    MainPanel.updatePanel("\n  " + item.getName());
+                    target.removeInvItem(item); // removes item from corpse's inventory
+                    ObjectFactory.player.addInvItem(item);
+                }
+            }
+        }
+
+        if (input.contains("open"))
+        {
+            // opens a container object and adds its items to the room
+            Container con = null;
+            for (Item item : currentRoom.getItems())
+            {
+                if (item instanceof Container) // if the item is a container object
+                {
+                    con = (Container) item;
+                    if (input.contains(item.getName()))
+                    {
+                        con.open();
+                    }
+                }
+            }
+        }
+
+        if (input.contains("unlock"))
+        {
+            Container con = null;
+            for (Item item : currentRoom.getItems())
+            {
+                if (item instanceof Container) // if the item is a container object
+                {
+                    con = (Container) item;
+                    if (input.contains(con.getName()))
+                    {
+                        if (con.isLocked())
+                        {
+                            con.tryUnlock();
+                        }
+                        else
+                        {
+                            con.open();
+                        }
+                    }
                 }
             }
         }
