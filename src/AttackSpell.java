@@ -3,10 +3,10 @@ import java.util.Random;
 public class AttackSpell extends Spell
 {
     // instance variables
-    Random rand = new Random();
-    String dmgType;
-    Dice dice;
-    int diceRolls;
+    private Random rand = new Random();
+    private String dmgType;
+    private Dice dice;
+    private int diceRolls;
 
     // constructor
     public AttackSpell(String name, String desc, int mpCost, boolean aoe, String dmgType, Dice dice, int diceRolls)

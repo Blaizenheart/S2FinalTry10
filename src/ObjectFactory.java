@@ -12,10 +12,11 @@ public class ObjectFactory
     public static Dice d20 = new Dice("D20",20);
 
     // WEAPONS
-    public static Weapon dagger = new Weapon("dagger", "A small dagger.", 5, "a", d4, 1, "slashing");
-    public static Weapon shortsword = new Weapon("shortsword", "A rusty shortsword.", 10, "a", d6, 1, "slashing");
+    public static Weapon dagger = new Weapon("dagger", "A small dagger.", 5, "a ", d4, 1, "slashing");
+    public static Weapon shortsword = new Weapon("shortsword", "A rusty shortsword.", 10, "a ", d6, 1, "slashing");
     public static Weapon claws = new Weapon("claws", "rawr", 0, "", d4, 1, "slashing");
-    public static ArrayList<Item> gameWeapons = new ArrayList<Item>(List.of(dagger)); // arraylist holding weapons
+    public static Weapon fangs = new Weapon("fangs", "rawr", 0, "", d4, 1, "piercing");
+    public static ArrayList<Item> gameWeapons = new ArrayList<Item>(List.of(dagger, shortsword, claws, fangs)); // arraylist holding weapons
 
     // CONSUMABLES
     public static Consumable pretzel = new Consumable("pretzel","A very small but delicious pretzel that restores 5 hp.", 2, "a",
@@ -37,9 +38,6 @@ public class ObjectFactory
             true, 15, false, 0,true,"bleeding","use");
     public static ArrayList<Consumable> gameConsumables = new ArrayList<Consumable>(List.of(pretzel, bun, cookie, bagel, donut, bearClaw, medkit)); // arraylist holding consumables
 
-    // arraylist for all items
-    public static ArrayList<Item> gameItems = new ArrayList<Item>(List.of(dagger, shortsword, claws, pretzel, cookie, bagel, donut, bearClaw, medkit)); // arraylist holding weapons
-
     // SPELLS
     public static HealingSpell cureWounds = new HealingSpell("Cure Wounds", "Heals a single target for 1d8 hp.",
             5, d8, 1,false);
@@ -51,8 +49,21 @@ public class ObjectFactory
             2, "blessed", false, 2);
     public static BuffSpell resistance = new BuffSpell("Resistance", "Increases an ally's resistance to attack by 1d4.",
             2, "resistant", true, 2);
+    public static AttackSpell firebolt = new AttackSpell("Firebolt", "Hurls a small bolt of fire at an enemy for 1d8 fire damage.", 5, false, "fire", d8, 1);
 
-    public static ArrayList<Spell> gameSpells = new ArrayList<Spell>(List.of(massCureWounds, cureWounds, charm, bless, resistance)); // arraylist holding weapons
+    public static ArrayList<Spell> gameSpells = new ArrayList<Spell>(List.of(massCureWounds, cureWounds, charm, bless, resistance, firebolt)); // arraylist holding spells
+
+    // SPELL SCROLLS
+    public static SpellScroll fireboltScroll = new SpellScroll("firebolt scroll", "Teaches firebolt.", 7, "a", firebolt);
+
+    public static ArrayList<SpellScroll> gameSpellScrolls = new ArrayList<SpellScroll>(List.of(fireboltScroll)); // arraylist holding scrolls
+
+    // CONTAINERS
+    // chest in room b
+    public static Container chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
+
+    // arraylist for all the items in the game
+    public static ArrayList<Item> gameItems = new ArrayList<Item>(List.of(dagger, shortsword, claws, pretzel, cookie, bagel, donut, bearClaw, medkit, fireboltScroll)); // arraylist holding all the game items
 
     // PEOPLE
     public static Person player = new Person("Adventurer", "Despite everything, it's still you.",
@@ -72,7 +83,7 @@ public class ObjectFactory
     public static Person sylvie = new Person("Sylvie","a very beautiful woman with long wavy pink hair and a watery sheen to her skin",
             true, 1,0,25,25,3,8, 10,15,15, dagger,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-            new ArrayList<>(List.of(charm)));
+            new ArrayList<>(List.of(charm, firebolt)));
     public static Person saltine = new Person("Saltine","a blonde freckled girl with a large pink ribbon adorned in her hair",
             true, 1,0,25,25,3,5, 10,15,15, dagger,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -80,16 +91,26 @@ public class ObjectFactory
     public static ArrayList<Person> gamePeople = new ArrayList<Person>(List.of(player, dain, everest, henry, sylvie, saltine));
 
     // MONSTERS
-    public static Monster testDummy = new Monster("Wolf", "A large wolf with sharp fangs.", true, 1,0,50,
+    public static Monster wolf = new Monster("Wolf", "A large wolf with sharp fangs.", true, 1,0,50,
             50,5,5,10,0, 0, claws, new ArrayList<>(), new ArrayList<>(),
-            new ArrayList<>(), new ArrayList<>(), List.of(dagger), new ArrayList<>(), "bleeding", 30, 3);
-    public static ArrayList<Monster> gameMonsters = new ArrayList<Monster>(List.of(testDummy));
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 30, 3);
+    public static Monster grick = new Monster("Grick", "A large worm-like monster with barbed tentacles.", true, 1,0,75,
+            75,5,5,10,0, 0, fangs, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 40, 3);
+    public static Monster rat1 = new Monster("Feral Rat", "A scraggly rat with red eyes.", true, 1,0,10,
+            10,2,1,50,0, 0, fangs, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 40, 3);
+    public static Monster rat2 = new Monster("Big Rat", "A large rat with a stubbed tail.", true, 1,0,10,
+            10,2,1,50,0, 0, fangs, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 40, 3);
+
+    public static ArrayList<Monster> gameMonsters = new ArrayList<Monster>(List.of(wolf, rat1, rat2, grick));
 
     // ROOMS (im going to die)
     public static Room roomA = new Room("a", "The small room has cobbled walls and a stale odor.", new ArrayList<>(List.of("S")),
-            new ArrayList<>(), new ArrayList<>(List.of(testDummy)), new ArrayList<>(List.of(dain)));
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(dain)));
     public static Room roomB = new Room("b", "The walls are lined with arch indents. The floor here is tiled and slightly polished, " +
-            "although there are still spots where the tiles are eroding into dust.", new ArrayList<>(List.of("N","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            "although there are still spots where the tiles are eroding into dust.", new ArrayList<>(List.of("N","W")), new ArrayList<>(List.of(chestH1)), new ArrayList<>(), new ArrayList<>());
     public static Room roomC = new Room("c", "There are intricate pillars seemingly sculpted into the corners of the room. " +
             "A faint scent of alcohol lingers in the air. It seems to be getting stronger to the west.", new ArrayList<>(List.of("E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomD = new Room("d","The room is nauseatingly narrow. It is unclear what the purpose of this room might’ve been. The smell of gore seems to lead to the west.",
@@ -119,7 +140,7 @@ public class ObjectFactory
     public static Room roomY = new Room("y","", new ArrayList<>(List.of("N", "W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomZ = new Room("z","", new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-    public static Room hall1 = new Room("hall1","The walls of the hallway are slightly crumbling.", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static Room hall1 = new Room("hall1","The walls of the hallway are slightly crumbling.", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(List.of(chestH1)), new ArrayList<>(List.of(rat1, rat2)), new ArrayList<>());
     public static Room hall2 = new Room("hall2","", new ArrayList<>(List.of("N", "S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room hall3 = new Room("hall3","", new ArrayList<>(List.of("N", "S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room hall4 = new Room("hall4","", new ArrayList<>(List.of("N", "S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());

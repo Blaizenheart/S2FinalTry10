@@ -274,6 +274,11 @@ public class Entity // two child classes, Person and Monster
         this.inv.add(item);
     }
 
+    public void clearInv()
+    {
+        inv.clear();
+    }
+
     public void removeInvItem(Item item)
     {
         this.inv.remove(item);
@@ -295,7 +300,7 @@ public class Entity // two child classes, Person and Monster
         int num = rand.nextInt(100);
         if (weapon != null)
         {
-            MainPanel.updatePanel(name + " attacks " + target.getName() + " with a " + weapon.getName() + "!");
+            MainPanel.updatePanel(name + " attacks " + target.getName() + " with " + weapon.getArticle()  + weapon.getName() + "!");
         }
         else
         {
@@ -385,7 +390,7 @@ public class Entity // two child classes, Person and Monster
             output = name.toUpperCase() + " SPELLS:\n";
             for (Spell spell: spells)
             {
-                output += "<" + spell.getName() + ">\t";
+                output += "<" + spell.getName() + "> ";
             }
         }
         return output;
@@ -446,7 +451,7 @@ public class Entity // two child classes, Person and Monster
             output += "\n";
             for (Spell spell: spells)
             {
-                output += "<" + spell.getName() + ">\t";
+                output += "<" + spell.getName() + "> ";
             }
         }
         return output;

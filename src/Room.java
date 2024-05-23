@@ -135,7 +135,7 @@ public class Room
             output += " There is a " + monsters.get(0).getName();
             if (monsters.size() == 2) // two items, ___ and ___
             {
-                output += " and a " + monsters.get(0).getName();
+                output += " and a " + monsters.get(1).getName();
             }
             else if (monsters.size() > 2)
             {

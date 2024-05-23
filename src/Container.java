@@ -85,10 +85,10 @@ public class Container extends Item
                 MainPanel.updatePanel("You found:");
                 for (Item item: items)
                 {
-                    MainPanel.updatePanel("\n  " + item.getName());
-                    items.remove(item); // removes item from container
+                    MainPanel.updatePanel("- " + item.getName());
                     ObjectFactory.player.addInvItem(item);
                 }
+                items.clear();
             }
         }
     }

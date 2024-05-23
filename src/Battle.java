@@ -131,6 +131,7 @@ public class Battle
 
     public static void processCommand(String input)
     {
+        boolean fleeing = false;
         boolean found = false;
         boolean invalid = false;
         Entity target = null;
@@ -150,13 +151,28 @@ public class Battle
                 }
                 if (found)
                 {
-                    party.get(activeChar).attack(target);
+                    if (target.isAlive()) // if the enemy is even alive
+                    {
+                        party.get(activeChar).attack(target);
+                        activeChar++;
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("Please specify a creature that is still alive to attack.");
+                    }
                 }
                 else
                 {
-                    party.get(activeChar).attack(enemyParty.get(0));
+                    if (enemyParty.get(0).isAlive()) // if the enemy is even alive
+                    {
+                        party.get(activeChar).attack(enemyParty.get(0));
+                        activeChar++;
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("Please specify a creature that is still alive to attack.");
+                    }
                 }
-                activeChar++;
             }
             else if (input.equals("spells") || input.equals("spell"))
             {
@@ -377,9 +393,9 @@ public class Battle
                     {
                         // have target & item
                         item.use(target);
+                        activeChar++;
                     }
                 }
-                activeChar++;
             }
             else if (input.contains("inventory") || input.contains("inv") || input.equals("i"))
             {
@@ -389,6 +405,7 @@ public class Battle
             {
                 if (rand.nextInt(101) > 50)
                 {
+                    fleeing = true;
                     MainPanel.updatePanel("You fled from the battle!");
                     fleeBattle();
                 }
@@ -425,7 +442,7 @@ public class Battle
                 startTurn();
             }
         }
-        if (activeChar == party.size())
+        if (activeChar == party.size() && !fleeing)
         {
             partyTurn = false;
             turn++;
@@ -441,8 +458,15 @@ public class Battle
             for (Monster enemy: enemyParty)
             {
                 MainPanel.updatePanel("-------------------------------------------------------------");
-                MainPanel.updatePanel(enemy.getName().toUpperCase() + "'S TURN!!!\n");
-                enemy.attack();
+                if (enemy.isAlive())
+                {
+                    MainPanel.updatePanel(enemy.getName().toUpperCase() + "'S TURN!!!\n");
+                    enemy.attack();
+                }
+                else
+                {
+                    MainPanel.updatePanel(enemy.getName() + " is dead!");
+                }
             }
         }
         partyTurn = true;
@@ -474,6 +498,8 @@ public class Battle
 
     public static void endBattle(boolean win)
     {
+        MainPanel.updatePanel("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+
         int goldEarned = 0;
         inBattle = false;
         if (win)
@@ -496,9 +522,9 @@ public class Battle
         }
         for (Monster monster: enemyParty)
         {
-            goldEarned += rand.nextInt(15)+5;
             if (!monster.isAlive())
             {
+                goldEarned += rand.nextInt(15)+5;
                 monster.setName(monster.getName() + " Corpse"); // turns into corpse
             }
             //ADD MORE CODE HERE FOR CORPSES
@@ -508,8 +534,11 @@ public class Battle
             Dialogue.setInDialogue(true);
             Dialogue.getDialogue(Main.currentRoom, ObjectFactory.dain);
         }
-        MainPanel.updatePanel("You earned " + goldEarned + " gold!");
-        Main.addGold(goldEarned);
+        else
+        {
+            MainPanel.updatePanel("You earned " + goldEarned + " gold!");
+            Main.addGold(goldEarned);
+        }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
     }

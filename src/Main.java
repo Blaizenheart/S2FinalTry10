@@ -61,7 +61,7 @@ public class Main
 
     public static void addGold(int gold)
     {
-        gold += gold;
+        Main.gold += gold;
     }
 
     public static void subGold(int gold)
@@ -234,96 +234,93 @@ public class Main
             MainPanel.updatePanel(Party.print());
         }
 
-        if (input.contains("examine"))
+        if (input.contains("examine") || input.contains("look at self"))
         {
-            if (input.contains("person"))
+            if (input.contains("self"))
             {
-                if (input.contains("self"))
+                MainPanel.updatePanel(ObjectFactory.player.examine());
+                ImgFinder.updateImage((Person) ObjectFactory.player);
+                timer = new Timer(3000, new ActionListener()
                 {
-                    MainPanel.updatePanel(ObjectFactory.player.examine());
-                    ImgFinder.updateImage((Person) ObjectFactory.player);
-                    timer = new Timer(3000, new ActionListener()
+                    int step = 0;
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        int step = 0;
-                        @Override
-                        public void actionPerformed(ActionEvent e)
+                        step++;
+                        if (step == 1)
                         {
-                            step++;
-                            if (step == 1)
-                            {
-                                MainPanel.clearPanel2();
-                                timer.stop();
-                            }
+                            MainPanel.clearPanel2();
+                            timer.stop();
                         }
-                    });
-                    timer.start();
+                    }
+                });
+                timer.start();
+            }
+            else if (input.contains("person"))
+            {
+                boolean found = false;
+                Person target = null;
+                for (Person person: Party.getParty()) // sees if the person is in the party
+                {
+                    if (input.contains(person.getName().toLowerCase()))
+                    {
+                        found = true;
+                        target = person;
+                        break;
+                    }
                 }
-                else
+                for (Person person: currentRoom.getPeople()) // sees if the person is in the room
                 {
-                    boolean found = false;
-                    Person target = null;
-                    for (Person person: Party.getParty()) // sees if the person is in the party
+                    if (input.contains(person.getName().toLowerCase()))
                     {
-                        if (input.contains(person.getName().toLowerCase()))
-                        {
-                            found = true;
-                            target = person;
-                            break;
-                        }
+                        found = true;
+                        target = person;
+                        break;
                     }
-                    for (Person person: currentRoom.getPeople()) // sees if the person is in the room
+                }
+                if (found)
+                {
+                    if (target == ObjectFactory.player)
                     {
-                        if (input.contains(person.getName().toLowerCase()))
+                        if (toggle)
                         {
-                            found = true;
-                            target = person;
-                            break;
-                        }
-                    }
-                    if (found)
-                    {
-                        if (target == ObjectFactory.player)
-                        {
-                            if (toggle)
-                            {
-                                MainPanel.updatePanel("There's no one to talk to but yourself, you know.");
-                            }
-                            else
-                            {
-                                MainPanel.updatePanel("No one to talk to but yourself.");
-                            }
+                            MainPanel.updatePanel("There's no one to talk to but yourself, you know.");
                         }
                         else
                         {
-                            ImgFinder.updateImage((Person) target);
-                            MainPanel.updatePanel(target.examine());
-                            timer = new Timer(3000, new ActionListener()
-                            {
-                                int step = 0;
-                                @Override
-                                public void actionPerformed(ActionEvent e)
-                                {
-                                    step++;
-                                    if (step == 1)
-                                    {
-                                        MainPanel.clearPanel2();
-                                        timer.stop();
-                                    }
-                                }
-                            });
-                            timer.start();
+                            MainPanel.updatePanel("No one to talk to but yourself.");
                         }
                     }
                     else
                     {
-                        if (toggle)
+                        ImgFinder.updateImage((Person) target);
+                        MainPanel.updatePanel(target.examine());
+                        timer = new Timer(3000, new ActionListener()
                         {
-                            MainPanel.updatePanel("What are you talking about? You can't examine someone who doesn't exist or isn't in your party.");
-                        }
-                        else
-                        {
-                            MainPanel.updatePanel("That person doesn't exist or isn't in your party.");
-                        }
+                            int step = 0;
+                            @Override
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                step++;
+                                if (step == 1)
+                                {
+                                    MainPanel.clearPanel2();
+                                    timer.stop();
+                                }
+                            }
+                        });
+                        timer.start();
+                    }
+                }
+                else
+                {
+                    if (toggle)
+                    {
+                        MainPanel.updatePanel("What are you talking about? You can't examine someone who doesn't exist or isn't in your party.");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("That person doesn't exist or isn't in your party.");
                     }
                 }
             }
@@ -497,7 +494,7 @@ public class Main
             boolean hasItem = false;
             boolean itemInRoom = false;
             Person target = null;
-            Consumable item = null;
+            Item item = null;
             // tries to retrieve the item
             for (int i = 0; i < ObjectFactory.gameConsumables.size(); i++)
             {
@@ -506,9 +503,13 @@ public class Main
                     found = true;
                     item = ObjectFactory.gameConsumables.get(i);
                 }
-                else
+            }
+            for (int i = 0; i < ObjectFactory.gameSpellScrolls.size(); i++)
+            {
+                if(input.contains(ObjectFactory.gameSpellScrolls.get(i).getName().toLowerCase())) // see if it matches the name of any of the game items
                 {
-                    i = ObjectFactory.gameConsumables.size();
+                    found = true;
+                    item = ObjectFactory.gameSpellScrolls.get(i);
                 }
             }
             if (found)
@@ -537,18 +538,30 @@ public class Main
                 }
                 if (hasItem || itemInRoom)
                 {
+                    boolean used = false;
                     //checks to see if target is specified
-                    for (int i = 0; i < ObjectFactory.gamePeople.size(); i++)
+                    for (int i = 0; i < Party.getParty().size(); i++)
                     {
-                        if(input.contains(ObjectFactory.gamePeople.get(i).getName().toLowerCase()))
+                        if(input.contains(Party.getParty().get(i).getName().toLowerCase()))
                         {
-                            target = ObjectFactory.gamePeople.get(i);
-                            item.use(target);
+                            target = Party.getParty().get(i);
+                            if (item instanceof Consumable)
+                            {
+                                used = true; // found target already
+                                ((Consumable) item).use(target);
+                                i = ObjectFactory.gamePeople.size(); // exit
+                            }
                         }
-                        else
+                    }
+                    if (!used)
+                    {
+                        if (item instanceof Consumable)
                         {
-                            item.use(); // use on self since target not specified
-                            i = ObjectFactory.gamePeople.size(); // exit
+                            ((Consumable) item).use();
+                        }
+                        if (item instanceof SpellScroll)
+                        {
+                            ((SpellScroll) item).use();
                         }
                     }
                 }
@@ -625,23 +638,30 @@ public class Main
             }
             for (Monster monster : corpses)
             {
-                if (input.contains(monster.getName()) || input.contains(monster.getName().substring(monster.getName().length()-7).trim()))
+                if (input.contains(monster.getName()) || input.contains(monster.getName().substring(0, monster.getName().length()-6).trim().toLowerCase()))
                 {
                     target = monster;
                 }
             }
-            if (target.getInv().isEmpty())
+            if (target == null)
             {
-                MainPanel.updatePanel("The corpse holds nothing of worth.");
+                MainPanel.updatePanel("There aren't any corpses in this room to search through.");
             }
             else
             {
-                MainPanel.updatePanel("You found:");
-                for (Item item: target.getInv())
+                if (target.getInv().isEmpty())
                 {
-                    MainPanel.updatePanel("\n  " + item.getName());
-                    target.removeInvItem(item); // removes item from corpse's inventory
-                    ObjectFactory.player.addInvItem(item);
+                    MainPanel.updatePanel("The corpse holds nothing of worth.");
+                }
+                else
+                {
+                    MainPanel.updatePanel("You found:");
+                    for (Item item: target.getInv())
+                    {
+                        MainPanel.updatePanel("- " + item.getName());
+                        ObjectFactory.player.addInvItem(item);
+                    }
+                    target.clearInv(); // removes item from corpse's inventory
                 }
             }
         }
@@ -659,6 +679,19 @@ public class Main
                     {
                         con.open();
                     }
+                }
+            }
+        }
+
+        if (input.contains("pick up") || input.contains("take") || input.contains("grab")) // takes an item from the room
+        {
+            for (Item item: currentRoom.getItems())
+            {
+                if (input.contains(item.getName()) && !(item instanceof Container)) // can take any item except container
+                {
+                    MainPanel.updatePanel("You picked up the " + item.getName());
+                    ObjectFactory.player.addInvItem(item); // adds to player inventory
+                    currentRoom.removeItem(item); // removes from room
                 }
             }
         }
