@@ -1,4 +1,8 @@
+import com.sun.tools.javac.Main;
+
 import java.util.Arrays;
+
+import static java.lang.Integer.parseInt;
 
 public class Dialogue
 {
@@ -244,7 +248,7 @@ public class Dialogue
                                     "\nEverest waves. \"Hallooo.\"");
                         }
                     }
-                    if (Party.getParty().contains(ObjectFactory.everest))
+                    else if (Party.getParty().contains(ObjectFactory.everest))
                     {
                         MainPanel.updatePanel("With some difficulty, Saltine eventually spots the small white-haired halfling standing behind you." +
                                 "\n\"Hi Everest!!\" Saltine chirps. \"\"");
@@ -267,6 +271,11 @@ public class Dialogue
                             "\n4) Tell me about yourself.");
                     currentDialogue = 12;
                 }
+            }
+            // SYLVIE DIALOGUES
+            else if (target.getName().equals("Sylvie"))
+            {
+
             }
         }
     }
@@ -294,7 +303,7 @@ public class Dialogue
                             "\nYou take a moment to look around.\n");
                     inDialogue = false;
                     intro = false;
-                    MainPanel.updatePanel(Main.currentRoom.toString());
+                    MainPanel.updatePanel(Game.currentRoom.toString());
                     break;
 
                 case -3: // DEFAULT HENRY DIALOGUE
@@ -356,10 +365,24 @@ public class Dialogue
                     }
                     else if (input.equals("3"))
                     {
-                        MainPanel.updatePanel("\"U-Uh...\"" +
-                                "\nHe scrunches his eyebrows and looks away. \"There's nothing that special about me. I am..." +
-                                " just a doctor.\"");
-                        waitInput = true;
+                        if (flags[9]) // saltine dialogue about dead party members has been triggered
+                        {
+                            MainPanel.updatePanel("Dain regards you a bit warily, before relenting. \"I guess I could tell you " +
+                                    "a little bit about myself. Well, for starters, I am a doctor. Mostly physical, I'm not good at " +
+                                    "mental doctoring.\"" +
+                                    "\nHe continues. \"I became acquainted with this party fairly recently. I happened to be there when" +
+                                    " one of their friends died of a dragon attack. Quite awful wounding, honestly. There were deep" +
+                                    " lacerations from the dragon's talons across his chest.\"" +
+                                    "\nDain narrows his eyes, frowning. \"I... I can't seem to remember his face.\"");
+                            flags[10] = true;
+                        }
+                        else
+                        {
+                            MainPanel.updatePanel("\"U-Uh...\"" +
+                                    "\nHe scrunches his eyebrows and looks away. \"There's nothing that special about me. I am..." +
+                                    " just a doctor.\"");
+                            waitInput = true;
+                        }
                     }
                     break;
 
@@ -368,7 +391,7 @@ public class Dialogue
                     {
                         MainPanel.updatePanel("Dain joins the party!");
                         Party.addMember(ObjectFactory.dain);
-                        Main.currentRoom.removePerson(ObjectFactory.dain);
+                        Game.currentRoom.removePerson(ObjectFactory.dain);
                         flags[1] = true;
                         waitInput = true;
                     }
@@ -385,7 +408,7 @@ public class Dialogue
                         MainPanel.updatePanel("Dain joins the party!");
                         Party.addMember(ObjectFactory.dain);
                         flags[1] = true;
-                        Main.currentRoom.removePerson(ObjectFactory.dain);
+                        Game.currentRoom.removePerson(ObjectFactory.dain);
                         waitInput = true;
                     }
                     else if (input.equals("2"))
@@ -433,7 +456,7 @@ public class Dialogue
                                 "\n\"Tch. I'm glad you're safe.\"");
                         MainPanel.updatePanel("Everest joins the party!");
                         Party.addMember(ObjectFactory.everest);
-                        Main.currentRoom.removePerson(ObjectFactory.everest);
+                        Game.currentRoom.removePerson(ObjectFactory.everest);
                         waitInput = true;
                     }
                     break;
@@ -466,7 +489,7 @@ public class Dialogue
                         MainPanel.updatePanel("Everest tilts his head. \"Ohh, uh, sure?\"");
                         MainPanel.updatePanel("Everest joins the party!");
                         Party.addMember(ObjectFactory.everest);
-                        Main.currentRoom.removePerson(ObjectFactory.everest);
+                        Game.currentRoom.removePerson(ObjectFactory.everest);
                         flags[4] = true;
                         waitInput = true;
                     }
@@ -496,10 +519,10 @@ public class Dialogue
                     if (input.equals("1"))
                     {
                         MainPanel.updatePanel("Everest turns to Dain. \"Hi Danish! I didn't see you theerree!\"" +
-                                "\nDain looks away. \"I'm glad you're safe. I mean-- Ugh, whatever...\"");
+                                "\nDain looks away. \"I'm glad you're sa-- Ugh, whatever...\"");
                         MainPanel.updatePanel("Everest joins the party!");
                         Party.addMember(ObjectFactory.everest);
-                        Main.currentRoom.removePerson(ObjectFactory.everest);
+                        Game.currentRoom.removePerson(ObjectFactory.everest);
                         flags[4] = true;
                         waitInput = true;
                     }
@@ -516,7 +539,7 @@ public class Dialogue
                     {
                         MainPanel.updatePanel("Henry grins. \"Okay, Henry go with you. Yay! :D\"");
                         Party.addMember(ObjectFactory.henry);
-                        Main.currentRoom.removePerson(ObjectFactory.henry);
+                        Game.currentRoom.removePerson(ObjectFactory.henry);
                         flags[7] = true;
                         flags[9] = true;
                         waitInput = true;
@@ -539,7 +562,8 @@ public class Dialogue
                     }
                     else if (input.equals("2"))
                     {
-                        MainPanel.updatePanel("");
+                        MainPanel.updatePanel("\"I sell a wide variety of baked goods, but my specialty is pretzels.\"" +
+                                "\nSaltine places a hand on her chest. \"Just talk to me whenever you want to buy something!\"");
                         flags[8] = true;
                         waitInput = true;
                     }
@@ -588,10 +612,109 @@ public class Dialogue
                     knowDain = true;
                     break;
                 case 12:
-                    if (input.equals("2"))
+                    if (input.equals("1"))
                     {
-
+                        // SHOW ME YOUR WARES, MERCHANT!
+                        MainPanel.updatePanel("Saltine gasps. \"Of course!\"");
+                        MainPanel.clearPanel2();
+                        MainPanel.updatePanel2(ObjectFactory.printShop());
+                        currentDialogue = 13; // enters shop dialogue
                     }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Saltine gives you a cheery smile. \"Everything is mostly fine! Sometimes, the rats" +
+                                " here scamper towards me, but I've discovered that throwing scraps at them distracts them for for an entire night.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        if (!flags[9]) // not trigger yet
+                        {
+                            MainPanel.updatePanel("A thoughtful expression emerges on her face. \"I wonder what happened to the rest of our party." +
+                                    " Despite what you might think, we had a wayyyy bigger party before we ended up here! Honestly I'm not even sure when or how" +
+                                    " we got stuck down here...\"" +
+                                    "\nSaltine seems to reminisce about her friends. \"We've been through a lot. We recently lost a few members of our party. There was Aris, and...\"" +
+                                    "\nHer brows suddenly scrunch up, and she frowns. \"Actually... I can't... I can't remember what he looked like. But he was very... oh pretzels." +
+                                    " I'm so sorry, I'll tell you about it once I can remember... \"");
+                            flags[9] = true;
+                            waitInput = true;
+                        }
+                        else if (flags[10]) // triggered saltine dialogue and dain dialogue
+                        {
+                            MainPanel.updatePanel("\"Oh, yes, remember where we last left off, " + ObjectFactory.player.getName() + "?\"" +
+                                    " Saltine inquires. \"Well, I remembered a bit more! Dain joined around the time of the second death in the" +
+                                    " party.\"" +
+                                    "\n Saltine's expression falls. \"I still can't remember his face. But I remember vaguely what he was like!" +
+                                    " Always happy and wholesome, although he did have this problem of eating things that frankly should not be eaten...\"" +
+                                    "\nSaltine grimaces.");
+                            flags[11] = true;
+                            waitInput = true;
+                        }
+                        else
+                        {
+                            MainPanel.updatePanel("Saltine smiles, tilting her head. \"What's on my mind? Baking, of course!\"");
+                            waitInput = true;
+                        }
+                    }
+                    else if (input.equals("4"))
+                    {
+                        MainPanel.updatePanel("Saltine seems delighted that you want to know more about her." +
+                                " \"Ah, okay! So, my name is Saltine. I loveee making all kinds of pastries and breads" +
+                                " but pretzels are my speciality! I actually come from a whole lineage of various" +
+                                " bread artisans. My uncle makes baguettes, for example...\"" +
+                                "\nShe continues to rant, even after you've clearly lost interest.");
+                        waitInput = true;
+                    }
+                    break;
+                case 13: // SHOPPING AT SALTINES CART
+                    int num;
+                    boolean isNum = false;
+                    try
+                    {
+                        num = parseInt(input);
+                        isNum = true;
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("not an int");
+                    }
+                    if (input.equals("0"))
+                    {
+                        MainPanel.updatePanel("Saltine waves. \"See you around!\"");
+                        MainPanel.clearPanel2();
+                        waitInput = true;
+                    }
+                    else if (input.contains("inv") || input.contains("inventory"))
+                    {
+                        MainPanel.updatePanel(ObjectFactory.player.printInv());
+                    }
+                    else if (isNum) // is a number
+                    {
+                        if (parseInt(input) <= ObjectFactory.saltineWares.size() && parseInt(input) > 0) // valid index
+                        {
+                            Item item = ObjectFactory.saltineWares.get(parseInt(input) - 1);
+                            System.out.println(item.getName());
+                            // checks if player has enough gold
+                            if (Game.getGold() >= item.getValue())
+                            {
+                                MainPanel.updatePanel("You bought a " +  item.getName() + "!");
+                                Game.subGold(item.getValue());
+                                System.out.println(Game.getGold());
+                                ObjectFactory.player.addInvItem(item);
+                                MainPanel.clearPanel2();
+                                MainPanel.updatePanel2(ObjectFactory.printShop()); // reprints shop to have updated gold counter
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("You don't have enough gold for that!");
+                            }
+                        }
+                        else
+                        {
+                            MainPanel.updatePanel("Enter a valid number!");
+                        }
+                    }
+                    break;
                 default:
                     break;
             }

@@ -36,9 +36,9 @@ public class SpellScroll extends Item // teaches the player a spell
         else
         {
             MainPanel.updatePanel("You learn " + spell.getName() + "!");
-            if (Main.currentRoom.getItems().contains(this))
+            if (Game.currentRoom.getItems().contains(this))
             {
-                Main.currentRoom.removeItem(this);
+                Game.currentRoom.removeItem(this);
             }
             if (ObjectFactory.player.getInv().contains(this))
             {

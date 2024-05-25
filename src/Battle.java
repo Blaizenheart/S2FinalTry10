@@ -483,7 +483,7 @@ public class Battle
         {
             if (!monster.isAlive())
             {
-                Main.currentRoom.removeMonster(monster); // removes dead monsters from room
+                Game.currentRoom.removeMonster(monster); // removes dead monsters from room
                 totalXP += monster.getLvl() * 20;
             }
             //ADD MORE CODE HERE FOR CORPSES
@@ -532,12 +532,12 @@ public class Battle
         if (!win)
         {
             Dialogue.setInDialogue(true);
-            Dialogue.getDialogue(Main.currentRoom, ObjectFactory.dain);
+            Dialogue.getDialogue(Game.currentRoom, ObjectFactory.dain);
         }
         else
         {
             MainPanel.updatePanel("You earned " + goldEarned + " gold!");
-            Main.addGold(goldEarned);
+            Game.addGold(goldEarned);
         }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors

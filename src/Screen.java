@@ -78,14 +78,14 @@ public class Screen // screens for different graphics
                 {
                     timer.stop();
                     Battle.endBattle(false);
-                    Main.openMainPanel();
+                    Game.openMainPanel();
                 }
             }
         });
         timer.start();
         label1.setIcon(black); // resets
         step = 0;
-        MainPanel.updatePanel(Main.currentRoom.toString());
+        MainPanel.updatePanel(Game.currentRoom.toString());
     }
 
     public static void playBadEnd1()
@@ -146,13 +146,13 @@ public class Screen // screens for different graphics
                 if (step > 13)
                 {
                     timer.stop();
-                    Main.openMainPanel();
+                    Game.openMainPanel();
                 }
             }
         });
         timer.start();
         label2.setIcon(black); // resets
         step = 0;
-        MainPanel.updatePanel(Main.currentRoom.toString());
+        MainPanel.updatePanel(Game.currentRoom.toString());
     }
 }

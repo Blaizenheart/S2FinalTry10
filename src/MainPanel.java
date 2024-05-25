@@ -89,7 +89,7 @@ public class MainPanel extends JPanel
                     }
                     else // free roaming
                     {
-                        Main.processCommand(inputField.getText().toLowerCase().trim()); // calls method in main with the text from the input field as an argument
+                        Game.processCommand(inputField.getText().toLowerCase().trim()); // calls method in main with the text from the input field as an argument
                     }
                     inputField.setText(""); // resets the text
                 }

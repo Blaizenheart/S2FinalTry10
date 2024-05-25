@@ -425,7 +425,7 @@ public class Entity // two child classes, Person and Monster
         output += "MP: " + currentMp + "/" + maxMp + "\n"; // mp
         if (this == ObjectFactory.player)
         {
-            output += "GOLD: " + Main.getGold() + "\n";
+            output += "GOLD: " + Game.getGold() + "\n";
         }
         output += "WEAPON: " + weapon.getName() + ", " + weapon.getDamageType() + " damage\n";
         output += "STATUS(ES): ";

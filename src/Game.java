@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class Main
+public class Game
 {
     public static JFrame frame = new JFrame("Dungeons and Dummies");
     private static final int FPS = 60; // frames per second
@@ -61,12 +61,12 @@ public class Main
 
     public static void addGold(int gold)
     {
-        Main.gold += gold;
+        Game.gold += gold;
     }
 
     public static void subGold(int gold)
     {
-        gold -= gold;
+        Game.gold -= gold;
     }
 
     public static int getGold()
@@ -162,8 +162,6 @@ public class Main
         {
             Person caster = null;
             Person target = null;
-            boolean foundCaster = false;
-            boolean foundTarget = false;
             Spell spell = null;
             for (Person person: Party.getParty())
             {
@@ -173,7 +171,6 @@ public class Main
                     {
                         caster = person; // determine caster
                         spell = s;
-                        foundCaster = true;
                     }
                 }
             }
@@ -256,7 +253,7 @@ public class Main
                 });
                 timer.start();
             }
-            else if (input.contains("person"))
+            else
             {
                 boolean found = false;
                 Person target = null;
@@ -307,6 +304,7 @@ public class Main
                                     MainPanel.clearPanel2();
                                     timer.stop();
                                 }
+
                             }
                         });
                         timer.start();
@@ -314,105 +312,64 @@ public class Main
                 }
                 else
                 {
-                    if (toggle)
+                    found = false;
+                    Item targetItem = null;
+                    for (Item item: ObjectFactory.player.getInv()) // sees if the item is in inventory
                     {
-                        MainPanel.updatePanel("What are you talking about? You can't examine someone who doesn't exist or isn't in your party.");
+                        if (input.contains(item.getName().toLowerCase()))
+                        {
+                            found = true;
+                            targetItem = item;
+                            break;
+                        }
+                    }
+                    for (Item item: currentRoom.getItems()) // sees if item is in room
+                    {
+                        if (input.contains(item.getName().toLowerCase()))
+                        {
+                            found = true;
+                            targetItem = item;
+                            break;
+                        }
+                    }
+                    if (found)
+                    {
+                        MainPanel.updatePanel(targetItem.getDesc());
                     }
                     else
                     {
-                        MainPanel.updatePanel("That person doesn't exist or isn't in your party.");
+                        found = false;
+                        Monster targetMonster = null;
+                        for (Monster monster: currentRoom.getMonsters()) // sees if monster is in room
+                        {
+                            if (input.contains(monster.getName().toLowerCase()))
+                            {
+                                found = true;
+                                targetMonster = monster;
+                                break;
+                            }
+                        }
+                        if (found)
+                        {
+                            MainPanel.updatePanel(targetMonster.getDesc());
+                        }
+                        else
+                        {
+                            if (toggle)
+                            {
+                                MainPanel.updatePanel("What are you talking about? You can only examine yourself, another person, an item, or a monster.");
+                            }
+                            else
+                            {
+                                MainPanel.updatePanel("Please include a valid person/monster/item that is present in the room or in your inventory to examine it. You can also examine yourself.");
+                            }
+                        }
                     }
-                }
-            }
-            else if (input.contains("item"))
-            {
-                boolean found = false;
-                Item target = null;
-                for (Item item: ObjectFactory.player.getInv()) // sees if the item is in inventory
-                {
-                    if (input.contains(item.getName().toLowerCase()))
-                    {
-                        found = true;
-                        target = item;
-                        break;
-                    }
-                }
-                for (Item item: currentRoom.getItems()) // sees if item is in room
-                {
-                    if (input.contains(item.getName().toLowerCase()))
-                    {
-                        found = true;
-                        target = item;
-                        break;
-                    }
-                }
-                if (found)
-                {
-                    MainPanel.updatePanel(target.getDesc());
-                }
-                else
-                {
-                    if (toggle)
-                    {
-                        MainPanel.updatePanel("What are you talking about? You can't examine something that doesn't exist or isn't in the room.");
-                    }
-                    else
-                    {
-                        MainPanel.updatePanel("That item doesn't exist or isn't in the room.");
-                    }
-                }
-            }
-            else if (input.contains("monster"))
-            {
-                boolean found = false;
-                Monster target = null;
-                for (Monster monster: currentRoom.getMonsters()) // sees if monster is in room
-                {
-                    if (input.contains(monster.getName().toLowerCase()))
-                    {
-                        found = true;
-                        target = monster;
-                        break;
-                    }
-                }
-                if (found)
-                {
-                    MainPanel.updatePanel(target.getDesc());
-                }
-                else
-                {
-                    if (toggle)
-                    {
-                        MainPanel.updatePanel("What are you talking about? You can't examine a monster that isn't in the room.");
-                    }
-                    else
-                    {
-                        MainPanel.updatePanel("That monster doesn't exist or isn't in the room.");
-                    }
-                }
-            }
-            else
-            {
-                if (toggle)
-                {
-                    MainPanel.updatePanel("Why can't you just specify whether it is a \"person\", " +
-                            "\"item\", or \"monster\" that you're trying to examine?");
-                }
-                else
-                {
-                    MainPanel.updatePanel("Please specify whether it is a \"person\", " +
-                            "\"item\", or \"monster\" that you're trying to examine.");
                 }
             }
         }
 
-        if (input.equals("p badend1"))
-        {
-            cl.show(mainPanel,"Bad End 1 Panel");
-            Screen.playBadEnd1();
-        }
-
-        if (input.contains("move"))
+        if (input.contains("move") || input.contains("go"))
         {
             boolean invalid = false;
             if (input.contains("north") || input.contains(" n"))
@@ -485,6 +442,7 @@ public class Main
             {
                 MainPanel.updatePanel(currentRoom.toString());
             }
+            System.out.println(currentRoom.getRoomName());
         }
 
         //meant for consumables
