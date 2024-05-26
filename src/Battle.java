@@ -547,6 +547,7 @@ public class Battle
         }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
+        MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
     }
 
     // toString
