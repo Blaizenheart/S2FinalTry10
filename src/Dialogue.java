@@ -1,3 +1,4 @@
+import com.sun.jdi.ObjectReference;
 import com.sun.tools.javac.Main;
 
 import java.util.Arrays;
@@ -78,6 +79,29 @@ public class Dialogue
                     }
                     ObjectFactory.player.addHp(1);
                     ObjectFactory.player.alive = true;
+                }
+                else if (Game.currentRoom == ObjectFactory.roomV)
+                {
+                    if (!flags[14]) // HAVENT TALKED TO DAIN ABOUT THE ROOM YET
+                    {
+                        MainPanel.updatePanel("As you look around the grand room, you notice that Dain is staring" +
+                                " very analytically at the marble statues. His gaze turns towards the skeletal arm and" +
+                                " the balancing scale in the middle of the room." +
+                                "\n\"Hm. I believe these statues are of Kelemvor,\" Dain observes out loud. \"The skeleton arm" +
+                                " with the scale of balance is his holy symbol.\"" +
+                                "\n1) Who is Kelemvor?" +
+                                "\n2) Why are these statues here?" +
+                                "\n3) How do you know this?");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("\"The statues of Kelemvor...\" Dain mutters." +
+                                "\n1) Who is Kelemvor?" +
+                                "\n2) Why are these statues here?" +
+                                "\n3) How do you know this?");
+                    }
+                    currentDialogue = 16;
+
                 }
                 else if (!flags[0]) // NOT MET DAIN YET
                 {
@@ -214,7 +238,7 @@ public class Dialogue
                 {
                     currentDialogue = -3;
                     MainPanel.updatePanel("You look over at Henry." +
-                            "\n\"Hai friend!\" Henry enthusiastically grins." +
+                            "\n\"Hai, friend!\" Henry enthusiastically grins." +
                             "\n1) Is everything okay?" +
                             "\n2) What's on your mind?" +
                             "\n3) Tell me about yourself.");
@@ -258,6 +282,11 @@ public class Dialogue
                         MainPanel.updatePanel("Sylvie stands to your left. She greets Saltine with a smile. \"Hi Saltine!\"" +
                                 "\nSaltine responds enthusiastically. \"HELLOO SYLVIEE!!\"");
                     }
+                    if (Party.getParty().contains(ObjectFactory.henry))
+                    {
+                        MainPanel.updatePanel("Henry has been distracted by bug crawling up the wall farther back in the room. Saltine doesn't seem to" +
+                                " notice his presence over her excitement from meeting you.");
+                    }
                     currentDialogue = 9;
                     MainPanel.updatePanel("\n1) Will you join us?" +
                            "\n2) What are you selling?");
@@ -275,7 +304,53 @@ public class Dialogue
             // SYLVIE DIALOGUES
             else if (target.getName().equals("Sylvie"))
             {
-
+                if (!flags[12]) // FIRST TIME TALKING TO SYLVIE
+                {
+                    MainPanel.updatePanel("You approach the long, pink haired woman ." +
+                            "\n\"Oh! Hey there. My name is Sylvie.\"" +
+                            "\nShe has a friendly expression on her face.\"");
+                    if (Party.getParty().contains(ObjectFactory.dain))
+                    {
+                        MainPanel.updatePanel("Her eyes flit over to the eye-patched man standing by your side. " +
+                                "\"Oh, Dain! How's it going?\"" +
+                                "\nDain sighs. \"What do you think?\"");
+                        if (Party.getParty().contains(ObjectFactory.everest))
+                        {
+                            MainPanel.updatePanel("\"And you're here too, Everest!\" Sylvie exclaims." +
+                                    "\n\"Yepp,\" Everest nods in greeting.");
+                        }
+                    }
+                    else if (Party.getParty().contains(ObjectFactory.everest))
+                    {
+                        MainPanel.updatePanel("\"Oh, hey there Everest.\" Sylvie smiles." +
+                                "\nEverest nods in greeting, shooting finger guns.");
+                    }
+                    if (Party.getParty().contains(ObjectFactory.henry))
+                    {
+                        MainPanel.updatePanel("\"Henry...?\" Sylvie frowns, her eyes squinting in confused recognition." +
+                                "\nHenry waves excitedly. \"Hi Sylvie!!!\"");
+                    }
+                    MainPanel.updatePanel("1) Want to join us?" +
+                            "\n2) We'll see you around!");
+                    knowSylvie = true;
+                    currentDialogue = 14;
+                }
+                else if (!flags[13]) // MET BUT HAVENT RECRUITED
+                {
+                    MainPanel.updatePanel("You approach Sylvie." +
+                            "\n1) Want to join us?" +
+                            "\n2) We'll see you around!");
+                    currentDialogue = 14;
+                }
+                else // DEFAULT SYLVIE DIALOGUE
+                {
+                    currentDialogue = 15;
+                    MainPanel.updatePanel("You strike up a conversation with Sylvie." +
+                            "\n\"Hey, " + ObjectFactory.player.getName() + "!\" Sylvie greets." +
+                            "\n1) Is everything okay?" +
+                            "\n2) What's on your mind?" +
+                            "\n3) Tell me about yourself.");
+                }
             }
         }
     }
@@ -297,7 +372,7 @@ public class Dialogue
             {
                 case -1000: // INTRO DIALOGUE
                     MainPanel.updatePanel("Ah, yes, that was your name: " + input.toUpperCase() + ".");
-                    ObjectFactory.player.setName(input.substring(0,1).toUpperCase() + input.substring(1));
+                    ObjectFactory.player.setName(input.substring(0, 1).toUpperCase() + input.substring(1));
                     MainPanel.updatePanel("And for how you got here... you still have no clue. What you do" +
                             " know now, is that you should probably find a way out of this place..." +
                             "\nYou take a moment to look around.\n");
@@ -320,7 +395,7 @@ public class Dialogue
                     }
                     else if (input.equals("3"))
                     {
-                        MainPanel.updatePanel("\"Henry's Henry,\" he responded simply.");
+                        MainPanel.updatePanel("\"Henry's Henry,\" he responds simply.");
                         waitInput = true;
                     }
                     break;
@@ -543,8 +618,7 @@ public class Dialogue
                         flags[7] = true;
                         flags[9] = true;
                         waitInput = true;
-                    }
-                    else if (input.equals("2"))
+                    } else if (input.equals("2"))
                     {
                         MainPanel.updatePanel("Henry grins. \"Bye bye!\"");
                         waitInput = true;
@@ -559,8 +633,7 @@ public class Dialogue
                                 " guys can find a way out. But if you need me, I'm selling pretzels of all kinds!\"");
                         flags[8] = true;
                         waitInput = true;
-                    }
-                    else if (input.equals("2"))
+                    } else if (input.equals("2"))
                     {
                         MainPanel.updatePanel("\"I sell a wide variety of baked goods, but my specialty is pretzels.\"" +
                                 "\nSaltine places a hand on her chest. \"Just talk to me whenever you want to buy something!\"");
@@ -667,11 +740,9 @@ public class Dialogue
                     }
                     break;
                 case 13: // SHOPPING AT SALTINES CART
-                    int num;
                     boolean isNum = false;
                     try
                     {
-                        num = parseInt(input);
                         isNum = true;
                     }
                     catch (Exception e)
@@ -697,7 +768,7 @@ public class Dialogue
                             // checks if player has enough gold
                             if (Game.getGold() >= item.getValue())
                             {
-                                MainPanel.updatePanel("You bought a " +  item.getName() + "!");
+                                MainPanel.updatePanel("You bought a " + item.getName() + "!");
                                 Game.subGold(item.getValue());
                                 System.out.println(Game.getGold());
                                 ObjectFactory.player.addInvItem(item);
@@ -713,6 +784,68 @@ public class Dialogue
                         {
                             MainPanel.updatePanel("Enter a valid number!");
                         }
+                    }
+                    break;
+                case 14:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("\"Of course. We'll have strength in numbers, afterall,\" Sylvie responds.");
+                        MainPanel.updatePanel("Sylvie joins the party!");
+                        Party.addMember(ObjectFactory.sylvie);
+                        Game.currentRoom.removePerson(ObjectFactory.sylvie);
+                        waitInput = true;
+                        flags[12] = true;
+                        flags[13] = true;
+
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Sylvie frowns slightly, but quickly masks it with a small smile. " +
+                                "\"Oh, I see. Well, don't leave me here for too long, okay?\"");
+                        waitInput = true;
+                        flags[12] = true;
+                    }
+                    break;
+                case 15:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Sylvie nods. \"We've gotten into worse circumstances. If you really think about it," +
+                                " it could be way worse!\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Sylvie gives you a thoughtful look. \"Nothing much. I'm just thinking of a way out of here...\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("\"Oh, about me?\" Sylvie repeats, pondering it over. \"Well... I am a water genasi. People don't see much of" +
+                                " my kind around very much, so I thought you might be curious about that.\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 16:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("\"Kelemvor is a greater deity of the Death and Grave domains. He has several titles," +
+                                " some being 'Lord of the Dead', 'Judge of the Damned', et cetera,\" Dain explains to you. " +
+                                "\"Despite what you might think, he is a lawful neutral god. He believed that death was a natural" +
+                                " part of life which shouldn't be feared.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Dain ponders your question for a few minutes. \"There's no way for me to know for" +
+                                " sure, but... there's always been a lot of forgotten old shrines that become ruins. Perhaps this was once" +
+                                " a place of worship for Kelemvor.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("\"Hm?\" Dain stares blankly at you, before processing your question. " +
+                                "\"Oh. I forgot to tell you that I am a cleric. I have some knowledge on the gods.\"");
+                        waitInput = true;
                     }
                     break;
                 default:
