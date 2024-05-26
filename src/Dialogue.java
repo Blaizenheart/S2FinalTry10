@@ -11,7 +11,7 @@ public class Dialogue
     // bad news-- i have to write and code all of this
 
     private static boolean inDialogue; // command processing will be different in dialogue and normal commands will not be avaliable
-    private static boolean[] flags = new boolean[50];
+    public static boolean[] flags = new boolean[50];
     // flags correspond to certain dialogues, if flag is false then the dialogue hasn't been played yet
     // mostly meant for one time dialogues
     public static boolean knowDain = false;
@@ -365,6 +365,7 @@ public class Dialogue
             inDialogue = false;
             MainPanel.clearPanel2();
             waitInput = false;
+            MainPanel.updatePanel(Game.currentRoom.toString());
         }
         else
         {
@@ -691,6 +692,7 @@ public class Dialogue
                         MainPanel.updatePanel("Saltine gasps. \"Of course!\"");
                         MainPanel.clearPanel2();
                         MainPanel.updatePanel2(ObjectFactory.printShop());
+                        MainPanel.updateColorsBattle();
                         currentDialogue = 13; // enters shop dialogue
                     }
                     else if (input.equals("2"))
@@ -753,6 +755,7 @@ public class Dialogue
                     {
                         MainPanel.updatePanel("Saltine waves. \"See you around!\"");
                         MainPanel.clearPanel2();
+                        MainPanel.updateColors();
                         waitInput = true;
                     }
                     else if (input.contains("inv") || input.contains("inventory"))
@@ -826,6 +829,7 @@ public class Dialogue
                     }
                     break;
                 case 16:
+                    flags[14] = true;
                     if (input.equals("1"))
                     {
                         MainPanel.updatePanel("\"Kelemvor is a greater deity of the Death and Grave domains. He has several titles," +
