@@ -432,6 +432,51 @@ public class Battle
                         "\n>use item health potion on todd" +
                         "\n>flee");
             }
+            else if (input.contains("examine"))
+            {
+                String output = "";
+                for (Monster monster : enemyParty)
+                {
+                    output += monster.getName().toUpperCase() + "" +
+                            "\nWeaknesses: ";
+                    if (monster.getWeakTypes().isEmpty())
+                    {
+                        output += "NONE";
+                    }
+                    else
+                    {
+                        for (String weakness: monster.getWeakTypes())
+                        {
+                            output += "[" + weakness + "] ";
+                        }
+                    }
+                    output += "\nResistances: ";
+                    if (monster.getResTypes().isEmpty())
+                    {
+                        output += "NONE";
+                    }
+                    else
+                    {
+                        for (String res: monster.getResTypes())
+                        {
+                            output += "[" + res + "] ";
+                        }
+                    }
+                    output += "\nImmunities: ";
+                    if (monster.getImmTypes().isEmpty())
+                    {
+                        output += "NONE";
+                    }
+                    else
+                    {
+                        for (String imm: monster.getImmTypes())
+                        {
+                            output += "[" + imm + "] ";
+                        }
+                    }
+                }
+                MainPanel.updatePanel(output);
+            }
             else
             {
                 MainPanel.updatePanel("You can only attack, use a spell, use an item, or try to run away.");
