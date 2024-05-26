@@ -41,6 +41,10 @@ public class Monster extends Entity
     {
         Random rand = new Random();
         int target = rand.nextInt(Battle.getParty().size()); // get party array to attack random party member
+        while (!Battle.getParty().get(target).isAlive())
+        {
+            target = rand.nextInt(Battle.getParty().size()); // if target is already dead, find different target
+        }
         super.attack(Battle.getParty().get(target)); // super call to entity class's attack method
         // sees if status hits
         int chance = rand.nextInt(101);
