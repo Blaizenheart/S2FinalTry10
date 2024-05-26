@@ -364,8 +364,8 @@ public class Battle
             }
             else if (input.contains("item") || input.contains("use") || input.contains("eat"))
             {
-                Consumable item = null;
-                for (Consumable cons : ObjectFactory.gameConsumables)
+                Item item = null;
+                for (Item cons : ObjectFactory.gameConsumables)
                 {
                     if (input.contains(cons.getName().toLowerCase()))
                     {
@@ -392,7 +392,7 @@ public class Battle
                     else
                     {
                         // have target & item
-                        item.use(target);
+                        ((Consumable)item).use(target);
                         activeChar++;
                     }
                 }
@@ -527,7 +527,6 @@ public class Battle
                 goldEarned += rand.nextInt(15)+5;
                 monster.setName(monster.getName() + " Corpse"); // turns into corpse
             }
-            //ADD MORE CODE HERE FOR CORPSES
         }
         if (!win)
         {
@@ -538,6 +537,13 @@ public class Battle
         {
             MainPanel.updatePanel("You earned " + goldEarned + " gold!");
             Game.addGold(goldEarned);
+        }
+        for (Person person: Party.getParty())
+        {
+            if (!person.isAlive())
+            {
+                person.addHp(1);
+            }
         }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
