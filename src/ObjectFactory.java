@@ -12,11 +12,20 @@ public class ObjectFactory
     public static Dice d20 = new Dice("D20",20);
 
     // WEAPONS
-    public static Weapon dagger = new Weapon("dagger", "A small dagger.", 5, "a ", d4, 1, "slashing");
+    public static Weapon dagger = new Weapon("dagger", "A small dagger.", 5, "a ", d4, 1, "piercing");
+    public static Weapon sickle = new Weapon("sickle", "A rusted sickle.", 5, "a ", d4, 1, "slashing");
     public static Weapon shortsword = new Weapon("shortsword", "A rusty shortsword.", 10, "a ", d6, 1, "slashing");
+    public static Weapon spear = new Weapon("spear", "A pointy spear.", 10, "a ", d6, 1, "piercing");
+    public static Weapon crossbow = new Weapon("crossbow", "A wooden crossbow.", 15, "a ", d8, 1, "piercing");
+    public static Weapon club = new Weapon("club", "A hard club.", 5, "a ", d4, 1, "bludgeoning");
+    public static Weapon greatclub = new Weapon("greatclub", "An even bigger club.", 15, "a ", d8, 1, "bludgeoning");
     public static Weapon claws = new Weapon("claws", "rawr", 0, "", d4, 1, "slashing");
     public static Weapon fangs = new Weapon("fangs", "rawr", 0, "", d4, 1, "piercing");
-    public static ArrayList<Item> gameWeapons = new ArrayList<Item>(List.of(dagger, shortsword, claws, fangs)); // arraylist holding weapons
+    public static Weapon glaive = new Weapon("glaive", "A heavy glaive.", 20, "", d10, 1, "slashing");
+    public static Weapon greataxe = new Weapon("glaive", "A large greataxe.", 25, "", d12, 1, "slashing");
+    public static Weapon maul = new Weapon("maul", "A spiked maul.", 15, "a ", d6, 2, "bludgeoning");
+
+    public static ArrayList<Item> gameWeapons = new ArrayList<Item>(List.of(dagger, shortsword, claws, fangs, spear, club, greatclub, crossbow, sickle, glaive, greataxe, maul)); // arraylist holding weapons
 
     // CONSUMABLES
     public static Item pretzel = new Consumable("pretzel","A very small but delicious pretzel that restores 5 hp.", 2, "a",
