@@ -20,6 +20,8 @@ public class Party
     public static void addMember(Person member)
     {
         party.add(member);
+        member.addXp(ObjectFactory.player.getXp());
+
     }
 
     public static void removeMember(Person member)
