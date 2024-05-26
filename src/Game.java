@@ -667,10 +667,73 @@ public class Game
                     MainPanel.updatePanel("You found:");
                     for (Item item: target.getInv())
                     {
-                        MainPanel.updatePanel("- " + item.getName());
+                        MainPanel.updatePanel("[" + item.getName() + "] ");
                         ObjectFactory.player.addInvItem(item);
                     }
                     target.clearInv(); // removes item from corpse's inventory
+                }
+            }
+        }
+
+        if (input.contains("equip")) // changing weapons
+        {
+            // find weapon in inventory to switch
+            ArrayList<Weapon> weaps = new ArrayList<>();
+            for (Item item: ObjectFactory.player.getInv())
+            {
+                if (item instanceof Weapon)
+                {
+                    weaps.add((Weapon) item);
+                }
+            }
+            if (weaps.isEmpty())
+            {
+                MainPanel.updatePanel("You don't have any weapons in your inventory to equip!");
+            }
+            else
+            {
+                Weapon weapon = null;
+                for (Weapon weap : weaps)
+                {
+                    if (input.contains(weap.getName()))
+                    {
+                        weapon = weap;
+                    }
+                }
+                if (weapon == null)
+                {
+                    MainPanel.updatePanel("Specify what weapon you're trying to equip.");
+                }
+                else
+                {
+                    Person person = null;
+                    for (Person partyMember : Party.getParty())
+                    {
+                        if (input.contains(partyMember.getName()))
+                        {
+                            person = partyMember;
+                        }
+                    }
+                    if (input.contains("self"))
+                    {
+                        person = ObjectFactory.player;
+                        MainPanel.updatePanel("You equip the " + weapon.getName() + "!");
+                        ObjectFactory.player.getInv().remove(weapon);
+                        ObjectFactory.player.getInv().add(person.getWeapon());
+                        person.setWeapon(weapon);
+
+                    }
+                    else if (person == null)
+                    {
+                        MainPanel.updatePanel("Specify who you're trying to equip the weapon onto.");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel(person + " equips the " + weapon + "!");
+                        ObjectFactory.player.getInv().remove(weapon); // removes the weapon from player inventory
+                        ObjectFactory.player.getInv().add(person.getWeapon()); // adds the person's current weapon to the player's inventory
+                        person.setWeapon(weapon); // sets the new weapon
+                    }
                 }
             }
         }
