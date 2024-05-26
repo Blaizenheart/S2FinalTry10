@@ -282,6 +282,17 @@ public class Room
         {
             output += exit + " ";
         }
+        // checks dialogue flags to hint to player if they need to talk to anyone
+        if (!Dialogue.flags[14] && Game.currentRoom == ObjectFactory.roomV &&
+                Party.getParty().contains(ObjectFactory.dain)) // DAIN DIALOGUE ABOUT ROOM V
+        {
+            output += "\n[!] It seems like Dain has something to say.";
+        }
+        if (!Dialogue.flags[5]&& Game.currentRoom == ObjectFactory.roomF &&
+                Party.getParty().contains(ObjectFactory.everest))
+        {
+            output += "\n[!] It seems like Everest has something to say.";
+        }
         return output;
     }
 }
