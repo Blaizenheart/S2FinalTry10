@@ -162,7 +162,6 @@ public class MainPanel extends JPanel
 
     public static void updateColorsBattle()
     {
-        // cant figure out why the jtextpane isnt setting the foreground color right so this is a workaround
         xtraArea.setBackground(dark);
     }
 

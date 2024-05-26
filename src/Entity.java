@@ -173,6 +173,10 @@ public class Entity // two child classes, Person and Monster
 
     public void addHp(int hp)
     {
+        if (!alive)
+        {
+            alive = true; // welcome back!
+        }
         currentHp += hp;
         if (currentHp > maxHp)
         {
@@ -420,7 +424,7 @@ public class Entity // two child classes, Person and Monster
         output += name.toUpperCase() + " - "; // name
         output += desc + ".\n";
         output += "LVL: " + lvl + "\n";
-        output += "XP: " + xp + "/" + lvl*100 + "\n";
+        output += "XP: " + xp + "/" + lvl*50 + "\n";
         output += "HP: " + currentHp + "/" + maxHp + "\n"; // hp
         output += "MP: " + currentMp + "/" + maxMp + "\n"; // mp
         if (this == ObjectFactory.player)
