@@ -1,3 +1,5 @@
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,8 @@ public class Game
     public static Timer timer;
 
     private static int gold = 0;
+    public static boolean placedWhite = false;
+    public static boolean placedBlack = false;
 
     public static void main(String[] args) // main method
     {
@@ -34,8 +38,6 @@ public class Game
             badEnd1Panel = new JPanel();
 
             mainPanel.add(MainPanel.main, "Main Panel"); // adds the main panel
-            badEnd1Panel.add(Screen.getScreen(2));
-            //more panels here for different endings ??!?!?!?!? or graphics ig
 
             frame.add(mainPanel); // adds the card panel to the frame
             frame.pack();
@@ -49,6 +51,7 @@ public class Game
 
             Dialogue.reset(); // marks all booleans false
             Party.addMember(ObjectFactory.player); //adds player to party
+            MainPanel.clearPanel();
 
             currentRoom = ObjectFactory.roomA; // starting area
 
@@ -114,7 +117,8 @@ public class Game
                     "\ntutorial: explains how the game works" +
                     "\nhelp: brings up the list of commands" +
                     "\npalette: lets you set the palette/theme of the game" +
-                    "\nuse/eat/consume/drink: use an item" +
+                    "\nuse/eat/consume/drink/give: use an item or give to party member to use" +
+                    "\nattack: attacks enemies in a room" +
                     "\nlook: prints a description of the room" +
                     "\nmove north/south/east/west: move in that direction" +
                     "\nmap: displays the map and where you are" +
@@ -141,6 +145,53 @@ public class Game
                     "\n(This is the outcome of the command that the user inputted.)" +
                     "\n\nIf for SOME REASON, this doesn't make any sense, type the \"help\" command later." +
                     "\n-------------------------------------------------------------------------\n");
+        }
+
+        if (input.contains("place")) // for room V
+        {
+            QuestItem item = null;
+            if (currentRoom == ObjectFactory.roomV)
+            {
+                if (!(placedWhite && placedBlack))
+                {
+                    if (ObjectFactory.player.getInv().contains(ObjectFactory.whiteScale))
+                    {
+                        MainPanel.updatePanel("After a moment of contemplation, you place the white scale you had" +
+                                " obtained from the dragon onto one side of the scale.");
+                        placedWhite = true;
+                        if (placedBlack)
+                        {
+                            MainPanel.updatePanel("As soon as you place it down, the scales shift to a balanced state.");
+                        }
+                    }
+                    else if (ObjectFactory.player.getInv().contains(ObjectFactory.blackScale))
+                    {
+                        MainPanel.updatePanel("After a moment of contemplation, you place the black scale you had" +
+                                " obtained from the dragon onto one side of the scale.");
+                        placedBlack = true;
+                        if (placedWhite)
+                        {
+                            MainPanel.updatePanel("As soon as you place it down, the scales shift to a balanced state.");
+                        }
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("You don't have anything to place onto the scales.");
+                    }
+                    if (placedBlack && placedWhite) // completed!
+                    {
+                        MainPanel.updatePanel("A strong magical force surrounds the balancing scale, engulfing the black scale in a bright," +
+                                " white light, and the white scale in a cloud of darkness. After the magical effects dissipate, there is a field of" +
+                                " magic around the balancing scale. Something tells you that there is nothing more to do in this room.");
+                    }
+                }
+                else // both scales have been placed on the scales
+                {
+                    MainPanel.updatePanel("You have already placed both of the scales on the balance. It seems like" +
+                            " they cannot be moved any longer, held in place by some arcanic force. Something tells you that" +
+                            " there is nothing more to do in this room.");
+                }
+            }
         }
 
         if (input.equals("look") || input.contains("look around")) // prints description of the room + items + enemies + people
@@ -446,7 +497,7 @@ public class Game
         }
 
         //meant for consumables
-        if (input.contains("eat") || input.contains("use") || input.contains("consume") || input.contains("drink"))
+        if (input.contains("eat") || input.contains("use") || input.contains("consume") || input.contains("drink") || input.contains("give"))
         {
             boolean found = false;
             boolean hasItem = false;
