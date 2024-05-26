@@ -37,10 +37,10 @@ public class Person extends Entity
     public void addXp(int xp)
     {
         this.xp += xp;
-        while (this.xp >= lvl * 100) //xp hit max or overflow
+        while (this.xp >= lvl * 50) //xp hit max or overflow
         {
             // level up
-            xp = xp - lvl * 100; // reset xp based on overflow
+            xp = xp - lvl * 50; // reset xp based on overflow
             lvl++;
             MainPanel.updatePanel(name + " leveled up to Level " + lvl + "!");
             hpCapAdjustment(); // adjusts the hp cap
@@ -50,13 +50,13 @@ public class Person extends Entity
 
     public void hpCapAdjustment()
     {
-        maxHp += 10; // hp increases by 10 per level
+        maxHp += 5*lvl; // hp increases by scaled amount
         currentHp = maxHp; // full heal
     }
 
     public void mpCapAdjustment()
     {
-        maxMp += 10; // mp increases by 5 per level
+        maxMp += 5*lvl; // mp increases by scaled amount
         currentMp = maxMp; // full mp restore
     }
 
