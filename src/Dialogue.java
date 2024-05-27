@@ -363,6 +363,14 @@ public class Dialogue
                             "\n2) We'll see you around!");
                     currentDialogue = 14;
                 }
+                if (!flags[16] && Game.currentRoom == ObjectFactory.roomI)
+                {
+                    MainPanel.updatePanel("Sylvie shivers, carefully stepping over all of the webs." +
+                            "\n\"Ugh. This is all so gross...\"" +
+                            "\n1) I like spiders." +
+                            "\n2) Spiders are awful.");
+                    currentDialogue = 17;
+                }
                 else // DEFAULT SYLVIE DIALOGUE
                 {
                     currentDialogue = 15;
@@ -870,6 +878,23 @@ public class Dialogue
                     {
                         MainPanel.updatePanel("\"Hm?\" Dain stares blankly at you, before processing your question. " +
                                 "\"Oh. I forgot to tell you that I am a cleric, so I have some knowledge on the gods.\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 17:
+                    flags[17] = true;
+                    if (input.equals("1"))
+                    {
+                        ObjectFactory.sylvie.approve();
+                        MainPanel.updatePanel("Sylvie smiles, which surprises you, given her disgusted demeanor a minute earlier" +
+                                " towards the webbing. \"No, they're definitely very interesting critters. I quite like them." +
+                                " However... these are new heels...\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Sylvie's eyes widen. \"Oh no, I don't dislike spiders. I just don't like the sticky" +
+                                " webbing on my heels.\"");
                         waitInput = true;
                     }
                     break;

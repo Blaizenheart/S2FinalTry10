@@ -119,6 +119,19 @@ public class ObjectFactory
     public static Monster possum = new Monster("Skeletal Possum", "An animated set of bones vaguely resembling a possum or a rat.", true, 1,0,30,
             30,3,1,30,0, 0, fangs, new ArrayList<>(), new ArrayList<>(List.of("bludgeoning")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 40, 3);
+    public static Monster spider1 = new Monster("Black Spider", "A large black spider.", true, 2,0,30,
+            30,3,1,30,0, 0, fangs, new ArrayList<>(), new ArrayList<>(List.of("bludgeoning")),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "poisoned", 10, 3);
+    public static Monster spider2 = new Monster("Green Spider", "A small green spider.", true, 2,0,10,
+            10,4,1,30,0, 0, fangs, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "poisoned", 50, 1);
+    public static Monster spider3 = new Monster("White Spider", "A medium-sized white spider.", true, 2,0,20,
+            20,3,6,30,0, 0, fangs, new ArrayList<>(), new ArrayList<>(List.of("slashing")),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "poisoned", 5, 3);
+    public static Monster spider4 = new Monster("Brown Spider", "A large fuzzy brown spider.", true, 2,0,25,
+            25,2,3,30,0, 0, fangs, new ArrayList<>(), new ArrayList<>(List.of("piercing")),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "poisoned", 15, 2);
+
 
     // BOSSES !!
     public static Monster lightDragon = new Monster("Light Dragon", "A large dragon with shimmering scales. It is emitting a bright light.", true,
@@ -147,7 +160,8 @@ public class ObjectFactory
             new ArrayList<>(List.of("S","W")), new ArrayList<>(), new ArrayList<>(List.of(possum)), new ArrayList<>());
     public static Room roomH = new Room("h","The room is lined with several terraces that sprout a great amount of grass and flowers. A dried up fountain sits in the middle of the room. " +
             "An aura of arcana surrounds the greenery, keeping it alive despite the lack of water.", new ArrayList<>(List.of("N","S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(saltine)));
-    public static Room roomI = new Room("i","", new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static Room roomI = new Room("i","Large cobwebs cover the corners of the room, some loose webbing dangling down from the ceiling. The entire room is very dusty.",
+            new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(List.of(spider1, spider2, spider3, spider4)), new ArrayList<>());
     public static Room roomJ = new Room("j","", new ArrayList<>(List.of("E","S")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomK = new Room("k","", new ArrayList<>(List.of("N","S","W")), new ArrayList<>(), new ArrayList<>(List.of(darkDragon)), new ArrayList<>());
     public static Room roomL = new Room("l","", new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -171,7 +185,7 @@ public class ObjectFactory
 
     public static Room hall1 = new Room("hall1","The walls of the hallway are slightly crumbling.", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(List.of(chestH1)), new ArrayList<>(List.of(rat1, rat2)), new ArrayList<>());
     public static Room hall2 = new Room("hall2","Dim lanterns light up the hallway. Slight foliage forms at the corners of the room.", new ArrayList<>(List.of("N", "S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    public static Room hall3 = new Room("hall3","", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static Room hall3 = new Room("hall3","The hallway is wide, with a low ceiling.", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room hall4 = new Room("hall4","", new ArrayList<>(List.of("N", "S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room hall5 = new Room("hall5","", new ArrayList<>(List.of("N", "S","E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomAA = new Room("aa","", new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
