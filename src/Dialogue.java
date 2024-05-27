@@ -21,6 +21,7 @@ public class Dialogue
     public static boolean knowEverest = false;
     public static boolean knowHenry = false;
     public static boolean waitInput = false;
+    private static int clues = 0;
 
     private static int currentDialogue;
 
@@ -44,7 +45,7 @@ public class Dialogue
 
     // brain methods
 
-    public static void getDialogue(Room room, Entity target)
+    public static void getDialogue(Entity target)
     {
         if (intro)
         {
@@ -52,6 +53,26 @@ public class Dialogue
                     "You gather your bearings and take a moment to reflect. How did you even get here? " +
                     "\nMaybe you should start off with an easier question to answer. What's your name?");
             currentDialogue = -1000;
+        }
+        else if (Game.currentRoom == ObjectFactory.roomN && (Game.placedBlack && Game.placedWhite)) // TRYING TO LEAVE AFTER GATE IS UNLOCKED
+        {
+            ImgFinder.updateImage(ObjectFactory.player);
+            MainPanel.updatePanel("You have placed both the black and white scale onto the balancing scale in the other room. However," +
+                    " the gates are not yet open. What's going on?");
+            if (!(Party.getParty().contains(ObjectFactory.dain) && Party.getParty().contains(ObjectFactory.sylvie)
+                    && knowSaltine && Party.getParty().contains(ObjectFactory.henry) && Party.getParty().contains(ObjectFactory.everest))) // havent recruited everyone yet
+            {
+                MainPanel.updatePanel("You have a feeling that you might be missing someone." +
+                        " If you choose to proceed now, there may be no going back." +
+                        "\n1) I'm not ready yet.");
+                currentDialogue = 999;
+            }
+            else
+            {
+                MainPanel.updatePanel("1) Proceed." +
+                        "\n2) I'm not ready yet.");
+                currentDialogue = 1000;
+            }
         }
         else
         {
@@ -181,7 +202,7 @@ public class Dialogue
                         currentDialogue = 4;
                     }
                 }
-                else if (!flags[5] && room == ObjectFactory.roomF) // EVEREST TALKS ABT WINE ROOM
+                else if (!flags[5] && Game.currentRoom == ObjectFactory.roomF) // EVEREST TALKS ABT WINE ROOM
                 {
                     MainPanel.updatePanel("You turn towards Everest. (press ENTER to continue)");
                     currentDialogue = 5;
@@ -441,7 +462,7 @@ public class Dialogue
                     }
                     else if (input.equals("3"))
                     {
-                        if (flags[9]) // saltine dialogue about dead party members has been triggered
+                        if (flags[15]) // saltine dialogue about dead party members has been triggered
                         {
                             MainPanel.updatePanel("Dain regards you a bit warily, before relenting. \"I guess I could tell you " +
                                     "a little bit about myself. Well, for starters, I am a doctor. Mostly physical, I'm not good at " +
@@ -703,7 +724,7 @@ public class Dialogue
                     }
                     else if (input.equals("3"))
                     {
-                        if (!flags[9]) // not trigger yet
+                        if (!flags[15]) // not trigger yet
                         {
                             MainPanel.updatePanel("A thoughtful expression emerges on her face. \"I wonder what happened to the rest of our party." +
                                     " Despite what you might think, we had a wayyyy bigger party before we ended up here! Honestly I'm not even sure when or how" +
@@ -711,13 +732,13 @@ public class Dialogue
                                     "\nSaltine seems to reminisce about her friends. \"We've been through a lot. We recently lost a few members of our party. There was Aris, and...\"" +
                                     "\nHer brows suddenly scrunch up, and she frowns. \"Actually... I can't... I can't remember what he looked like. But he was very... oh pretzels." +
                                     " I'm so sorry, I'll tell you about it once I can remember... \"");
-                            flags[9] = true;
+                            flags[15] = true;
                             waitInput = true;
                         }
                         else if (flags[10]) // triggered saltine dialogue and dain dialogue
                         {
                             MainPanel.updatePanel("\"Oh, yes, remember where we last left off, " + ObjectFactory.player.getName() + "?\"" +
-                                    " Saltine inquires. \"Well, I remembered a bit more! Dain joined around the time of the second death in the" +
+                                    " Saltine inquires. \"Well, I remembered a bit more! Dain joined around the time of the first death in the" +
                                     " party.\"" +
                                     "\n Saltine's expression falls. \"I still can't remember his face. But I remember vaguely what he was like!" +
                                     " Always happy and wholesome, although he did have this problem of eating things that frankly should not be eaten...\"" +
@@ -848,8 +869,316 @@ public class Dialogue
                     else if (input.equals("3"))
                     {
                         MainPanel.updatePanel("\"Hm?\" Dain stares blankly at you, before processing your question. " +
-                                "\"Oh. I forgot to tell you that I am a cleric. I have some knowledge on the gods.\"");
+                                "\"Oh. I forgot to tell you that I am a cleric, so I have some knowledge on the gods.\"");
                         waitInput = true;
+                    }
+                    break;
+                case 999: // when not everyone has been recruited to the party
+                    MainPanel.updatePanel("You decide that you aren't ready yet. You just can't shake the feeling that" +
+                            " you might be missing someone...");
+                    waitInput = true;
+                    break;
+                case 1000:
+                    if (input.equals("1")) // FINAL SCENE...
+                    {
+                        MainPanel.clearPanel();
+                        MainPanel.updatePanel("Okay then. Beware that you have entered a point of no return." +
+                                "\nYou decided to look around the room, trying to understand why the gates haven't lifted." +
+                                " After a few moments, you realize that there is a button near the entrance of the room that " +
+                                "lifts the gate... However, once your finger leaves the button, the gate quickly descends again." +
+                                " You try using a makeshift contraption to keep one of your items stuck to the button, but it" +
+                                " seems like it takes a person to press it." +
+                                "\nSaltine appears from the door, pushing her pretzel (and other baked goods) cart" +
+                                " into the room at a leisurely pace. It seems like she's done selling her pretzels to the critters of the dungeon." +
+                                "She turns to you, smiling brightly. \"OH! You found the way out?\"" +
+                                "\nYour party members gather around, and you explain your findings." +
+                                "\n\"Hm, I see,\" Sylvie murmurs. \"Does this mean that one of us will have to" +
+                                " stay behind to hold the button...?\"" +
+                                "\nEverest remains silent, but he seems to understand the implications." +
+                                "\n\"W-Wha?...\" Henry's eyes widen." +
+                                "\nDain frowns. \"This is... awful. I don't even want to think about having to" +
+                                " make the decision on who to leave behind...\"" +
+                                "\nSaltine's eyes begin to tear up a bit, and you see everyone's faces fall as" +
+                                " they process what Dain has said. A decision must be made, but no one is willing to suggest someone" +
+                                " else to be sacrificed.");
+                        currentDialogue = 1001;
+                    }
+                    else if (input.equals("2")) // GOO BACKKK
+                    {
+                        MainPanel.updatePanel("You decide that you aren't ready yet.");
+                        waitInput = true;
+                    }
+                    break;
+                case 1001:
+                    MainPanel.updatePanel("\"I can do it.\"" +
+                            "\nYou look up. It seems like Dain, Saltine, and Henry had spoken in unison. They looked" +
+                            " at each other, surprised." +
+                            "\n\"Oh, nonono. I'm not letting either of you sacrifice yourself,\" Dain argues, gritting his teeth." +
+                            " He seems upset, a contrast to his usual stoic demeanor." +
+                            "\nSaltine begins to cry. \"No, please, Dain... It's... It's best if you stay alive. You're our" +
+                            " doctor, after all... A-And, I...\"" +
+                            "\nShe gulps, before frantic words begin to burst out of her. \"I'm sorry for hiding this from everyone! " +
+                            "But I don't have very long to live! I'm... I'm sick! It's a terminal disease and it's been eating away" +
+                            " at my health for years and years and I think it's just best that I be the one...\"" +
+                            "\nEveryone seems shocked at the revelation. It seems that they had never discovered her secret, " +
+                            "despite travelling with Saltine for so long." +
+                            "\nHenry patted her head. \"Henry... Henry doesn't want to leave Saltine to die. Eyepatch man nice, too." +
+                            " Henry is okay with dying... familiar feeling...\"" +
+                            "\n\nIt seems like the three of them are willing to die. It might be about time that you spoke up.\n" +
+                            "\nI think it should be..." +
+                            "\n1) Dain." +
+                            "\n2) Saltine." +
+                            "\n3) Henry." +
+                            "\n4) Me.");
+                    currentDialogue = 1002;
+                    break;
+                case 1002:
+                    if (input.equals("1"))
+                    {
+                        ImgFinder.updateImage(ObjectFactory.dain);
+                        MainPanel.updatePanel("\"There you go,\" Dain announces. \"If none of us can make a decision," +
+                                " it should be up to our friend here.\"" +
+                                "\nDespite what he says, you have a feeling that he would've argued against you if you" +
+                                " had suggested anyone else." +
+                                "\nAfter a few minutes of silence, Dain clears his throat. It's clear that he's been" +
+                                " thinking of what to say to his friends. " +
+                                "\n\"I'm... thankful I got to know you all. But I always knew death was inevitable for me." +
+                                " I've just... done too much. It's always felt unfair that I, of all people, get to continue" +
+                                " living...\" Dain says, placing his hand over his heart. You aren't sure exactly what he" +
+                                " is referring to, but you can sense there is some kind of darkness in his past." +
+                                "\nHe turns to Everest, hesitant. \"Everest, I...\"" +
+                                "\nEverest tilts his head. \"What is it?\"" +
+                                "\n\n\"N-Nothing,\" Dain mutters, turning towards you instead. \"I will go and push the button now." +
+                                " If you have no other obligations elsewhere, please take care of them in my place...\"");
+                        currentDialogue = 1005;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        ImgFinder.updateImage(ObjectFactory.saltine);
+                        MainPanel.updatePanel("Saltine smiles weakly. \"Thank you, " + ObjectFactory.player.getName() + "." +
+                                "\nShe turns to everyone else. \"I... I love you guys. Thank you for everything, really. Tell the" +
+                                " others once you get back to the surface that, too... and if you ever run into my family, tell them" +
+                                " that I did my best to live up to their name...\"" +
+                                "\nSaltine begins to address each of them individually, tears rushing down her cheek. " +
+                                "\"Sylvie... thank you for being my friend. I remember all those times where we would sing together" +
+                                " around the campfire. And Dain, you don't seem to realize how awesome you are! You're always" +
+                                " taking care of people, even when they're not very grateful for it...\" She shoots Everest a pointed look." +
+                                "\n\"And Everest. Don't you DARE hurt Dain's feelings, okay?\"" +
+                                "\nThen, Saltine gives Henry a hesitant look. Her eyes widen, as if suddenly recalling something." +
+                                "\"Oh, Henry... You were such a good friend. I still have the ring you left me,\" Saltine whispers," +
+                                " fidgeting with the ruby ring on her left hand." +
+                                "\nSaltine turns back to look at you. \"Well then. I'll push the button now...\"");
+                        currentDialogue = 1004;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        ImgFinder.updateImage(ObjectFactory.henry);
+                        // tallies up all the clues the player has seen
+                        if (flags[9])
+                        {
+                            clues++;
+                        }
+                        if (flags[10])
+                        {
+                            clues++;
+                        }
+                        if (flags[11])
+                        {
+                            clues++;
+                        }
+                        if (clues >= 2) // 66% or higher
+                        {
+                            // THE BIG TWIST
+                            MainPanel.updatePanel("You've realized something had been off about him this entire time." +
+                                    " It was a bit difficult to place, since you weren't ever part of their party prior to" +
+                                    " ending up in these dungeons, but..." +
+                                    "\n\"Henry... you're not alive, are you?\"" +
+                                    "\nEveryone turns to stare at you, your comment having taken them all off guard." +
+                                    "\nHenry tilts his head at you. \"What are you talking about, " + ObjectFactory.player.getName() + "?" +
+                                    "\nYou clear your throat, mentally preparing your defense. \"You guys lost a few party members recently," +
+                                    " didn't you?\"" +
+                                    "\nSaltine nods, remembering what she had told you. \"That's... that's right. We lost three people in total." +
+                                    " Aris, Moria... and...\"" +
+                                    "\nShe frowned, her eyes widening. \"I still can't remember.\"" +
+                                    "\n\"Yes. It appears that this place has some kind of magical effect that has caused" +
+                                    " all of you to have blurry memories,\" you point out. \"That's why, when Henry" +
+                                    " joined the party, all of you seemed a bit perplexed, but you ultimately shrugged it off." +
+                                    " HOWEVER, Dain was an exception.\"" +
+                                    "\nDain turned to look at Henry, and then back at you. \"Correct. I vaguely recalled his" +
+                                    " appearance, but I don't believe I knew him prior to all of this.\"" +
+                                    "\nSaltine gasped, clasping her hand over her mouth. \"And... Dain joined around the time of" +
+                                    "the first death. I remember telling you that, " + ObjectFactory.player.getName() + "!" +
+                                    "\n\"So he wouldn't have known Henry... but then why did he recognize his appearance?\" Sylvie interjects, folding her arms." +
+                                    "\n\n1) Because he had seen Henry from his past." +
+                                    "\n2) Because he was confused. He doesn't actually remember Henry's appearance." +
+                                    "\n3) Because he had performed the autopsy.");
+                            currentDialogue = 1003;
+                        }
+                        else
+                        {
+                            MainPanel.updatePanel("Henry smiles at you, his eyes softening. It seems like he had come to some sort of" +
+                                    " realization. \"Then it will be Henry. Okay. Henry will go press " +
+                                    "button now.\"" +
+                                    "\nSaltine grits her teeth, tears streaming down her cheek. \"That's it, Henry? You're just" +
+                                    " going to accept your fate, just like that?\"" +
+                                    "\nEverest tilts his head, staring at Henry. Then, his eyes widen a little. \"Oh." +
+                                    " The alcohol wore off... I remember now.\"" +
+                                    "\nHe made no further attempt to elaborate." +
+                                    "\nHenry pats Saltine gently on the head, before turning to Sylvie. \"Sorry, Sylvie... you" +
+                                    " were good friend too. Henry thought you like candles, but Henry was wrong.\"" +
+                                    "\nSylvie frowned. \"What do you mean?\"" +
+                                    "\nBut Henry doesn't explain himself. He only turns away, reaching for the button. " +
+                                    "\"You should all go now. Goodbye, friends. It was nice seeing you all again.\"" +
+                                    "\nSomething about the way he spoke changed, as if he was dropping his naive facade. Instead," +
+                                    " an understanding, wiser expression enveloped his rough features.");
+                            currentDialogue = 1006;
+                        }
+                    }
+                    else if (input.equals("4"))
+                    {
+                        ImgFinder.updateImage(ObjectFactory.player);
+                        MainPanel.updatePanel("Everyone turns to look at you, shocked." +
+                                "\n\"B-But... you barely know us, " + ObjectFactory.player.getName() + "!\" Saltine exclaims." +
+                                "\nEverest sighs, turning away from everyone else. \"If they are willing to do it, why are" +
+                                " we arguing with their decision?\"" +
+                                "\n\"I agree with Everest,\" Sylvie says. She gives you an apologetic smile." +
+                                "\nDain's eyebrows scrunch, but it doesn't seem like he's willing to argue against this" +
+                                " decision." +
+                                "\n\"Okay,\" Dain mutters, seeming a bit ashamed of himself for making what he probably" +
+                                " sees as a selfish decision. \"Thank you for everything, " + ObjectFactory.player.getName() + "." +
+                                "\nAfter solemn goodbyes are exchanged, with Saltine enveloping you in a big hug," +
+                                " you hold the button, watching as the party slowly descends. Without you." +
+                                "\nBut it was your decision afterall, wasn't it?" +
+                                "\nHow could you blame them?" +
+                                "\n\nENDING 4: Sacrifice" +
+                                "\n\n1) See other endings." +
+                                "\n2) Exit the game.");
+                        currentDialogue = 1008;
+                    }
+                    // gag options
+                    else if (input.equalsIgnoreCase("everest"))
+                    {
+                        MainPanel.updatePanel("Everest laughs, as if you were suggesting a reallllyyy funny joke." +
+                                " \"That's funny, " + ObjectFactory.player.getName() + "!\"" +
+                                "\nDain frowns. \"Let's not sacrifice Everest. I lo... nevermind. Just no.\"");
+                    }
+                    else if (input.equalsIgnoreCase("sylvie"))
+                    {
+                        MainPanel.updatePanel("Sylvie gives you an incredulous stare. \"No way! I'm... I've survived this far." +
+                                " I don't want to leave anyone else behind, but I'm not giving up here!\"");
+                    }
+                    break;
+                case 1003: // HENRY PATH, QUESTION
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("No, that doesn't seem correct.");
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("No, that doesn't seem correct.");
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("Yes! That seems right." +
+                                "\"Dain recognized his appearance because he was the one to perform Henry's autopsy,\"" +
+                                " you explain." +
+                                "Everyone is rather quiet, processing what you've said. Ever since they had entered the " +
+                                "dungeon, their memories had been fuzzy, but it seemed to be slowly clearing up again..." +
+                                "\nHenry suddenly laughs, breaking the silence. \"Henry is a ghost, then! So... it won't" +
+                                " hurt for Henry to return to the dead, right?\"" +
+                                "\n1) Everything's going to be okay." +
+                                "\n2) I don't know.");
+                        currentDialogue = 1007;
+                    }
+                    break;
+                case 1004:
+                    MainPanel.clearPanel2();
+                    MainPanel.updatePanel("The party solemnly ascends the stairs in silence, mourning the loss of Saltine." +
+                            " Sure, she wasn't dead just yet, but if she was to be trapped in these dungeons... it was only a" +
+                            " matter of time until her food supply ran out. It was a harsh truth everyone would have to live with." +
+                            " Dain seems like he is barely holding everything together, Sylvie is clutching onto her sleeves," +
+                            " gaze cast downwards, Henry has a blank expression on his face, and Everest... well, he was drinking. As usual." +
+                            "\n\"She was... one of the first people I considered my friend,\" Dain mutters, looking at no one in particular as he" +
+                            " spoke. \"Saltine...\"" +
+                            "\nYou can't help but wonder if this was the correct decision. Was there even a right decision, to" +
+                            " begin with?" +
+                            "\nAs soon as the five of you step into the sunlight, you notice that Henry is gone." +
+                            "\n\nENDING 1: Goodbye, Pretzel Girl" +
+                            "\n\n1) See other endings." +
+                            "\n2) Exit the game.");
+                    currentDialogue = 1008;
+                    break;
+                case 1005:
+                    MainPanel.clearPanel2();
+                    MainPanel.updatePanel("The party solemnly ascends the stairs in silence, mourning the loss of Dain." +
+                            " Saltine is sobbing furiously, Sylvie averts her gaze everytime you try to look at her, Henry has" +
+                            " a blank expression plastered onto his face, and Everest... looks rather unaffected by the loss of Dain." +
+                            "\n\"What's wrong with you?\" Amidst her tears, Saltine suddenly lashes out at Everest." +
+                            "\n\"Hm?\" Everest responds nonchalantly." +
+                            "\n\"You're the worst, Everest,\" Saltine grits her teeth. \"Don't you know that he... nevermind. You would never understand.\"" +
+                            "\nYou can't help but wonder if this was the correct decision. Was there even a right decision, to" +
+                            " begin with?" +
+                            "\nAs soon as the five of you step into the sunlight, you notice that Henry is gone." +
+                            "\n\nENDING 2: Goodbye, My Danish Sweetheart" +
+                            "\n\n1) See other endings." +
+                            "\n2) Exit the game.");
+                    currentDialogue = 1008;
+                    break;
+                case 1006:
+                    MainPanel.clearPanel2();
+                    MainPanel.updatePanel("The party solemnly ascends the stairs in silence, mourning the loss of Henry." +
+                            " Dain and Everest seem less affected than Saltine and Sylvie, who seem to have both come to some" +
+                            " sort of realization." +
+                            "\n\"Oh, Henry...\" Sylvie sobs. \"I remember the candles now——how could I have not realized it...?\"" +
+                            "\nSaltine is also crying. \"The ring... he gave me... I had it on me this entire time and I also" +
+                            " didn't realize... it's okay, Sylvie. I'm sure he's happy...\"" +
+                            "\nSylvie shakes her head. \"I didn't process it quick enough. If I did, I would've given him a hug or" +
+                            " something... thank him for the candles, and apologize for misunderstanding him...\"" +
+                            "\nYou're not completely sure what they're talking about." +
+                            "\nAs soon as the five of you step into the sunlight, you feel the cool breeze on your face." +
+                            " With one final glance back at the stairs which you ascended from, you continue forth with your new acquaintances." +
+                            "\nBut still... you can't help but feel like there was something you were missing." +
+                            "\n\nENDING 3: Goodbye, Best Boy" +
+                            "\n\n1) See other endings. (Other Henry ending has been unlocked as well)" +
+                            "\n2) Exit the game.");
+                    clues = 3;
+                    currentDialogue = 1008;
+                    break;
+                case 1007:
+                    MainPanel.clearPanel2();
+                    MainPanel.updatePanel("The party solemnly ascends the stairs in silence, mourning the loss of Henry." +
+                            " It seems like the revelation has hit Saltine and Sylvie pretty hard. Everest seems to be thinking in" +
+                            " silence, while Dain is talking to himself about Kelemvor and the nature of the dungeons." +
+                            "\n\"Oh, Henry...\" Sylvie sobs. \"I remember the candles now——how could I have not realized it...?\"" +
+                            "\nSaltine is also crying. \"The ring... he gave me... I had it on me this entire time and I also" +
+                            " didn't realize... it's okay, Sylvie. I'm sure he's happy...\"" +
+                            "\nSylvie shakes her head. \"I didn't process it quick enough. If I did, I would've given him a hug or" +
+                            " something... thank him for the candles, and apologize for misunderstanding him...\"" +
+                            "\n'Rest in peace, Henry,' you think to yourself. He seemed like a very genuine man. You wonder" +
+                            " when exactly it was that he had realized he was not alive..." +
+                            "\nAs soon as the five of you step into the sunlight, you feel the cool breeze on your face." +
+                            " With one final glance back at the stairs which you ascended from, you continue forth with your new friends." +
+                            "\n\n\"So, ah, Everest...\" Dain began, before quickly looking away." +
+                            "\n\"What is it, Danish?\" Everest raises an eyebrow. \"You look like you're about to confe——\"" +
+                            "\n\"W-W-What?!? No, OF COURSE NOT,\" Dain stammers. \"I just think you have pretty eyes!\"" +
+                            "\n\"——a secret.\" Everest finishes, before staring at Dain. \"Wait, what?\"" +
+                            "\n\nWhat adventures will you embark on next?" +
+                            "\n\nBEST ENDING: Final Goodbye" +
+                            "\n\n1) See other endings. (Other Henry ending has been unlocked as well)" +
+                            "\n2) Exit the game.");
+                    clues = 1;
+                    currentDialogue = 1008;
+                    break;
+                case 1008: // OPTION TO SEE OTHER ENDINGS OR EXIT
+                    MainPanel.clearPanel2();
+                    if (input.equals("1")) // SEE OTHER ENDINGS
+                    {
+                        currentDialogue = 1001;
+                    }
+                    else if (input.equals("2")) // EXIT GAME
+                    {
+                        Game.frame.dispose();
+                        System.exit(0);
                     }
                     break;
                 default:
@@ -857,7 +1186,7 @@ public class Dialogue
             }
             if (waitInput)
             {
-                MainPanel.updatePanel("(Press ENTER to leave)");
+                MainPanel.updatePanel("(Press ENTER)");
             }
         }
     }
