@@ -57,7 +57,7 @@ public class Game
 
             // intro dialogue
             Dialogue.setInDialogue(true);
-            Dialogue.getDialogue(null,null);
+            Dialogue.getDialogue(null);
             gameLoop(); //starts the gameLoop
         });
     } // end main method
@@ -183,6 +183,7 @@ public class Game
                         MainPanel.updatePanel("A strong magical force surrounds the balancing scale, engulfing the black scale in a bright," +
                                 " white light, and the white scale in a cloud of darkness. After the magical effects dissipate, there is a field of" +
                                 " magic around the balancing scale. Something tells you that there is nothing more to do in this room.");
+                        // ADD MORE CODE FOR UNLOCKING EXIT
                     }
                 }
                 else // both scales have been placed on the scales
@@ -836,7 +837,7 @@ public class Game
                 {
                     Dialogue.setInDialogue(true);
                     ImgFinder.updateImage((Person) target);
-                    Dialogue.getDialogue(currentRoom, target); // this class will handle all the dialogue
+                    Dialogue.getDialogue(target); // this class will handle all the dialogue
                 }
                 else
                 {
@@ -858,7 +859,7 @@ public class Game
                 {
                     Dialogue.setInDialogue(true);
                     ImgFinder.updateImage(currentRoom.getPeople().get(0));
-                    Dialogue.getDialogue(currentRoom, currentRoom.getPeople().get(0));
+                    Dialogue.getDialogue(currentRoom.getPeople().get(0));
                 }
                 else
                 {
@@ -871,6 +872,21 @@ public class Game
                         MainPanel.updatePanel("Please specify who you wish to talk to.");
                     }
                 }
+            }
+        }
+
+        if (input.contains("debug"))
+        {
+            if (input.contains("ending"))
+            {
+                placedWhite = true;
+                placedBlack = true;
+                Party.addMember(ObjectFactory.dain);
+                Party.addMember(ObjectFactory.sylvie);
+                Party.addMember(ObjectFactory.everest);
+                Party.addMember(ObjectFactory.henry);
+                Dialogue.knowSaltine = true;
+                currentRoom = ObjectFactory.roomN;
             }
         }
 
@@ -974,7 +990,7 @@ public class Game
         }
         catch (NumberFormatException e)
         {
-            // not a number ig
+
         }
 
         if (input.contains("toggle"))
