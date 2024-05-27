@@ -168,6 +168,17 @@ public class Nav//igation
                     Game.currentRoom = ObjectFactory.roomK;
                     break;
                 case "n":
+                    if (Game.placedWhite && Game.placedBlack)
+                    {
+                        // enters dialogue
+                        Dialogue.setInDialogue(true);
+                        Dialogue.getDialogue(null);
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("There is a steel gate obstructing your path out. It seems like something has to be" +
+                                " done somewhere else before the gate can rise...");
+                    }
                     //EXIT.. ADD MORE CODE HERE LATER
                     break;
                 case "p":
