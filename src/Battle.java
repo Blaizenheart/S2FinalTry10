@@ -576,7 +576,7 @@ public class Battle
         if (!win)
         {
             Dialogue.setInDialogue(true);
-            Dialogue.getDialogue(Game.currentRoom, ObjectFactory.dain);
+            Dialogue.getDialogue(ObjectFactory.dain);
         }
         else
         {
@@ -599,7 +599,7 @@ public class Battle
     public static void printStatus() // updates output area 2 with the status of party and enemies
     {
         String output = "";
-        output += "[ATTACK] [CAST] [ITEM] [FLEE]" +
+        output += "[ATTACK] [CAST] [ITEM] [EXAMINE] [FLEE]" +
                 "\nYOUR PARTY-------------------------\n";
         for (Person person: getParty())
         {

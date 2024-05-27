@@ -43,7 +43,7 @@ public class ObjectFactory
 
     public static ArrayList<Item> saltineWares = new ArrayList<>(List.of(pretzel, bun, cookie, bagel, donut, bearClaw));
 
-    public static Consumable medkit = new Consumable("medkit","A medkit that restores 15 hp and stops bleeding.", 15, "a",
+    public static Item medkit = new Consumable("medkit","A medkit that restores 15 hp and stops bleeding.", 15, "a",
             true, 15, false, 0,true,"bleeding","use");
     public static ArrayList<Item> gameConsumables = new ArrayList<>(List.of(pretzel, bun, cookie, bagel, donut, bearClaw, medkit)); // arraylist holding consumables
 
@@ -69,12 +69,11 @@ public class ObjectFactory
 
     // CONTAINERS
     // chest in room b
-    public static Container chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
+    public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
 
     // IMPORTANT QUEST ITEMS
-    public static QuestItem whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
-    public static QuestItem blackScale = new QuestItem("black scale", "A dark, reflective obsidian colored scale that had been taken from a black dragon.", 0, "a");
-
+    public static Item whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
+    public static Item blackScale = new QuestItem("black scale", "A dark, reflective obsidian colored scale that had been taken from a black dragon.", 0, "a");
 
     // arraylist for all the items in the game
     public static ArrayList<Item> gameItems = new ArrayList<>(List.of(dagger, shortsword, claws, pretzel, cookie, bagel, donut, bearClaw, medkit, fireboltScroll, whiteScale, blackScale)); // arraylist holding all the game items
