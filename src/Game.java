@@ -125,6 +125,7 @@ public class Game
                     "\ntalk: talks to someone in the room or in your party" +
                     "\nopen/close: opens/closes something" +
                     "\nexamine: prints description of a person/item/monster" +
+                    "\nloot/search: searches a corpse for items"+
                     "\nparty: check up on the people in your party" +
                     "\ninventory/inv/i: prints your inventory"+
                     "\ntoggle: turns on/off passive aggressive and possibly hateful flavor text"); // ADD MORE
@@ -601,6 +602,7 @@ public class Game
                 {
                     if (monster.isAlive())
                     {
+                        System.out.println(monster.getName() + "alive");
                         enemies.add(monster);
                     }
                 }
@@ -617,7 +619,7 @@ public class Game
                 else
                 {
                     // starts battle
-                    new Battle(Party.getParty(), new ArrayList<Monster>(currentRoom.getMonsters()), false);
+                    new Battle(Party.getParty(), enemies, false);
                     MainPanel.updateColorsBattle();
                 }
             }

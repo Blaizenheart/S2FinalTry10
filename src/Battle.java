@@ -69,7 +69,7 @@ public class Battle
         boolean output = true;
         for (Person person: party)
         {
-            if (person.isAlive())
+            if ((person != ObjectFactory.player) && person.isAlive())
             {
                 output = false;
             }
@@ -136,7 +136,7 @@ public class Battle
         boolean invalid = false;
         Entity target = null;
         MainPanel.updatePanel(">" + input + "\n"); // records the user's input
-        if(partyTurn && !(activeChar == party.size())) // only take command when its the party's turn
+        if (partyTurn && !(activeChar == party.size())) // only take command when its the party's turn
         {
             if (input.contains("attack") || input.contains("hit"))
             {
@@ -158,7 +158,15 @@ public class Battle
                     }
                     else
                     {
-                        MainPanel.updatePanel("Please specify a creature that is still alive to attack.");
+                        for (Monster monster: enemyParty) // attack next enemy if not specified and first enemy is already dead
+                        {
+                            if (monster.isAlive())
+                            {
+                                party.get(activeChar).attack(monster);
+                                activeChar++;
+                                break;
+                            }
+                        }
                     }
                 }
                 else
@@ -170,7 +178,14 @@ public class Battle
                     }
                     else
                     {
-                        MainPanel.updatePanel("Please specify a creature that is still alive to attack.");
+                        for (Monster monster : enemyParty) // attack next enemy if not specified and first enemy is already dead
+                        {
+                            if (monster.isAlive()) {
+                                party.get(activeChar).attack(monster);
+                                activeChar++;
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -528,10 +543,8 @@ public class Battle
         {
             if (!monster.isAlive())
             {
-                Game.currentRoom.removeMonster(monster); // removes dead monsters from room
-                totalXP += monster.getLvl() * 20;
+                monster.setName(monster.getName() + " Corpse"); // turns into corpse
             }
-            //ADD MORE CODE HERE FOR CORPSES
         }
         for (Person person : party)
         {
