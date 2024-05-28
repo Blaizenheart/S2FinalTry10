@@ -70,6 +70,7 @@ public class ObjectFactory
     // CONTAINERS
     // chest in room b
     public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
+    public static Item chestJ1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(fireboltScroll, medkit)));
 
     // IMPORTANT QUEST ITEMS
     public static Item whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
@@ -162,7 +163,8 @@ public class ObjectFactory
             "An aura of arcana surrounds the greenery, keeping it alive despite the lack of water.", new ArrayList<>(List.of("N","S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(saltine)));
     public static Room roomI = new Room("i","Large cobwebs cover the corners of the room, some loose webbing dangling down from the ceiling. The entire room is very dusty.",
             new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(List.of(spider1, spider2, spider3, spider4)), new ArrayList<>());
-    public static Room roomJ = new Room("j","", new ArrayList<>(List.of("E","S")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static Room roomJ = new Room("j","The room is considerably small. Near the door to the south is a rusted metal plaque with the words 'Here sleeps Miasma' etched onto it.",
+            new ArrayList<>(List.of("E","S")), new ArrayList<>(List.of(chestJ1)), new ArrayList<>(), new ArrayList<>());
     public static Room roomK = new Room("k","", new ArrayList<>(List.of("N","S","W")), new ArrayList<>(), new ArrayList<>(List.of(darkDragon)), new ArrayList<>());
     public static Room roomL = new Room("l","", new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomM = new Room("m","", new ArrayList<>(List.of("N","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());

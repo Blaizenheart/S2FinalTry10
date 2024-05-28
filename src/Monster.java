@@ -5,9 +5,9 @@ import java.util.Random;
 public class Monster extends Entity
 {
     // instance variables
-    String attackStatus = null; // status that an attack can inflict
-    int statusChance; // chance that the status is applied (1-100)
-    int statusDuration;
+    private String attackStatus = null; // status that an attack can inflict
+    private int statusChance; // chance that the status is applied (1-100)
+    private int statusDuration;
 
     // constructor
     public Monster(String name, String desc, boolean alive, int lvl, int xp, int maxHp, int currentHp, int atk, int def, int ev, int maxMp,

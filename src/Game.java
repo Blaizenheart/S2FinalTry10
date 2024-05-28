@@ -602,7 +602,7 @@ public class Game
                 {
                     if (monster.isAlive())
                     {
-                        System.out.println(monster.getName() + "alive");
+                        System.out.println(monster.getName() + " - alive");
                         enemies.add(monster);
                     }
                 }

@@ -298,6 +298,11 @@ public class Room
         {
             output += "\n[!] It seems like Sylvie has something to say.";
         }
+        if (!Dialogue.flags[17]&& Game.currentRoom == ObjectFactory.roomJ &&
+                Party.getParty().contains(ObjectFactory.henry))
+        {
+            output += "\n[!] It seems like Henry has something to say.";
+        }
         return output;
     }
 }
