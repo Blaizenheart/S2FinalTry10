@@ -583,6 +583,11 @@ public class Battle
                 MainPanel.updatePanel("You notice a shiny dark scale on the dragon's body. Perhaps you should LOOT or SEARCH" +
                         "the dragon's corpse for it?"); // hint hint wink wink
             }
+            if (Game.currentRoom == ObjectFactory.roomK) // light dragon boss room
+            {
+                MainPanel.updatePanel("You notice a shiny pearly scale on the dragon's body. Perhaps you should LOOT or SEARCH" +
+                        "the dragon's corpse for it?");
+            }
         }
         for (Monster monster: enemyParty)
         {
@@ -599,6 +604,12 @@ public class Battle
                 // send outside
                 Game.currentRoom = ObjectFactory.roomJ;
                 ObjectFactory.darkDragon.setCurrentHp(ObjectFactory.darkDragon.getMaxHp()); // regen health
+            }
+            if (Game.currentRoom == ObjectFactory.roomAE) // dark dragon boss room
+            {
+                // send outside
+                Game.currentRoom = ObjectFactory.roomAD;
+                ObjectFactory.lightDragon.setCurrentHp(ObjectFactory.lightDragon.getMaxHp()); // regen health
             }
             Dialogue.setInDialogue(true);
             Dialogue.getDialogue(ObjectFactory.dain);
