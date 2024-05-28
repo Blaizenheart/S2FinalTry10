@@ -388,6 +388,13 @@ public class Battle
                         item = cons;
                     }
                 }
+                for (Person person : ObjectFactory.gamePeople)
+                {
+                    if (input.contains(person.getName().toLowerCase()))
+                    {
+                        target = person;
+                    }
+                }
                 if (target == null)
                 {
                     if (item == null)
@@ -490,6 +497,7 @@ public class Battle
                             output += "[" + imm + "] ";
                         }
                     }
+                    output += "\n\n";
                 }
                 MainPanel.updatePanel(output);
             }
