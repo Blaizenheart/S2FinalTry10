@@ -25,8 +25,6 @@ public class ObjectFactory
     public static Weapon greataxe = new Weapon("glaive", "A large greataxe.", 25, "", d12, 1, "slashing");
     public static Weapon maul = new Weapon("maul", "A spiked maul.", 15, "a ", d6, 2, "bludgeoning");
 
-    public static ArrayList<Item> gameWeapons = new ArrayList<Item>(List.of(dagger, shortsword, claws, fangs, spear, club, greatclub, crossbow, sickle, glaive, greataxe, maul)); // arraylist holding weapons
-
     // CONSUMABLES
     public static Item pretzel = new Consumable("pretzel","A very small but delicious pretzel that restores 5 hp.", 2, "a",
             true, 5, false, 0,false,"","eat");
@@ -59,25 +57,25 @@ public class ObjectFactory
     public static Spell resistance = new BuffSpell("Resistance", "Increases an ally's resistance to attack by 1d4.",
             2, "resistant", true, 2);
     public static Spell firebolt = new AttackSpell("Firebolt", "Hurls a small bolt of fire at an enemy for 1d8 fire damage.", 5, false, "fire", d8, 1);
-
-    public static ArrayList<Spell> gameSpells = new ArrayList<>(List.of(massCureWounds, cureWounds, charm, bless, resistance, firebolt)); // arraylist holding spells
+    public static Spell thunderclap = new AttackSpell("Thunderclap", "With a clap, damage all enemies for 2d8 thunder damage.", 10, false, "thunder", d8, 2);
+    public static Spell lightSpray = new AttackSpell("Light Spray", "Sprays all enemies with rays of light for 3d10 light damage.", 15, false, "light", d10, 3);
 
     // SPELL SCROLLS
     public static Item fireboltScroll = new SpellScroll("firebolt scroll", "Teaches firebolt.", 7, "a", firebolt);
+    public static Item thunderScroll = new SpellScroll("thunderclap scroll", "Teaches thunderclap.", 13, "a", thunderclap);
+    public static Item lightScroll = new SpellScroll("lightspray scroll", "Teaches light spray.", 78, "a", lightSpray);
 
-    public static ArrayList<Item> gameSpellScrolls = new ArrayList<>(List.of(fireboltScroll)); // arraylist holding scrolls
+    public static ArrayList<Item> gameSpellScrolls = new ArrayList<>(List.of(fireboltScroll, thunderScroll, lightScroll)); // arraylist holding scrolls
 
     // CONTAINERS
-    // chest in room b
     public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
     public static Item chestJ1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(fireboltScroll, medkit)));
+    public static Item chestAF1 = new Container("big chest", "",0,"a",false,false,null, new ArrayList<>(List.of(medkit, medkit, thunderScroll)));
+    public static Item chestAF2 = new Container("big chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun, lightScroll)));
 
     // IMPORTANT QUEST ITEMS
     public static Item whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
     public static Item blackScale = new QuestItem("black scale", "A dark, reflective obsidian colored scale that had been taken from a black dragon.", 0, "a");
-
-    // arraylist for all the items in the game
-    public static ArrayList<Item> gameItems = new ArrayList<>(List.of(dagger, shortsword, claws, pretzel, cookie, bagel, donut, bearClaw, medkit, fireboltScroll, whiteScale, blackScale)); // arraylist holding all the game items
 
     // PEOPLE
     public static Person player = new Person("Adventurer", "Despite everything, it's still you.",
@@ -142,8 +140,6 @@ public class ObjectFactory
             0, 350, 350, 5, 20, 0,0,0, claws, new ArrayList<>(), new ArrayList<>(List.of("light")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(blackScale)), new ArrayList<>(), "blinded", 20, 2);
 
-    public static ArrayList<Monster> gameMonsters = new ArrayList<Monster>(List.of(wolf, rat1, rat2, grick, lightDragon, darkDragon));
-
     // ROOMS (im going to die)
     public static Room roomA = new Room("a", "The small room has cobbled walls and a stale odor.", new ArrayList<>(List.of("S")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(dain)));
@@ -194,8 +190,10 @@ public class ObjectFactory
     public static Room roomAB = new Room("ab","", new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomAC = new Room("ac","", new ArrayList<>(List.of("E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(henry)));
     public static Room roomAD = new Room("ad","", new ArrayList<>(List.of("N", "W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    public static Room roomAE = new Room("ae","", new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(List.of(lightDragon)), new ArrayList<>());
-    public static Room roomAF = new Room("af","", new ArrayList<>(List.of("E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static Room roomAE = new Room("ae","This is less of a room and more of a small cavern. The ceiling of the cavern is speckled with stalactites, and large pieces of rock jut out of the ground.",
+            new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(List.of(lightDragon)), new ArrayList<>());
+    public static Room roomAF = new Room("af","The floor of this room is lined with neatly chiseled stone bricks, but its age is betrayed by the cracks in the wall.",
+            new ArrayList<>(List.of("E")), new ArrayList<>(List.of(chestAF1, chestAF2)), new ArrayList<>(), new ArrayList<>());
 
     public static Room[] gameRooms = {roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH, roomI, roomJ, roomK, roomL, roomM, roomN, roomO, roomP, roomQ, roomR, roomS, roomT, roomU, roomV, roomW, roomX, roomY, roomZ, hall1, hall2, hall3, hall4, hall5, roomAA, roomAB, roomAC, roomAD, roomAE, roomAF};
 
