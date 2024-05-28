@@ -5,10 +5,10 @@ import java.util.Random;
 public class Entity // two child classes, Person and Monster
 {
     // instance variables
-    Random rand = new Random();
+    public Random rand = new Random();
     public String name = "";
-    String desc;
-    boolean alive;
+    public String desc;
+    public boolean alive;
     public int lvl, xp, maxHp, currentHp, atk, def, ev, maxMp, currentMp; // basic stats
     public Weapon weapon;
     public ArrayList<String> statusEffects = new ArrayList<String>(); // afflicted statuses
@@ -147,6 +147,11 @@ public class Entity // two child classes, Person and Monster
     }
 
     public void kill()
+    {
+        alive = false;
+    }
+
+    public void revive()
     {
         alive = false;
     }
