@@ -25,6 +25,7 @@ public class Battle
         turn = 0;
         if (ambushed)
         {
+            MainPanel.updatePanel("You've been ambushed!");
             partyTurn = false;
             enemyTurn();
         }
@@ -577,6 +578,11 @@ public class Battle
             {
                 person.clearStatus(); // fixes all statuses
             }
+            if (Game.currentRoom == ObjectFactory.roomK) // dark dragon boss room
+            {
+                MainPanel.updatePanel("You notice a shiny dark scale on the dragon's body. Perhaps you should LOOT or SEARCH" +
+                        "the dragon's corpse for it?"); // hint hint wink wink
+            }
         }
         for (Monster monster: enemyParty)
         {
@@ -588,6 +594,12 @@ public class Battle
         }
         if (!win)
         {
+            if (Game.currentRoom == ObjectFactory.roomK) // dark dragon boss room
+            {
+                // send outside
+                Game.currentRoom = ObjectFactory.roomJ;
+                ObjectFactory.darkDragon.setCurrentHp(ObjectFactory.darkDragon.getMaxHp()); // regen health
+            }
             Dialogue.setInDialogue(true);
             Dialogue.getDialogue(ObjectFactory.dain);
         }

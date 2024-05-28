@@ -1,7 +1,9 @@
 import com.sun.jdi.ObjectReference;
 import com.sun.tools.javac.Main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -74,7 +76,17 @@ public class Dialogue
                 currentDialogue = 1000;
             }
         }
-        else
+        else if (Game.currentRoom == ObjectFactory.roomJ) // THE ROOM BEFORE THE DARK DRAGON BOSS
+        {
+            MainPanel.updatePanel("You can sense a large, foreboding presence behind the door. Are you *sure* you want to head south?");
+            if (flags[17])
+            {
+                MainPanel.updatePanel("Henry did warn you about some 'big lizard'... Unless you are prepared, it might not be a good" +
+                        " decision to enter this room just yet.");
+            }
+            currentDialogue = 19;
+        }
+        else // PEOPLE DIALOGUES
         {
             // DAIN DIALOGUES
             if (target.getName().equals("Dain"))
@@ -254,6 +266,16 @@ public class Dialogue
                     MainPanel.updatePanel("\n1) Do you want to come with us?" +
                             "\n2) Uhh, okay... well, see you around?");
                     currentDialogue = 8;
+                }
+                else if (!flags[17] && Game.currentRoom == ObjectFactory.roomJ) // WARNING ABOUT BOSS ROOM
+                {
+                    MainPanel.updatePanel("Henry seems to stop in his tracks. He sniffs the air, before" +
+                            " turning towards you with a concerned expression on his face." +
+                            "\n\"Henry feels danger ahead. Big lizard,\" he explains." +
+                            "\n1) Big lizard? Like, how big?" +
+                            "\n2) I trust your intuition. Should we turn back, then?" +
+                            "\n3) Are you sure?");
+                    currentDialogue = 18;
                 }
                 else // DEFAULT DIALOGUE
                 {
@@ -882,7 +904,7 @@ public class Dialogue
                     }
                     break;
                 case 17:
-                    flags[17] = true;
+                    flags[16] = true;
                     if (input.equals("1"))
                     {
                         ObjectFactory.sylvie.approve();
@@ -895,6 +917,41 @@ public class Dialogue
                     {
                         MainPanel.updatePanel("Sylvie's eyes widen. \"Oh no, I don't dislike spiders. I just don't like the sticky" +
                                 " webbing on my heels.\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 18:
+                    flags[17] = true;
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Henry raises his arms, as if mimicking the 'big lizard'. \"Very very very big lizard.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        ObjectFactory.henry.approve();
+                        MainPanel.updatePanel("Henry smiles, pleased at the compliment. \"Henry not sure. If Henry's friends are" +
+                                " ready to fight, then Henry will be ready to fight too. If not ready, we come back later.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("Henry gives you a defiant stare. \"Henry's VERY sure!\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 19:
+                    if (input.equals("1"))
+                    {
+                        ArrayList<Monster> enemy = new ArrayList<>(List.of(ObjectFactory.darkDragon));
+                        MainPanel.updatePanel("You enter the room.");
+                        Game.currentRoom = ObjectFactory.roomK;
+                        new Battle(Party.getParty(), enemy, true);
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("You decide to head back for now.");
                         waitInput = true;
                     }
                     break;

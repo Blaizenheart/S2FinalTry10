@@ -1,3 +1,7 @@
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Nav//igation
 {
     // handles moving from room to room
@@ -94,7 +98,16 @@ public class Nav//igation
                     Game.currentRoom = ObjectFactory.roomI;
                     break;
                 case "j":
-                    Game.currentRoom = ObjectFactory.roomK;
+                    // ENTERING BOSS ROOM
+                    if (ObjectFactory.darkDragon.isAlive())
+                    {
+                        Dialogue.getDialogue(null);
+                    }
+                    else
+                    {
+                        new Battle(Party.getParty(), new ArrayList<Monster>(List.of(ObjectFactory.darkDragon)), true);
+                        MainPanel.updateColorsBattle();
+                    }
                     break;
                 case "k":
                     Game.currentRoom = ObjectFactory.roomL;
