@@ -69,7 +69,15 @@ public class Nav//igation
                     Game.currentRoom = ObjectFactory.roomZ;
                     break;
                 case "ad":
-                    Game.currentRoom = ObjectFactory.roomAE;
+                    // ENTERING BOSS ROOM
+                    if (ObjectFactory.lightDragon.isAlive())
+                    {
+                        Dialogue.getDialogue(null);
+                    }
+                    else
+                    {
+                        Game.currentRoom = ObjectFactory.roomAE;
+                    }
                     break;
                 default:
                     break;
@@ -105,8 +113,7 @@ public class Nav//igation
                     }
                     else
                     {
-                        new Battle(Party.getParty(), new ArrayList<Monster>(List.of(ObjectFactory.darkDragon)), true);
-                        MainPanel.updateColorsBattle();
+                        Game.currentRoom = ObjectFactory.roomK;
                     }
                     break;
                 case "k":
@@ -278,7 +285,15 @@ public class Nav//igation
                     Game.currentRoom = ObjectFactory.roomZ;
                     break;
                 case "w":
-                    Game.currentRoom = ObjectFactory.roomAE;
+                    // not unlocked until after the light dragon boss is killed
+                    if (ObjectFactory.darkDragon.isAlive())
+                    {
+                        MainPanel.updatePanel("The door west does not budge open. It seems like something is blocking it from the other side.");
+                    }
+                    else
+                    {
+                        Game.currentRoom = ObjectFactory.roomAE;
+                    }
                     break;
                 case "y":
                     Game.currentRoom = ObjectFactory.roomAD;
