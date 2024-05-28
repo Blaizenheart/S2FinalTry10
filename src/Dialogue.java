@@ -84,7 +84,15 @@ public class Dialogue
                 MainPanel.updatePanel("Henry did warn you about some 'big lizard'... Unless you are prepared, it might not be a good" +
                         " decision to enter this room just yet.");
             }
+            MainPanel.updatePanel("1) Yes, proceed." + "\n2) No, go back!");
             currentDialogue = 19;
+        }
+        else if (Game.currentRoom == ObjectFactory.roomAD) // THE ROOM BEFORE THE DARK DRAGON BOSS
+        {
+            MainPanel.updatePanel("You can sense a large, foreboding presence behind the door. Are you *sure* you want to head north?" +
+                    "\n1) Yes, proceed." +
+                    "\n2) No, go back!");
+            currentDialogue = 20;
         }
         else // PEOPLE DIALOGUES
         {
@@ -135,6 +143,18 @@ public class Dialogue
                     }
                     currentDialogue = 16;
 
+                }
+                else if (Game.currentRoom == ObjectFactory.roomAD) // room before the light dragon boss
+                {
+                    if (!flags[18] && ObjectFactory.lightDragon.alive) // HAVENT TALKED TO DAIN ABOUT THE ROOM YET
+                    {
+                        MainPanel.updatePanel("Dain looks over at you, his eyes narrowing in contemplation. \"I don't" +
+                                " know if this is a good idea... I can sense something is lurking in the room to the north.\"'" +
+                                "\n1) Let's head back, then." +
+                                "\n2) We won't know for sure until we go in!" +
+                                "\n3) How can you be so certain?");
+                    }
+                    currentDialogue = 21;
                 }
                 else if (!flags[0]) // NOT MET DAIN YET
                 {
@@ -267,7 +287,7 @@ public class Dialogue
                             "\n2) Uhh, okay... well, see you around?");
                     currentDialogue = 8;
                 }
-                else if (!flags[17] && Game.currentRoom == ObjectFactory.roomJ) // WARNING ABOUT BOSS ROOM
+                else if (!flags[17] && Game.currentRoom == ObjectFactory.roomJ && ObjectFactory.lightDragon.alive) // WARNING ABOUT BOSS ROOM
                 {
                     MainPanel.updatePanel("Henry seems to stop in his tracks. He sniffs the air, before" +
                             " turning towards you with a concerned expression on his face." +
@@ -952,6 +972,40 @@ public class Dialogue
                     else if (input.equals("2"))
                     {
                         MainPanel.updatePanel("You decide to head back for now.");
+                        waitInput = true;
+                    }
+                    break;
+                case 20:
+                    if (input.equals("1"))
+                    {
+                        ArrayList<Monster> enemy = new ArrayList<>(List.of(ObjectFactory.lightDragon));
+                        MainPanel.updatePanel("You enter the room.");
+                        Game.currentRoom = ObjectFactory.roomAE;
+                        new Battle(Party.getParty(), enemy, true);
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("You decide to head back for now.");
+                        waitInput = true;
+                    }
+                    break;
+                case 21:
+                    if (input.equals("1"))
+                    {
+                        ObjectFactory.dain.approve();
+                        MainPanel.updatePanel("\"Let's,\" Dain nods.");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        ObjectFactory.dain.disapprove();
+                        MainPanel.updatePanel("Dain frowns. \"Ignorance can get you killed, " + ObjectFactory.player.getName() + ".");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("Dain ponders your question. \"I don't know, to be honest. I just have a feeling.\"");
                         waitInput = true;
                     }
                     break;
