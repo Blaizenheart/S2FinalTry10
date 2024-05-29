@@ -83,6 +83,11 @@ public class Battle
         return turn;
     }
 
+    public static ArrayList<Status> getStatuses()
+    {
+        return statuses;
+    }
+
     // setters
     public static void setInBattle(boolean state)
     {
@@ -94,6 +99,11 @@ public class Battle
         statuses.add(status);
     }
 
+    public static void removeBattleStatus(Status status)
+    {
+        statuses.remove(status);
+    }
+
     // brain methods
 
     public static void statusUpdate() // checks statuses to remove any if they're ended already
@@ -103,7 +113,7 @@ public class Battle
             if (statuses.get(i).getEndingTurn() <= turn) // status expired
             {
                 statuses.get(i).getTarget().removeStatusEffect(statuses.get(i).getStatus()); // removes the status
-                statuses.remove(i);
+                statuses.remove(i); // removes from the list
             }
         }
         checkStatus();
@@ -426,16 +436,24 @@ public class Battle
             }
             else if (input.contains("run") || input.contains("flee"))
             {
-                if (rand.nextInt(101) > 50)
+                if (enemyParty.contains(ObjectFactory.darkDragon) || enemyParty.contains(ObjectFactory.lightDragon))
                 {
-                    fleeing = true;
-                    MainPanel.updatePanel("You fled from the battle!");
-                    fleeBattle();
+                    // cant escape
+                    MainPanel.updatePanel("You can't flee from this battle!");
                 }
                 else
                 {
-                    MainPanel.updatePanel("You were unable to flee!");
-                    activeChar = party.size(); // party ends turn
+                    if (rand.nextInt(101) > 50)
+                    {
+                        fleeing = true;
+                        MainPanel.updatePanel("You fled from the battle!");
+                        fleeBattle();
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("You were unable to flee!");
+                        activeChar = party.size(); // party ends turn
+                    }
                 }
             }
             else if (input.contains("help"))
@@ -588,13 +606,25 @@ public class Battle
             }
             if (Game.currentRoom == ObjectFactory.roomK) // dark dragon boss room
             {
-                MainPanel.updatePanel("You notice a shiny dark scale on the dragon's body. Perhaps you should LOOT or SEARCH" +
+                MainPanel.updatePanel("You notice a shiny dark scale on the dragon's body. Perhaps you should LOOT or SEARCH " +
                         "the dragon's corpse for it?"); // hint hint wink wink
+                if (Party.getParty().contains(ObjectFactory.henry) && !Dialogue.flags[20])
+                {
+                    Dialogue.flags[20] = true;
+                    Dialogue.setInDialogue(true);
+                    Dialogue.getDialogue(ObjectFactory.henry);
+                }
             }
             if (Game.currentRoom == ObjectFactory.roomK) // light dragon boss room
             {
-                MainPanel.updatePanel("You notice a shiny pearly scale on the dragon's body. Perhaps you should LOOT or SEARCH" +
+                MainPanel.updatePanel("You notice a shiny pearly scale on the dragon's body. Perhaps you should LOOT or SEARCH " +
                         "the dragon's corpse for it?");
+                if (Party.getParty().contains(ObjectFactory.henry) && !Dialogue.flags[20])
+                {
+                    Dialogue.flags[20] = true;
+                    Dialogue.setInDialogue(true);
+                    Dialogue.getDialogue(ObjectFactory.henry);
+                }
             }
         }
         for (Monster monster: enemyParty)
@@ -613,7 +643,7 @@ public class Battle
                 Game.currentRoom = ObjectFactory.roomJ;
                 ObjectFactory.darkDragon.setCurrentHp(ObjectFactory.darkDragon.getMaxHp()); // regen health
             }
-            if (Game.currentRoom == ObjectFactory.roomAE) // dark dragon boss room
+            if (Game.currentRoom == ObjectFactory.roomAE) // light dragon boss room
             {
                 // send outside
                 Game.currentRoom = ObjectFactory.roomAD;
@@ -624,7 +654,12 @@ public class Battle
         }
         else
         {
-            MainPanel.updatePanel("You earned " + goldEarned + " gold!");
+            if (!((Game.currentRoom == ObjectFactory.roomK || Game.currentRoom == ObjectFactory.roomAE) && Party.getParty().contains(ObjectFactory.henry)))
+            {
+                MainPanel.updatePanel("You earned " + goldEarned + " gold!");
+                MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
+
+            }
             Game.addGold(goldEarned);
         }
         for (Person person: Party.getParty())
@@ -636,7 +671,6 @@ public class Battle
         }
         MainPanel.clearPanel2();
         MainPanel.updateColors(); // reset colors
-        MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
     }
 
     // toString
@@ -677,7 +711,8 @@ public class Battle
                 else
                 {
                     if (!party.get(activeChar).isAlive()) // conditions where cannot act
-                    { // ADD MORE CODE LATER
+                    {
+                        MainPanel.updatePanel("-------------------------------------------------------------");
                         MainPanel.updatePanel(party.get(activeChar).getName() + " is knocked out!");
                         if (activeChar < party.size()) // so we dont get index out of bounds
                         {

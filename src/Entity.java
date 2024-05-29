@@ -250,7 +250,23 @@ public class Entity // two child classes, Person and Monster
 
     public void addStatusEffect(String statusEffect)
     {
-        this.statusEffects.add(statusEffect);
+        if (!(statusEffects.contains(statusEffect))) // entity is not already afflicted
+        {
+            this.statusEffects.add(statusEffect);
+        }
+        else
+        {
+            Status status = null;
+            for (Status stat : Battle.getStatuses())
+            {
+                if (stat.getTarget() == this && stat.getStatus() == statusEffect) // if this entity is the target & the status effect matches
+                {
+                    status = stat;
+                }
+            }
+            Battle.removeBattleStatus(status);
+            Battle.addBattleStatus(new Status(this, statusEffect, status.getEndingTurn())); // reset counter on status effect
+        }
     }
 
     public void removeStatusEffect(String statusEffect)
@@ -355,9 +371,8 @@ public class Entity // two child classes, Person and Monster
                 {
                     baseDmg += ObjectFactory.d4.roll(1);
                 }
-                baseDmg *= 2; // multiplied by two
                 MainPanel.updatePanel(target.getName() + " is weak against " + weapon.getDamageType() + "!");
-                baseDmg -= (int) Math.ceil(baseDmg - (baseDmg * (target.getDef() * 0.01)));
+                baseDmg *= 2; // multiplied by two
                 if (this.getStatusEffects().contains("resistant"))
                 {
                     baseDmg -= ObjectFactory.d4.roll(1);

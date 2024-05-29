@@ -73,6 +73,7 @@ public class Nav//igation
                     if (ObjectFactory.lightDragon.isAlive())
                     {
                         Dialogue.getDialogue(null);
+                        Dialogue.setInDialogue(true);
                     }
                     else
                     {
@@ -110,6 +111,7 @@ public class Nav//igation
                     if (ObjectFactory.darkDragon.isAlive())
                     {
                         Dialogue.getDialogue(null);
+                        Dialogue.setInDialogue(true);
                     }
                     else
                     {

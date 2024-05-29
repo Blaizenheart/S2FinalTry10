@@ -127,7 +127,6 @@ public class Room
                 }
                 output += ", and " + items.get(items.size()-1).getArticle() + " " + items.get(items.size()-1).getName();
             }
-
             output += ".";
         }
         if (!monsters.isEmpty())
@@ -307,6 +306,11 @@ public class Room
                 Party.getParty().contains(ObjectFactory.dain))
         {
             output += "\n[!] It seems like Dain has something to say.";
+        }
+        if (!Dialogue.flags[19]&& Game.currentRoom == ObjectFactory.roomL &&
+                Party.getParty().contains(ObjectFactory.everest))
+        {
+            output += "\n[!] It seems like Everest has something to say.";
         }
         return output;
     }

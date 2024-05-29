@@ -52,6 +52,7 @@ public class Monster extends Entity
         {
             if (attackStatus != null)
             {
+                Battle.getParty().get(target).addStatusEffect(attackStatus);
                 Status status = new Status(Battle.getParty().get(target), attackStatus, rand.nextInt(3));
                 Battle.addBattleStatus(status);
                 MainPanel.updatePanel(Battle.getParty().get(target).getName() + " is " + attackStatus + "!");

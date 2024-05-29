@@ -43,6 +43,7 @@ public class Person extends Entity
             xp = xp - lvl * 50; // reset xp based on overflow
             lvl++;
             MainPanel.updatePanel(name + " leveled up to Level " + lvl + "!");
+            atk += 3;
             hpCapAdjustment(); // adjusts the hp cap
             mpCapAdjustment(); // adjusts the hp cap
         }
@@ -56,7 +57,7 @@ public class Person extends Entity
 
     public void mpCapAdjustment()
     {
-        maxMp += 5*lvl; // mp increases by scaled amount
+        maxMp += 10; // mp increases by scaled amount
         currentMp = maxMp; // full mp restore
     }
 
@@ -69,11 +70,11 @@ public class Person extends Entity
             {
                 output += "\n" + name + " is not too fond of you.";
             }
-            else if (approval >= 0 && approval <= 3) // 0 - 3
+            else if (approval >= 0 && approval <= 1) // 0 - 1
             {
                 output += "\n" + name + " is indifferent towards you.";
             }
-            else if (approval >= 4 && approval <= 7) // 4 - 8
+            else if (approval >= 2 && approval <= 3) // 2-3
             {
                 output += "\n" + name + " appreciates your company.";
             }

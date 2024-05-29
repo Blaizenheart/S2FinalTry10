@@ -62,8 +62,9 @@ public class Container extends Item
         }
         if (success)
         {
-            MainPanel.updatePanel("You unlocked the " + name + " with the " + key + "!");
+            MainPanel.updatePanel("You unlocked the " + name + " with the " + key.getName() + "!");
             ObjectFactory.player.removeInvItem(key);
+            locked = false;
         }
     }
 

@@ -62,6 +62,11 @@ public class Game
         });
     } // end main method
 
+    public static ArrayList<String> getInputLog()
+    {
+        return inputLog;
+    }
+
     public static void addGold(int gold)
     {
         Game.gold += gold;
@@ -495,7 +500,6 @@ public class Game
             {
                 MainPanel.updatePanel(currentRoom.toString());
             }
-            System.out.println(currentRoom.getRoomName());
         }
 
         //meant for consumables
@@ -712,7 +716,7 @@ public class Game
                     Person person = null;
                     for (Person partyMember : Party.getParty())
                     {
-                        if (input.contains(partyMember.getName()))
+                        if (input.contains(partyMember.getName().toLowerCase()))
                         {
                             person = partyMember;
                         }
@@ -732,7 +736,7 @@ public class Game
                     }
                     else
                     {
-                        MainPanel.updatePanel(person + " equips the " + weapon + "!");
+                        MainPanel.updatePanel(person.getName() + " equips the " + weapon.getName() + "!");
                         ObjectFactory.player.getInv().remove(weapon); // removes the weapon from player inventory
                         ObjectFactory.player.getInv().add(person.getWeapon()); // adds the person's current weapon to the player's inventory
                         person.setWeapon(weapon); // sets the new weapon
@@ -764,9 +768,10 @@ public class Game
             {
                 if (input.contains(item.getName()) && !(item instanceof Container)) // can take any item except container
                 {
-                    MainPanel.updatePanel("You picked up the " + item.getName());
+                    MainPanel.updatePanel("You picked up the " + item.getName() + ".");
                     ObjectFactory.player.addInvItem(item); // adds to player inventory
                     currentRoom.removeItem(item); // removes from room
+                    break;
                 }
             }
         }
@@ -890,6 +895,22 @@ public class Game
                 Dialogue.knowSaltine = true;
                 currentRoom = ObjectFactory.roomN;
             }
+            if (input.contains("henry"))
+            {
+                Party.addMember(ObjectFactory.henry);
+            }
+            if (input.contains("everest"))
+            {
+                Party.addMember(ObjectFactory.everest);
+            }
+            if (input.contains("dain"))
+            {
+                Party.addMember(ObjectFactory.dain);
+            }
+            if (input.contains("sylvie"))
+            {
+                Party.addMember(ObjectFactory.sylvie);
+            }
         }
 
         // change palette of the game
@@ -1009,4 +1030,5 @@ public class Game
             }
         }
     }
+
 } // end main class

@@ -76,16 +76,31 @@ public class Dialogue
                 currentDialogue = 1000;
             }
         }
-        else if (Game.currentRoom == ObjectFactory.roomJ) // THE ROOM BEFORE THE DARK DRAGON BOSS
+        else if (Party.getParty().contains(ObjectFactory.henry) &&
+                !flags[17] && Game.currentRoom == ObjectFactory.roomJ && ObjectFactory.lightDragon.alive) // WARNING ABOUT BOSS ROOM
         {
-            MainPanel.updatePanel("You can sense a large, foreboding presence behind the door. Are you *sure* you want to head south?");
-            if (flags[17])
+            MainPanel.updatePanel("Henry seems to stop in his tracks. He sniffs the air, before" +
+                    " turning towards you with a concerned expression on his face." +
+                    "\n\"Henry feels danger ahead. Big lizard,\" he explains." +
+                    "\n1) Big lizard? Like, how big?" +
+                    "\n2) I trust your intuition. Should we turn back, then?" +
+                    "\n3) Are you sure?");
+            currentDialogue = 18;
+        }
+        else if (Game.currentRoom == ObjectFactory.roomJ && ObjectFactory.darkDragon.alive
+                && (Game.getInputLog().get(Game.getInputLog().size()-1).contains("move"))) // THE ROOM BEFORE THE DARK DRAGON BOSS
+        {
+            if (!(Party.getParty().contains(ObjectFactory.henry)) || flags[17]) // has henry, havent talk to henry yet
             {
-                MainPanel.updatePanel("Henry did warn you about some 'big lizard'... Unless you are prepared, it might not be a good" +
-                        " decision to enter this room just yet.");
+                MainPanel.updatePanel("You can sense a large, foreboding presence behind the door. Are you *sure* you want to head south?");
+                if (flags[17])
+                {
+                    MainPanel.updatePanel("Henry did warn you about some 'big lizard'... Unless you are prepared, it might not be a good" +
+                            " decision to enter this room just yet.");
+                }
+                MainPanel.updatePanel("1) Yes, proceed." + "\n2) No, go back!");
+                currentDialogue = 19;
             }
-            MainPanel.updatePanel("1) Yes, proceed." + "\n2) No, go back!");
-            currentDialogue = 19;
         }
         else if (Game.currentRoom == ObjectFactory.roomAD) // THE ROOM BEFORE THE DARK DRAGON BOSS
         {
@@ -117,9 +132,11 @@ public class Dialogue
                                 "\n1) Who are you?" +
                                 "\n2) What happened?");
                         currentDialogue = 11;
+
                     }
                     ObjectFactory.player.addHp(1);
                     ObjectFactory.player.alive = true;
+
                 }
                 else if (Game.currentRoom == ObjectFactory.roomV)
                 {
@@ -239,6 +256,30 @@ public class Dialogue
                     MainPanel.updatePanel("You turn towards Everest. (press ENTER to continue)");
                     currentDialogue = 5;
                 }
+                else if (!flags[19] && Game.currentRoom == ObjectFactory.roomL) // EVEREST TALKS ABT OLD COINS
+                {
+                    MainPanel.updatePanel("You see Everest picking up some of the old coins off the floor. He" +
+                            " holds them in his hand, scrutinizing them against the torch light.");
+                    if (Party.getParty().contains(ObjectFactory.sylvie))
+                    {
+                        MainPanel.updatePanel("Sylvie turns to look at Everest, smiling. \"I don't think the" +
+                                " pub would accept that. Way too old.\"" +
+                                "\nA determined look crosses his face. \"Maybe this is a relic, if it's that old!" +
+                                " We sell them to relic collectors, they'll give us coins in exchange, and I'll buy" +
+                                " myself a nice drink at the pub...\"" +
+                                "\n1) It's a plausible idea..." +
+                                "\n2) Ridiculous. There's no way anyone would want these." +
+                                "\n3) The coins are going to weigh us down.");
+                        currentDialogue = 23;
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("1) I don't think those can be used anywhere." +
+                                "2) Do you recognize them?" +
+                                "3) What's on your mind right now?");
+                        currentDialogue = 22;
+                    }
+                }
                 else // DEFAULT DIALOGUE
                 {
                     currentDialogue = -2;
@@ -287,15 +328,15 @@ public class Dialogue
                             "\n2) Uhh, okay... well, see you around?");
                     currentDialogue = 8;
                 }
-                else if (!flags[17] && Game.currentRoom == ObjectFactory.roomJ && ObjectFactory.lightDragon.alive) // WARNING ABOUT BOSS ROOM
+                else if ((flags[20] && Game.currentRoom == ObjectFactory.roomK) || (flags[20] && Game.currentRoom == ObjectFactory.roomAE)) // HENRY PTSD DIALOGUE AFTER KILLING WHITE DRAGON
                 {
-                    MainPanel.updatePanel("Henry seems to stop in his tracks. He sniffs the air, before" +
-                            " turning towards you with a concerned expression on his face." +
-                            "\n\"Henry feels danger ahead. Big lizard,\" he explains." +
-                            "\n1) Big lizard? Like, how big?" +
-                            "\n2) I trust your intuition. Should we turn back, then?" +
-                            "\n3) Are you sure?");
-                    currentDialogue = 18;
+                    MainPanel.updatePanel("As you clean the remains of the dragon's blood off of your " + ObjectFactory.player.getWeapon().getName() + "," +
+                            " you notice that Henry has retreated to the corner of the room. He seems to be going through something: his hands are shaking and" +
+                            " his nails dig into the flesh of his arms." +
+                            "\n1) Are you alright?" +
+                            "\n2) Get it together." +
+                            "\n3) What's wrong?");
+                    currentDialogue = 24;
                 }
                 else // DEFAULT DIALOGUE
                 {
@@ -371,7 +412,7 @@ public class Dialogue
                 {
                     MainPanel.updatePanel("You approach the long, pink haired woman ." +
                             "\n\"Oh! Hey there. My name is Sylvie.\"" +
-                            "\nShe has a friendly expression on her face.\"");
+                            "\nShe has a friendly expression on her face.");
                     if (Party.getParty().contains(ObjectFactory.dain))
                     {
                         MainPanel.updatePanel("Her eyes flit over to the eye-patched man standing by your side. " +
@@ -405,7 +446,7 @@ public class Dialogue
                             "\n2) We'll see you around!");
                     currentDialogue = 14;
                 }
-                if (!flags[16] && Game.currentRoom == ObjectFactory.roomI)
+                else if (!flags[16] && Game.currentRoom == ObjectFactory.roomI)
                 {
                     MainPanel.updatePanel("Sylvie shivers, carefully stepping over all of the webs." +
                             "\n\"Ugh. This is all so gross...\"" +
@@ -725,6 +766,7 @@ public class Dialogue
                             Party.addMember(ObjectFactory.dain);
                         }
                         waitInput = true;
+                        MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
                     }
                     break;
                 case 11: // DEATH (but you dont know dain yet)
@@ -740,6 +782,8 @@ public class Dialogue
                         }
                         flags[0] = true;
                         waitInput = true;
+                        MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
+
                     }
                     else if (input.equals("2"))
                     {
@@ -753,6 +797,7 @@ public class Dialogue
                         }
                         flags[0] = true;
                         waitInput = true;
+                        MainPanel.updatePanel(Game.currentRoom.toString()); // updates with room description to avoid players having to do it again
                     }
                     knowDain = true;
                     break;
@@ -816,6 +861,7 @@ public class Dialogue
                     boolean isNum = false;
                     try
                     {
+                        parseInt(input);
                         isNum = true;
                     }
                     catch (Exception e)
@@ -967,7 +1013,8 @@ public class Dialogue
                         MainPanel.updatePanel("You enter the room.");
                         Game.currentRoom = ObjectFactory.roomK;
                         new Battle(Party.getParty(), enemy, true);
-                        waitInput = true;
+                        MainPanel.updateColorsBattle();
+                        inDialogue = false;
                     }
                     else if (input.equals("2"))
                     {
@@ -982,7 +1029,8 @@ public class Dialogue
                         MainPanel.updatePanel("You enter the room.");
                         Game.currentRoom = ObjectFactory.roomAE;
                         new Battle(Party.getParty(), enemy, true);
-                        waitInput = true;
+                        MainPanel.updateColorsBattle();
+                        inDialogue = false;
                     }
                     else if (input.equals("2"))
                     {
@@ -1006,6 +1054,88 @@ public class Dialogue
                     else if (input.equals("3"))
                     {
                         MainPanel.updatePanel("Dain ponders your question. \"I don't know, to be honest. I just have a feeling.\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 22:
+                    flags[19] = true;
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Everest sighs, tossing the coin back to the floor. " +
+                                "\"You're right... plus, I like shinier coins anyways.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("\"Meee? Of course not,\" Everest laughs. He sighs, tossing the coin" +
+                                " to the floor. \"It's probably worthless...\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("\"'I need a drink'. That's what's on my mind right now,\" Everest sighs," +
+                                " tossing the coin to the floor.");
+                        waitInput = true;
+                    }
+                    break;
+                case 23:
+                    flags[19] = true;
+                    if (input.equals("1"))
+                    {
+                        ObjectFactory.everest.approve();
+                        MainPanel.updatePanel("Everest's violet eyes light up. \"Rightt?\"" +
+                                "\nHe places the coin into his pocket. \"Maybe it's actually worth a million gold pieces...\"" +
+                                "\nSylvie sighs, turning towards you. \"He usually goes for the shinier ones... he's probably" +
+                                " just going to forget about it and throw that it out later.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        ObjectFactory.everest.disapprove();
+                        MainPanel.updatePanel("Everest looks a bit offended. \"...you never know, you know! There's a lot" +
+                                " of worthless trash out there that someone ends up wanting...\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        ObjectFactory.sylvie.approve();
+                        MainPanel.updatePanel("Everest pouts, but relents, throwing the coin to the floor. \"You have a point, I guess...\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 24:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Henry looks up at you, before calming down a bit. He straightens up, offering" +
+                                " you an apologetic grin. \"Sorry. Henry feel a little weird. Dragon is dead. But Henry has bad" +
+                                " memories of red lizard.\"" +
+                                "\nHe shudders. \"Thank you for worrying about Henry.\"");
+                        if (Party.getParty().contains(ObjectFactory.dain))
+                        {
+                            ObjectFactory.dain.approve();
+                        }
+                        if (Party.getParty().contains(ObjectFactory.sylvie))
+                        {
+                            ObjectFactory.sylvie.approve();
+                        }
+                        if (Party.getParty().contains(ObjectFactory.henry))
+                        {
+                            ObjectFactory.henry.approve();
+                        }
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Henry grits his teeth, before standing up slowly. He turns away from you," +
+                                " not uttering a single word.");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("Henry's still shaking. \"Big... red lizard... hurt Henry. Painful memories.\"" +
+                                "\nHenry clutches his chest, as if he had been hit there before. His fingers tense up, before he" +
+                                " loosens his grip." +
+                                "\nHe exhales sharply, giving you a determined look. \"Henry will be okay. Sorry for making you worry.\"");
                         waitInput = true;
                     }
                     break;
