@@ -593,7 +593,7 @@ public class Battle
             // ADD MORE CODE to tally up xp or something
             for (Monster monster : enemyParty)
             {
-                totalXP += monster.getLvl() * 20; // maybe change scaling later
+                totalXP += monster.getLvl() * 15; // maybe change scaling later
             }
             for (Person person : party)
             {
