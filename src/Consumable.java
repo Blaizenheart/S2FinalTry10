@@ -47,17 +47,17 @@ public class Consumable extends Item
         MainPanel.updatePanel(target.getName() + " " + verb + "s the " + name + ".");
         if (restoreHp)
         {
-            ObjectFactory.player.addHp(hp);
+            target.addHp(hp);
             MainPanel.updatePanel(target.getName() + " restored " + hp + " hp!");
         }
         if (restoreMp)
         {
-            ObjectFactory.player.addHp(mp);
+            target.addHp(mp);
             MainPanel.updatePanel(target.getName() + " restored " + mp + " mp!");
         }
         if (removeStatus)
         {
-            ObjectFactory.player.removeStatusEffect(status);
+            target.removeStatusEffect(status);
             MainPanel.updatePanel("Removed condition on " + target.getName() + ": " + status + ".");
         }
     }
