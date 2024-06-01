@@ -312,6 +312,16 @@ public class Room
         {
             output += "\n[!] It seems like Everest has something to say.";
         }
+        if (!Dialogue.flags[21] && Game.currentRoom == ObjectFactory.roomT &&
+                Party.getParty().contains(ObjectFactory.dain))
+        {
+            output += "\n[!] It seems like Dain has something to say.";
+        }
+        if (!Dialogue.flags[22] && Game.currentRoom == ObjectFactory.roomAA &&
+                Party.getParty().contains(ObjectFactory.sylvie))
+        {
+            output += "\n[!] It seems like Sylvie has something to say.";
+        }
         return output;
     }
 }
