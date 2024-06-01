@@ -138,6 +138,29 @@ public class Dialogue
                     ObjectFactory.player.alive = true;
 
                 }
+                else if (Game.currentRoom == ObjectFactory.roomT) // MURAL ROOM
+                {
+                    if (!flags[21])
+                    {
+                        MainPanel.updatePanel("As you look at all the murals, Dain speaks up." +
+                                "\"Oh. This mural depicts the Lord of Death, Kelemvor." +
+                                " I believe this is supposed to be him passing judgement onto" +
+                                " souls in the afterlife.\"" +
+                                "\n1) Who is Kelemvor?" +
+                                "\n2) What do you think of this place?" +
+                                "\n3) How do you know this?");
+                    }
+                    else
+                    {
+                        MainPanel.updatePanel("\"This mural depicts the Lord of Death, Kelemvor." +
+                                " I believe this is supposed to be him passing judgement onto" +
+                                " souls in the afterlife,\" Dain explains." +
+                                "\n1) Who is Kelemvor?" +
+                                "\n2) What do you think of this place?" +
+                                "\n3) How do you know this?");
+                    }
+                    currentDialogue = 25;
+                }
                 else if (Game.currentRoom == ObjectFactory.roomV)
                 {
                     if (!flags[14]) // HAVENT TALKED TO DAIN ABOUT THE ROOM YET
@@ -453,6 +476,17 @@ public class Dialogue
                             "\n1) I like spiders." +
                             "\n2) Spiders are awful.");
                     currentDialogue = 17;
+                }
+                else if (!flags[22] && Game.currentRoom == ObjectFactory.roomAA)
+                {
+                    MainPanel.updatePanel("You see Sylvie digging through a patch of dirt with her bare hands." +
+                            " She seems intent on finding out what's underneath, but is disappointed when her long nails" +
+                            " scrape against the top of a metal coffin." +
+                            " \n\"Aw... It's much easier to dig through graves when they're not in a coffin,\" Sylvie groans." +
+                            "\n1) What are you doing?" +
+                            "\n2) That's gross, cut it out!" +
+                            "\n3) You're a graverobber?");
+                    currentDialogue = 26;
                 }
                 else // DEFAULT SYLVIE DIALOGUE
                 {
@@ -1136,6 +1170,79 @@ public class Dialogue
                                 "\nHenry clutches his chest, as if he had been hit there before. His fingers tense up, before he" +
                                 " loosens his grip." +
                                 "\nHe exhales sharply, giving you a determined look. \"Henry will be okay. Sorry for making you worry.\"");
+                        waitInput = true;
+                    }
+                    break;
+                case 25:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("\"Kelemvor is a greater deity of the Death and Grave domains. He has several titles," +
+                                " some being 'Lord of the Dead', 'Judge of the Damned', et cetera,\" Dain explains to you. " +
+                                "\"Despite what you might think, he is a lawful neutral god. He believed that death was a natural" +
+                                " part of life which shouldn't be feared.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Dain tilts his head, deep in thought. \"I'm not sure. This was painted by a person, " +
+                                "at one point. Probably long ago, too. This place might've been a place of worship for Kelemvor by his followers." +
+                                " I have no clue, though, why it is in this underground dungeon...\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("\"Hm?\" Dain stares blankly at you, before processing your question. " +
+                                "\"Oh. I forgot to tell you that I am a cleric, so I have some knowledge on the gods.\"");
+                        waitInput = true;
+                    }
+                case 26:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Sylvie looks up at you. \"I'm seeing if there are any useful supplies in" +
+                                " the graves... if we don't find a way out soon enough, we'll need everything we can get.\"");
+                    }
+                    else if (input.equals("2"))
+                    {
+                        MainPanel.updatePanel("Sylvie looks up at you, frowning ever so slightly. She steps away from the grave." +
+                                " \"I'm just looking for resources. When times are desperate, you have to look for supplies in" +
+                                " unconventional places.\"");
+                        ObjectFactory.sylvie.disapprove();
+                    }
+                    else if (input.equals("3"))
+                    {
+                        MainPanel.updatePanel("\"Hm, I guess so...? I mean, we'll need all the stuff we can get, if we're" +
+                                " going to be trapped down here.\" Sylvie shrugs, smiling. If you hadn't just seen her" +
+                                " dig through the dirt with her bare hands, you might've completely forgotten about it once you'd" +
+                                " seen her innocent smile.");
+                    }
+                    MainPanel.updatePanel("1) Have you done this before?" +
+                            "\n2) The dead should be respected..." +
+                            "\n3) Well, I guess that makes sense.");
+                    currentDialogue = 27;
+                    break;
+                case 27:
+                    if (input.equals("1"))
+                    {
+                        MainPanel.updatePanel("Sylvie's gaze softens. " +
+                                "\n\"Perhaps I have,\" she says quietly. \"I mean, when you're poor, you don't really" +
+                                " have any other choice.\"");
+                        waitInput = true;
+                    }
+                    else if (input.equals("2"))
+                    {
+                        ObjectFactory.sylvie.disapprove();
+                        MainPanel.updatePanel("\"Oh, sure!\"" +
+                                "\nIt is apparent from her tone that she doesn't agree, but she doesn't seem willing to" +
+                                " debate you on the matter. Despite that, she does look at the epitaph on the grave." +
+                                " The name has been worn away, but the letters '...ry..am' remain.");
+                        clues++;
+                        flags[23] = true;
+                        waitInput = true;
+                    }
+                    else if (input.equals("3"))
+                    {
+                        ObjectFactory.sylvie.approve();
+                        MainPanel.updatePanel("Sylvie gives what seems to be a sincere smile. \"I'm glad you understand.\"");
                         waitInput = true;
                     }
                     break;
