@@ -729,47 +729,4 @@ public class Battle
             }
         }
     }
-
-    /*
-    private static void startTurn()
-    {
-        printStatus();
-        if (!partyDead())
-        {
-            if (enemyPartyDead())
-            {
-                endBattle(true); // we won!
-            }
-            else
-            {
-                if (activeChar == party.size() && !party.get(activeChar-1).isAlive())
-                {
-                    activeChar = 0;
-                    enemyTurn();
-                }
-                else
-                {
-                    if (!party.get(activeChar).isAlive()) // conditions where cannot act
-                    {
-                        MainPanel.updatePanel("-------------------------------------------------------------");
-                        MainPanel.updatePanel(party.get(activeChar).getName() + " is knocked out!");
-                        if (activeChar < party.size()) // so we dont get index out of bounds
-                        {
-                            activeChar++;
-                        }
-                        else
-                        {
-                            activeChar = 0;
-                        }
-                        startTurn(); // recursive call!?
-                    }
-                    else
-                    {
-                        MainPanel.updatePanel("-------------------------------------------------------------");
-                        MainPanel.updatePanel(party.get(activeChar).getName().toUpperCase() + "'S TURN!!!\n");
-                    }
-                }
-            }
-        }
-    }*/
 }
