@@ -21,6 +21,8 @@ public class Game
     public static Timer timer;
 
     private static int gold = 0;
+    private static int counter; // each successful input counts as a turn
+    private static int lastCounter; // each successful input counts as a turn
     public static boolean placedWhite = false;
     public static boolean placedBlack = false;
 
@@ -169,6 +171,7 @@ public class Game
                         {
                             MainPanel.updatePanel("As soon as you place it down, the scales shift to a balanced state.");
                         }
+                        counter++;
                     }
                     else if (ObjectFactory.player.getInv().contains(ObjectFactory.blackScale))
                     {
@@ -179,6 +182,7 @@ public class Game
                         {
                             MainPanel.updatePanel("As soon as you place it down, the scales shift to a balanced state.");
                         }
+                        counter++;
                     }
                     else
                     {
@@ -241,6 +245,7 @@ public class Game
                         if (input.contains(person.getName().toLowerCase()))
                         {
                             target = person;
+                            counter++;
                         }
                     }
                 }
@@ -265,6 +270,7 @@ public class Game
                 if (caster.getCurrentMp() >= spell.getMpCost())
                 {
                     spell.cast(caster, target);
+                    counter++;
                 }
                 else
                 {
@@ -499,6 +505,7 @@ public class Game
             else
             {
                 MainPanel.updatePanel(currentRoom.toString());
+                counter++;
             }
         }
 
@@ -564,6 +571,7 @@ public class Game
                             {
                                 used = true; // found target already
                                 ((Consumable) item).use(target);
+                                counter++;
                                 i = ObjectFactory.gamePeople.size(); // exit
                             }
                         }
@@ -573,10 +581,12 @@ public class Game
                         if (item instanceof Consumable)
                         {
                             ((Consumable) item).use();
+                            counter++;
                         }
                         if (item instanceof SpellScroll)
                         {
                             ((SpellScroll) item).use();
+                            counter++;
                         }
                     }
                 }
@@ -671,6 +681,7 @@ public class Game
                 }
                 else
                 {
+                    counter++;
                     MainPanel.updatePanel("You found:");
                     for (Item item: target.getInv())
                     {
@@ -728,6 +739,7 @@ public class Game
                         ObjectFactory.player.getInv().remove(weapon);
                         ObjectFactory.player.getInv().add(person.getWeapon());
                         person.setWeapon(weapon);
+                        counter++;
 
                     }
                     else if (person == null)
@@ -757,6 +769,7 @@ public class Game
                     if (input.contains(item.getName()))
                     {
                         con.open();
+                        counter++;
                     }
                 }
             }
@@ -771,6 +784,7 @@ public class Game
                     MainPanel.updatePanel("You picked up the " + item.getName() + ".");
                     ObjectFactory.player.addInvItem(item); // adds to player inventory
                     currentRoom.removeItem(item); // removes from room
+                    counter++;
                     break;
                 }
             }
@@ -789,10 +803,12 @@ public class Game
                         if (con.isLocked())
                         {
                             con.tryUnlock();
+                            counter++;
                         }
                         else
                         {
                             con.open();
+                            counter++;
                         }
                     }
                 }
@@ -845,6 +861,7 @@ public class Game
                     Dialogue.setInDialogue(true);
                     ImgFinder.updateImage((Person) target);
                     Dialogue.getDialogue(target); // this class will handle all the dialogue
+                    counter++;
                 }
                 else
                 {
@@ -879,6 +896,29 @@ public class Game
                         MainPanel.updatePanel("Please specify who you wish to talk to.");
                     }
                 }
+            }
+        }
+
+        if (input.contains("rest"))
+        {
+            if (counter - lastCounter > 15) // more than 15 actions have been taken MIGHT ADJUST LATER
+            {
+                MainPanel.updatePanel("You decide to get a long rest. HP and MP has been restored to everyone within your party" +
+                        " and all conditions have been removed.");
+                for (Person ally: Party.getParty())
+                {
+                    ally.setCurrentHp(ally.getMaxHp());
+                    ally.setCurrentMp(ally.getMaxMp());
+                    for (String status: ally.getStatusEffects())
+                    {
+                        ally.removeStatusEffect(status);
+                    }
+                }
+                lastCounter = counter;
+            }
+            else
+            {
+                MainPanel.updatePanel("It is too soon to sleep again.");
             }
         }
 
@@ -1013,7 +1053,7 @@ public class Game
         }
         catch (NumberFormatException e)
         {
-
+            System.out.println("womp womp");
         }
 
         if (input.contains("toggle"))
