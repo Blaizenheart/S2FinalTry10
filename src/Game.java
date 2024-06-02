@@ -21,8 +21,8 @@ public class Game
     public static Timer timer;
 
     private static int gold = 0;
-    private static int counter; // each successful input counts as a turn
-    private static int lastCounter; // each successful input counts as a turn
+    private static int counter = 0; // each successful input counts as a turn
+    private static int lastCounter = 0; // each successful input counts as a turn
     public static boolean placedWhite = false;
     public static boolean placedBlack = false;
 
