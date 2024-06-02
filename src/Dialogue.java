@@ -1366,7 +1366,15 @@ public class Dialogue
                         {
                             clues++;
                         }
-                        if (clues >= 2) // 66% or higher
+                        if (flags[20])
+                        {
+                            clues++;
+                        }
+                        if (flags[23])
+                        {
+                            clues++;
+                        }
+                        if (clues >= 3)
                         {
                             // THE BIG TWIST
                             MainPanel.updatePanel("You've realized something had been off about him this entire time." +
@@ -1406,10 +1414,10 @@ public class Dialogue
                                     "\nHe made no further attempt to elaborate." +
                                     "\nHenry pats Saltine gently on the head, before turning to Sylvie. \"Sorry, Sylvie... you" +
                                     " were good friend too. Henry thought you like candles, but Henry was wrong.\"" +
-                                    "\nSylvie frowned. \"What do you mean?\"" +
+                                    "\nSylvie frowns. \"What do you mean?\"" +
                                     "\nBut Henry doesn't explain himself. He only turns away, reaching for the button. " +
                                     "\"You should all go now. Goodbye, friends. It was nice seeing you all again.\"" +
-                                    "\nSomething about the way he spoke changed, as if he was dropping his naive facade. Instead," +
+                                    "\nSomething about the way he spoke changed, as if he was dropping a naive facade. Instead," +
                                     " an understanding, wiser expression enveloped his rough features.");
                             currentDialogue = 1006;
                         }
@@ -1427,7 +1435,7 @@ public class Dialogue
                                 "\n\"Okay,\" Dain mutters, seeming a bit ashamed of himself for making what he probably" +
                                 " sees as a selfish decision. \"Thank you for everything, " + ObjectFactory.player.getName() + "." +
                                 "\nAfter solemn goodbyes are exchanged, with Saltine enveloping you in a big hug," +
-                                " you hold the button, watching as the party slowly descends. Without you." +
+                                " you hold the button, watching as the party slowly ascends. Without you." +
                                 "\nBut it was your decision afterall, wasn't it?" +
                                 "\nHow could you blame them?" +
                                 "\n\nENDING 4: Sacrifice" +

@@ -12,7 +12,7 @@ public class Game
     private static final int FPS = 60; // frames per second
 
     private static CardLayout cl; // card layout to manage different screens
-    private static JPanel mainPanel, badEnd1Panel; // panels will be added here
+    private static JPanel mainPanel; // panels will be added here
 
     private static ArrayList<String> inputLog = new ArrayList<String>(); // log of inputs
 
@@ -37,7 +37,6 @@ public class Game
 
             cl = new CardLayout(); // creates a new card layout
             mainPanel = new JPanel(cl); // creates new panel with card layout
-            badEnd1Panel = new JPanel();
 
             mainPanel.add(MainPanel.main, "Main Panel"); // adds the main panel
 
