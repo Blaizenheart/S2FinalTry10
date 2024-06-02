@@ -70,7 +70,7 @@ public class Battle
         boolean output = true;
         for (Person person: party)
         {
-            if ((person != ObjectFactory.player) && person.isAlive())
+            if (person.isAlive())
             {
                 output = false;
             }
@@ -413,7 +413,8 @@ public class Battle
                     }
                     else
                     {
-                        MainPanel.updatePanel("Please specify who you want to use it on.");
+                        ((Consumable)item).use(Party.getParty().get(activeChar));
+                        activeChar++;
                     }
                 }
                 else
@@ -695,6 +696,44 @@ public class Battle
     private static void startTurn()
     {
         printStatus();
+        if (enemyPartyDead())
+        {
+            endBattle(true); // we won!
+        }
+        else if (partyDead())
+        {
+            endBattle(false);
+        }
+        else
+        {
+            if (activeChar >= party.size())
+            {
+                activeChar = 0;
+                enemyTurn();
+            }
+            else
+            {
+                System.out.println(party.get(activeChar).getName() + " is alive? " + party.get(activeChar).isAlive());
+                if (!(party.get(activeChar).isAlive())) // active character is not alive
+                {
+                    MainPanel.updatePanel("-------------------------------------------------------------");
+                    MainPanel.updatePanel(party.get(activeChar).getName() + " is knocked out!");
+                    activeChar++; // skip to next character
+                    startTurn();
+                }
+                else // active character is alive
+                {
+                    MainPanel.updatePanel("-------------------------------------------------------------");
+                    MainPanel.updatePanel(party.get(activeChar).getName().toUpperCase() + "'S TURN!!!\n");
+                }
+            }
+        }
+    }
+
+    /*
+    private static void startTurn()
+    {
+        printStatus();
         if (!partyDead())
         {
             if (enemyPartyDead())
@@ -717,8 +756,12 @@ public class Battle
                         if (activeChar < party.size()) // so we dont get index out of bounds
                         {
                             activeChar++;
-                            startTurn(); // recursive call!?
                         }
+                        else
+                        {
+                            activeChar = 0;
+                        }
+                        startTurn(); // recursive call!?
                     }
                     else
                     {
@@ -728,5 +771,5 @@ public class Battle
                 }
             }
         }
-    }
+    }*/
 }
