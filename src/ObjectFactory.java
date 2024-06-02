@@ -72,11 +72,11 @@ public class ObjectFactory
     public static ArrayList<Item> gameSpellScrolls = new ArrayList<>(List.of(fireboltScroll, thunderScroll, lightScroll, acidScroll)); // arraylist holding scrolls
 
     // IMPORTANT QUEST ITEMS
-    public static Item whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
-    public static Item blackScale = new QuestItem("black scale", "A dark, reflective obsidian colored scale that had been taken from a black dragon.", 0, "a");
+    public static Item whiteScale = new Item("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
+    public static Item blackScale = new Item("black scale", "A dark, reflective obsidian colored scale that had been taken from a black dragon.", 0, "a");
 
     // KEYS
-    public static Item longKey = new QuestItem("long key", "An elongated piece of metal vaguely resembling a key.", 0,"a");
+    public static Item longKey = new Item("long key", "An elongated piece of metal vaguely resembling a key.", 0,"a");
 
     // CONTAINERS
     public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun, bun, pretzel)));

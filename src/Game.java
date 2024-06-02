@@ -159,7 +159,7 @@ public class Game
 
         if (input.contains("place")) // for room V
         {
-            QuestItem item = null;
+            Item item = null;
             if (currentRoom == ObjectFactory.roomV)
             {
                 if (!(placedWhite && placedBlack))
