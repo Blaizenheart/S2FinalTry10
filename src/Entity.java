@@ -56,7 +56,7 @@ public class Entity // two child classes, Person and Monster
 
     public boolean isAlive()
     {
-        return alive;
+        return currentHp > 0;
     }
 
     public int getLvl()
@@ -153,6 +153,7 @@ public class Entity // two child classes, Person and Monster
 
     public void revive()
     {
+        MainPanel.updatePanel(name + " regains consciousness!");
         alive = false;
     }
 
@@ -180,7 +181,7 @@ public class Entity // two child classes, Person and Monster
     {
         if (!alive)
         {
-            alive = true; // welcome back!
+            revive(); // welcome back!
         }
         currentHp += hp;
         if (currentHp > maxHp)
