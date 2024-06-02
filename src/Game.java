@@ -130,7 +130,8 @@ public class Game
                     "\nmove north/south/east/west: move in that direction" +
                     "\nmap: displays the map and where you are" +
                     "\ntalk: talks to someone in the room or in your party" +
-                    "\nopen/close: opens/closes something" +
+                    "\nopen: opens something" +
+                    "\nunlock: unlocks a locked container"+
                     "\nexamine: prints description of a person/item/monster" +
                     "\nloot/search: searches a corpse for items"+
                     "\nparty: check up on the people in your party" +
