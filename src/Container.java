@@ -84,6 +84,7 @@ public class Container extends Item
             {
                 MainPanel.updatePanel("You open the " + name + "!");
                 MainPanel.updatePanel("You found:");
+                opened = true;
                 for (Item item: items)
                 {
                     MainPanel.updatePanel("- " + item.getName());
