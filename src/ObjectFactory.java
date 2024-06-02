@@ -58,14 +58,18 @@ public class ObjectFactory
             2, "resistant", true, 2);
     public static Spell firebolt = new AttackSpell("Firebolt", "Hurls a small bolt of fire at an enemy for 1d8 fire damage.", 5, false, "fire", d8, 1);
     public static Spell thunderclap = new AttackSpell("Thunderclap", "With a clap, damage all enemies for 2d8 thunder damage.", 10, false, "thunder", d8, 2);
-    public static Spell lightSpray = new AttackSpell("Light Spray", "Sprays all enemies with rays of light for 3d10 light damage.", 15, false, "light", d10, 3);
+    public static Spell lightSpray = new AttackSpell("Light Spray", "Sprays all enemies with rays of light for 3d10 light damage.", 15, true, "light", d10, 3);
+    public static Spell acidSpray = new AttackSpell("Acid Spray", "Sprays all enemies with a spray of corrosive substance for 1d12 acid damage.", 10, true, "acid", d12, 1);
+
 
     // SPELL SCROLLS
     public static Item fireboltScroll = new SpellScroll("firebolt scroll", "Teaches firebolt.", 7, "a", firebolt);
     public static Item thunderScroll = new SpellScroll("thunderclap scroll", "Teaches thunderclap.", 13, "a", thunderclap);
     public static Item lightScroll = new SpellScroll("lightspray scroll", "Teaches light spray.", 78, "a", lightSpray);
+    public static Item acidScroll = new SpellScroll("acidspray scroll", "Teaches acid spray.", 10, "an", acidSpray);
 
-    public static ArrayList<Item> gameSpellScrolls = new ArrayList<>(List.of(fireboltScroll, thunderScroll, lightScroll)); // arraylist holding scrolls
+
+    public static ArrayList<Item> gameSpellScrolls = new ArrayList<>(List.of(fireboltScroll, thunderScroll, lightScroll, acidScroll)); // arraylist holding scrolls
 
     // IMPORTANT QUEST ITEMS
     public static Item whiteScale = new QuestItem("white scale", "A shimmery, almost iridescent pearly white scale that had been plucked off of a white dragon.", 0, "a");
@@ -75,11 +79,13 @@ public class ObjectFactory
     public static Item longKey = new QuestItem("long key", "An elongated piece of metal vaguely resembling a key.", 0,"a");
 
     // CONTAINERS
-    public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun)));
+    public static Item chestH1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun, bun, pretzel)));
     public static Item chestJ1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(fireboltScroll, medkit)));
     public static Item chestAF1 = new Container("big chest", "",0,"a",false,false,null, new ArrayList<>(List.of(medkit, medkit, thunderScroll)));
     public static Item chestAF2 = new Container("wooden chest", "",0,"a",false,false,null, new ArrayList<>(List.of(bun, lightScroll)));
     public static Item chestP1 = new Container("long chest", "",0,"a",true,false, longKey, new ArrayList<>(List.of(greataxe)));
+    public static Item chestM1 = new Container("chest", "",0,"a",false,false,null, new ArrayList<>(List.of(pretzel, bun, medkit, donut)));
+    public static Item chestAA1 = new Container("chest", "", 0, "a", false, false, null, new ArrayList<>(List.of(acidScroll)));
 
     // PEOPLE
     public static Person player = new Person("Adventurer", "Despite everything, it's still you.",
@@ -97,7 +103,7 @@ public class ObjectFactory
             true, 1,0,20,20,5,3, 15,0,0, shortsword,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Person sylvie = new Person("Sylvie","a very beautiful woman with long wavy pink hair and a watery sheen to her skin",
-            true, 1,0,25,25,3,8, 10,15,15, dagger,
+            true, 1,0,25,25,3,8, 10,30,30, dagger,
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>(List.of(charm, firebolt)));
     public static Person saltine = new Person("Saltine","a blonde freckled girl with a large pink ribbon adorned in her hair",
@@ -107,7 +113,7 @@ public class ObjectFactory
     public static ArrayList<Person> gamePeople = new ArrayList<Person>(List.of(player, dain, everest, henry, sylvie, saltine));
 
     // MONSTERS
-    public static Monster wolf = new Monster("Wolf", "A large wolf with sharp fangs.", true, 3,0,50,
+    public static Monster wolf = new Monster("Wolf", "A large wolf with sharp fangs.", true, 2,0,50,
             50,5,5,10,0, 0, claws, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "bleeding", 30, 3);
     public static Monster grick = new Monster("Grick", "A large worm-like monster with barbed tentacles.", true, 3,0,75,
@@ -152,6 +158,12 @@ public class ObjectFactory
     public static Monster fungi2 = new Monster("Wilted Shroom", "A fungi-like creature that emits a foul odor.", true, 1,0,50,
             20,2,1,10,0, 0, claws, new ArrayList<>(), new ArrayList<>(List.of("fire")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "poisoned", 10, 2);
+    public static Monster hobgoblin1 = new Monster("Young Hobgoblin", "A larger goblin.", true, 3,0,50,
+            50,2,5,10,0, 0, maul, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(maul, pretzel, bearClaw, bun)), new ArrayList<>(), "bleeding", 20, 3);
+    public static Monster hobgoblin2 = new Monster("Big Hobgoblin", "A larger goblin.", true, 2,0,45,
+            45,2,5,10,0, 0, glaive, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(glaive, pretzel, pretzel, pretzel, pretzel, pretzel, pretzel)), new ArrayList<>(), "bleeding", 20, 3);
 
 
     // BOSSES !!
@@ -166,7 +178,7 @@ public class ObjectFactory
     public static Room roomA = new Room("a", "The small room has cobbled walls and a stale odor.", new ArrayList<>(List.of("S")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(dain)));
     public static Room roomB = new Room("b", "The walls are lined with arch indents. The floor here is tiled and slightly polished, " +
-            "although there are still spots where the tiles are eroding into dust.", new ArrayList<>(List.of("N","W")), new ArrayList<>(List.of(chestH1)), new ArrayList<>(), new ArrayList<>());
+            "although there are still spots where the tiles are eroding into dust.", new ArrayList<>(List.of("N","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomC = new Room("c", "There are intricate pillars seemingly sculpted into the corners of the room. " +
             "A faint scent of alcohol lingers in the air. It seems to be getting stronger to the west.", new ArrayList<>(List.of("E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomD = new Room("d","The room is nauseatingly narrow. It is unclear what the purpose of this room might’ve been. The smell of gore seems to lead to the west.",
@@ -186,9 +198,9 @@ public class ObjectFactory
     public static Room roomK = new Room("k","It looks like part of this massive room has caved in, a pile of rock and dust present in one of the room's corners.",
             new ArrayList<>(List.of("N","S","W")), new ArrayList<>(), new ArrayList<>(List.of(darkDragon)), new ArrayList<>());
     public static Room roomL = new Room("l","This room appears to be some sort of small treasure room. The floor is covered in a mixture of old yellowed bones and old coins that you don't recognize.",
-            new ArrayList<>(List.of("N")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            new ArrayList<>(List.of("N")), new ArrayList<>(List.of(maul, crossbow)), new ArrayList<>(), new ArrayList<>());
     public static Room roomM = new Room("m","This room is considerably cleaner and brighter than the rest, save for the bloodstains splattered across the walls. You almost didn't notice " +
-            "them because of how well they blended into the dark stone.", new ArrayList<>(List.of("N","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            "them because of how well they blended into the dark stone.", new ArrayList<>(List.of("N","E")), new ArrayList<>(List.of(chestM1)), new ArrayList<>(), new ArrayList<>());
     public static Room roomN = new Room("n","This room is completely bland. The only thing of note here is the large steel gate that blocks off the exit to the east. Behind the gate seem to be ascending stairs.",
             new ArrayList<>(List.of("S","E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomO = new Room("o","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -210,10 +222,10 @@ public class ObjectFactory
     public static Room roomW = new Room("w","The cobblestone flooring of the room is crumbling as the earth underneath it sprout grass through the tiles. The room is well lit by some kind of magical chandelier.",
             new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(saltine)));
     public static Room roomX = new Room("x","This room contains a number of empty cages in a variety of different states. Some are " +
-            "completely broken, others are jammed shut, and others are in pristine condition.", new ArrayList<>(List.of("S")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            "completely broken, others are jammed shut, and others are in pristine condition.", new ArrayList<>(List.of("S")), new ArrayList<>(), new ArrayList<>(List.of(wolf)), new ArrayList<>());
     public static Room roomY = new Room("y","This room is very, very cold. You feel a shiver go down your spine as you walk through the room. A small layer of white frost" +
             " coats everything within the room.",
-            new ArrayList<>(List.of("N", "W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            new ArrayList<>(List.of("N", "W")), new ArrayList<>(), new ArrayList<>(List.of(hobgoblin1, hobgoblin2)), new ArrayList<>());
     public static Room roomZ = new Room("z","This room is less of a room as more of a very small cavern. The walls of the room are" +
             " covered in various fungi and mushrooms. Several luminous plants light up the room.", new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(List.of(fungi1, fungi2)), new ArrayList<>());
     public static Room hall1 = new Room("hall1","The walls of the hallway are slightly crumbling.", new ArrayList<>(List.of("N", "S","W")),
@@ -223,15 +235,16 @@ public class ObjectFactory
     public static Room hall3 = new Room("hall3","The hallway is wide, with a low ceiling.", new ArrayList<>(List.of("N", "S","W")),
             new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room hall4 = new Room("hall4","There are a variety of short and long chains hanging off of the ceiling of the hallway.", new ArrayList<>(List.of("N", "S","E")),
-            new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            new ArrayList<>(List.of(spear)), new ArrayList<>(), new ArrayList<>());
     public static Room hall5 = new Room("hall5","The walls of this hallway are complex, jutting in at seemingly random areas. It makes it only " +
             "slightly difficult to navigate through the hall.", new ArrayList<>(List.of("N", "S","E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomAA = new Room("aa","Unlike the other rooms in the dungeon, the floor of this room is completely brown dirt. A few gravestones lay here.",
-            new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            new ArrayList<>(List.of("N", "S","W")), new ArrayList<>(List.of(chestAA1)), new ArrayList<>(), new ArrayList<>());
     public static Room roomAB = new Room("ab","This room seems to be a library. There are books on the dusty shelves, but they immediately crumble under your touch.",
             new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    public static Room roomAC = new Room("ac","This room contains several stone tables and yellowed parchment pinned to the walls of the room or placed on the tables." +
-            " They seem rather fragile and unsuited to being picked up, but from afar, it looks like they are some kind of architectural blueprints.", new ArrayList<>(List.of("E")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(henry)));
+    public static Room roomAC = new Room("ac","This room is filled with the the scattered bloodied remains of... some animals, probably. It is hard to tell because of how" +
+            " much damage and tearing apart has been done to the bodies.", new ArrayList<>(List.of("E")),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(List.of(henry)));
     public static Room roomAD = new Room("ad","This room contains a lot of clocks, all powered by some kind of magical energy.", new ArrayList<>(List.of("N", "W")), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     public static Room roomAE = new Room("ae","This is less of a room and more of a small cavern. The ceiling of the cavern is speckled with stalactites, and large pieces of rock jut out of the ground.",
             new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(List.of(lightDragon)), new ArrayList<>());
