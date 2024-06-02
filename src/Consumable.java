@@ -3,11 +3,12 @@ public class Consumable extends Item
 
     // instance variables
     // different things consumables can do: restore hp, restore mp, remove status effect
-    boolean restoreHp, restoreMp, removeStatus;
-    int hp;
-    int mp;
-    String status = "";
-    String verb = ""; // what verb is used to describe using the consumable
+    private boolean restoreHp, restoreMp, removeStatus;
+    private int hp;
+    private int mp;
+    private String status = "";
+    private String verb = ""; // what verb is used to describe using the consumable
+
     public Consumable(String name, String desc, int value, String article, boolean restoreHp, int hp,
                       boolean restoreMp, int mp, boolean removeStatus, String status, String verb)
     {
