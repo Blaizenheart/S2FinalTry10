@@ -136,6 +136,7 @@ public class Game
                     "\nparty: check up on the people in your party" +
                     "\nrest: take a long rest to restore HP, MP and clear status effects" +
                     "\ninventory/inv/i: prints your inventory"+
+                    "\nequip: equips a weapon onto the specified person"+
                     "\ntoggle: turns on/off passive aggressive and possibly hateful flavor text"); // ADD MORE
         }
 
