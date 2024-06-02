@@ -1181,6 +1181,7 @@ public class Dialogue
                                 "\"Despite what you might think, he is a lawful neutral god. He believed that death was a natural" +
                                 " part of life which shouldn't be feared.\"");
                         waitInput = true;
+                        flags[21] = true;
                     }
                     else if (input.equals("2"))
                     {
@@ -1188,13 +1189,16 @@ public class Dialogue
                                 "at one point. Probably long ago, too. This place might've been a place of worship for Kelemvor by his followers." +
                                 " I have no clue, though, why it is in this underground dungeon...\"");
                         waitInput = true;
+                        flags[21] = true;
                     }
                     else if (input.equals("3"))
                     {
                         MainPanel.updatePanel("\"Hm?\" Dain stares blankly at you, before processing your question. " +
                                 "\"Oh. I forgot to tell you that I am a cleric, so I have some knowledge on the gods.\"");
                         waitInput = true;
+                        flags[21] = true;
                     }
+                    break;
                 case 26:
                     if (input.equals("1"))
                     {
@@ -1227,6 +1231,7 @@ public class Dialogue
                                 "\n\"Perhaps I have,\" she says quietly. \"I mean, when you're poor, you don't really" +
                                 " have any other choice.\"");
                         waitInput = true;
+                        flags[22] = true;
                     }
                     else if (input.equals("2"))
                     {
@@ -1237,6 +1242,7 @@ public class Dialogue
                                 " The name has been worn away, but the letters '...ry..am' remain.");
                         clues++;
                         flags[23] = true;
+                        flags[22] = true;
                         waitInput = true;
                     }
                     else if (input.equals("3"))
@@ -1244,6 +1250,7 @@ public class Dialogue
                         ObjectFactory.sylvie.approve();
                         MainPanel.updatePanel("Sylvie gives what seems to be a sincere smile. \"I'm glad you understand.\"");
                         waitInput = true;
+                        flags[22] = true;
                     }
                     break;
                 case 999: // when not everyone has been recruited to the party
