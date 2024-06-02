@@ -134,6 +134,7 @@ public class Game
                     "\nexamine: prints description of a person/item/monster" +
                     "\nloot/search: searches a corpse for items"+
                     "\nparty: check up on the people in your party" +
+                    "\nrest: take a long rest to restore HP, MP and clear status effects" +
                     "\ninventory/inv/i: prints your inventory"+
                     "\ntoggle: turns on/off passive aggressive and possibly hateful flavor text"); // ADD MORE
         }
@@ -899,18 +900,20 @@ public class Game
             }
         }
 
-        if (input.contains("rest"))
+        if (input.contains("rest") && !(input.contains("everest")))
         {
-            if (counter - lastCounter > 15) // more than 15 actions have been taken MIGHT ADJUST LATER
+            if (counter - lastCounter > 10) // more than 10 actions have been taken MIGHT ADJUST LATER
             {
                 MainPanel.updatePanel("You decide to get a long rest. HP and MP has been restored to everyone within your party" +
                         " and all conditions have been removed.");
                 for (Person ally: Party.getParty())
                 {
+                    ally.revive();
                     ally.setCurrentHp(ally.getMaxHp());
                     ally.setCurrentMp(ally.getMaxMp());
                     for (String status: ally.getStatusEffects())
                     {
+
                         ally.removeStatusEffect(status);
                     }
                 }
@@ -1051,10 +1054,7 @@ public class Game
                 }
             }
         }
-        catch (NumberFormatException e)
-        {
-            System.out.println("womp womp");
-        }
+        catch (NumberFormatException e) {}
 
         if (input.contains("toggle"))
         {
