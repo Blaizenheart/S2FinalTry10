@@ -15,16 +15,6 @@ public class DebuffSpell extends Spell
         this.duration = duration;
     }
 
-    //getters
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public int getDuration()
-    {
-        return duration;
-    }
 
     //brain methods
     public void cast(Entity caster, Entity target) // single target

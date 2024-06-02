@@ -912,11 +912,7 @@ public class Game
                     ally.revive();
                     ally.setCurrentHp(ally.getMaxHp());
                     ally.setCurrentMp(ally.getMaxMp());
-                    for (String status: ally.getStatusEffects())
-                    {
-
-                        ally.removeStatusEffect(status);
-                    }
+                    ally.clearStatus();
                 }
                 lastCounter = counter;
             }

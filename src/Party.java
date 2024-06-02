@@ -4,19 +4,13 @@ public class Party
 {
     private static ArrayList<Person> party = new ArrayList<Person>();
 
-    // getters
-    public static int size()
-    {
-        return party.size();
-    }
-
+    // getter
     public static ArrayList<Person> getParty()
     {
         return party;
     }
 
-    // setters
-
+    // setter
     public static void addMember(Person member)
     {
         party.add(member);
@@ -24,13 +18,7 @@ public class Party
 
     }
 
-    public static void removeMember(Person member)
-    {
-        party.add(member);
-    }
-
     // toString
-
     public static String print()
     {
         String output = "";

@@ -102,33 +102,6 @@ public class MainPanel extends JPanel
         outputArea.setText(outputArea.getText() + "\n" + text);
     }
 
-    public static void typePanel(String text, Runnable callback) // types the text
-    {
-        String original = outputArea.getText();
-        timer = new Timer(1, new ActionListener()
-        {
-            int index = 0;
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (index > text.length())
-                {
-                    timer.stop();
-                    if (callback != null)
-                    {
-                        callback.run();
-                    }
-                }
-                else
-                {
-                    outputArea.setText(original + "\n" + text.substring(0, index));
-                    index++;
-                }
-            }
-        });
-        timer.start();
-    }
-
     public static void clearPanel2() // updates the second output area
     {
         xtraArea.setText("");

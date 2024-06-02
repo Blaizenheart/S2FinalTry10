@@ -19,22 +19,6 @@ public class Monster extends Entity
         this.statusChance = statusChance;
         this.statusDuration = statusDuration;
     }
-    // getters
-
-    public String getAttackStatus()
-    {
-        return attackStatus;
-    }
-
-    public int getStatusChance()
-    {
-        return statusChance;
-    }
-
-    public int getStatusDuration()
-    {
-        return statusDuration;
-    }
 
     // brain methods
     public void attack()

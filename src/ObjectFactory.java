@@ -9,16 +9,13 @@ public class ObjectFactory
     public static Dice d8 = new Dice("D8",8);
     public static Dice d10 = new Dice("D10",10);
     public static Dice d12 = new Dice("D12",12);
-    public static Dice d20 = new Dice("D20",20);
 
     // WEAPONS
     public static Weapon dagger = new Weapon("dagger", "A small dagger.", 5, "a ", d4, 1, "piercing");
-    public static Weapon sickle = new Weapon("sickle", "A rusted sickle.", 5, "a ", d4, 1, "slashing");
     public static Weapon shortsword = new Weapon("shortsword", "A rusty shortsword.", 10, "a ", d6, 1, "slashing");
     public static Weapon spear = new Weapon("spear", "A pointy spear.", 10, "a ", d6, 1, "piercing");
     public static Weapon crossbow = new Weapon("crossbow", "A wooden crossbow.", 15, "a ", d8, 1, "piercing");
     public static Weapon club = new Weapon("club", "A hard club.", 5, "a ", d4, 1, "bludgeoning");
-    public static Weapon greatclub = new Weapon("greatclub", "An even bigger club.", 15, "a ", d8, 1, "bludgeoning");
     public static Weapon claws = new Weapon("claws", "rawr", 0, "", d4, 1, "slashing");
     public static Weapon fangs = new Weapon("fangs", "rawr", 0, "", d4, 1, "piercing");
     public static Weapon glaive = new Weapon("glaive", "A heavy glaive.", 20, "", d10, 1, "slashing");
@@ -250,8 +247,6 @@ public class ObjectFactory
             new ArrayList<>(List.of("S", "E","W")), new ArrayList<>(), new ArrayList<>(List.of(lightDragon)), new ArrayList<>());
     public static Room roomAF = new Room("af","The floor of this room is lined with neatly chiseled stone bricks, but its age is betrayed by the cracks in the wall.",
             new ArrayList<>(List.of("E")), new ArrayList<>(List.of(chestAF1, chestAF2)), new ArrayList<>(), new ArrayList<>());
-
-    public static Room[] gameRooms = {roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH, roomI, roomJ, roomK, roomL, roomM, roomN, roomO, roomP, roomQ, roomR, roomS, roomT, roomU, roomV, roomW, roomX, roomY, roomZ, hall1, hall2, hall3, hall4, hall5, roomAA, roomAB, roomAC, roomAD, roomAE, roomAF};
 
     public static String printShop() // prints all the items in Saltine's shop
     {

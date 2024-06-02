@@ -22,32 +22,6 @@ public class Container extends Item
         return locked;
     }
 
-    public boolean isOpened()
-    {
-        return opened;
-    }
-
-    public Item getKeyItem()
-    {
-        return key;
-    }
-
-    public ArrayList<Item> getItems()
-    {
-        return items;
-    }
-
-    // setters
-    public void setLocked(boolean locked)
-    {
-        this.locked = locked;
-    }
-
-    public void setOpened(boolean opened)
-    {
-        this.opened = opened;
-    }
-
     // brain methods
     public void tryUnlock()
     {

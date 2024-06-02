@@ -29,10 +29,7 @@ public class Room
     {
         return roomName;
     }
-    public String getRoomDesc()
-    {
-        return roomDesc;
-    }
+
     public ArrayList<String> getExits()
     {
         return exits;
@@ -48,18 +45,6 @@ public class Room
         return people;
     }
 
-    public Item getItem(String itemName)
-    {
-        int num = -1; // not found yet
-        for (int i = 0; i < items.size(); i++) // iterates through and tries to match item
-        {
-            if (itemName.equals(items.get(i).getName()))
-            {
-                num = i;
-            }
-        }
-        return items.get(num); //get the index
-    }
 
     public ArrayList<Item> getItems()
     {
@@ -68,32 +53,7 @@ public class Room
 
     // setters
 
-    public void removeExit(String exit)
-    {
-        exits.remove(exit);
-    }
-
-    public void addExit(String exit)
-    {
-        exits.add(exit);
-    }
-
-    public void removeMonster(Monster monster)
-    {
-        monsters.remove(monster);
-    }
-
-    public void addMonster(Monster monster)
-    {
-        monsters.remove(monster);
-    }
-
     public void removePerson(Person person)
-    {
-        people.remove(person);
-    }
-
-    public void addPerson(Person person)
     {
         people.remove(person);
     }
@@ -101,11 +61,6 @@ public class Room
     public void removeItem(Item item)
     {
         items.remove(item);
-    }
-
-    public void addItem(Item item)
-    {
-        items.add(item);
     }
 
     //to string
@@ -170,10 +125,6 @@ public class Room
             {
                 output += " Henry";
             }
-            else if (Dialogue.knowTodd && people.get(0).getName().equals("Todd"))
-            {
-                output += " Todd";
-            }
             else
             {
                 output += " " + people.get(0).getDesc();
@@ -200,10 +151,6 @@ public class Room
                 else if (Dialogue.knowHenry && people.get(1).getName().equals("Henry"))
                 {
                     output += " Henry";
-                }
-                else if (Dialogue.knowTodd && people.get(1).getName().equals("Todd"))
-                {
-                    output += " Todd";
                 }
                 else
                 {
@@ -235,10 +182,6 @@ public class Room
                     {
                         output += " Henry";
                     }
-                    else if (Dialogue.knowTodd && people.get(i).getName().equals("Todd"))
-                    {
-                        output += " Todd";
-                    }
                     else
                     {
                         output += " " + people.get(0).getDesc();
@@ -264,10 +207,6 @@ public class Room
                 else if (Dialogue.knowHenry && people.get(people.size()-1).getName().equals("Henry"))
                 {
                     output += " Henry";
-                }
-                else if (Dialogue.knowTodd && people.get(people.size()-1).getName().equals("Todd"))
-                {
-                    output += " Todd";
                 }
                 else
                 {

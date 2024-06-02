@@ -11,12 +11,12 @@ public class Entity // two child classes, Person and Monster
     public boolean alive;
     public int lvl, xp, maxHp, currentHp, atk, def, ev, maxMp, currentMp; // basic stats
     public Weapon weapon;
-    public ArrayList<String> statusEffects = new ArrayList<String>(); // afflicted statuses
-    public ArrayList<String> weakTypes = new ArrayList<String>(); // weakness types
-    public ArrayList<String> resTypes = new ArrayList<String>(); // resistant types
-    public ArrayList<String> immTypes = new ArrayList<String>(); // immune types
-    public ArrayList<Item> inv = new ArrayList<Item>(); // inventory
-    public ArrayList<Spell> spells = new ArrayList<Spell>(); // list of spells
+    public ArrayList<String> statusEffects; // afflicted statuses
+    public ArrayList<String> weakTypes; // weakness types
+    public ArrayList<String> resTypes; // resistant types
+    public ArrayList<String> immTypes; // immune types
+    public ArrayList<Item> inv; // inventory
+    public ArrayList<Spell> spells; // list of spells
 
     // very long constructor
     public Entity(String name, String desc, boolean alive, int lvl, int xp, int maxHp, int currentHp, int atk, int def, int ac,
@@ -72,16 +72,6 @@ public class Entity // two child classes, Person and Monster
     public int getMaxHp()
     {
         return maxHp;
-    }
-
-    public int getCurrentHp()
-    {
-        return currentHp;
-    }
-
-    public int getAtk()
-    {
-        return atk;
     }
 
     public int getDef()
@@ -162,16 +152,6 @@ public class Entity // two child classes, Person and Monster
         this.name = name;
     }
 
-    public void setXp(int xp)
-    {
-        this.xp = xp;
-    }
-
-    public void setMaxHp(int maxHp)
-    {
-        this.maxHp = maxHp;
-    }
-
     public void setCurrentHp(int currentHp)
     {
         this.currentHp = currentHp;
@@ -200,38 +180,10 @@ public class Entity // two child classes, Person and Monster
         }
     }
 
-    public void setAtk(int atk)
-    {
-        this.atk = atk;
-    }
-
-    public void setDef(int def)
-    {
-        this.def = def;
-    }
-
-    public void setEv(int ev)
-    {
-        this.ev = ev;
-    }
-
-    public void setMaxMp(int maxMp)
-    {
-        this.maxMp = maxMp;
-    }
 
     public void setCurrentMp(int currentMp)
     {
         this.currentMp = currentMp;
-    }
-
-    public void addMp(int mp)
-    {
-        currentMp += mp;
-        if (currentMp > maxMp)
-        {
-            currentMp = maxMp;
-        }
     }
 
     public void subMp(int mp)
@@ -242,11 +194,6 @@ public class Entity // two child classes, Person and Monster
     public void setWeapon(Weapon weapon)
     {
         this.weapon = weapon;
-    }
-
-    public void removeWeapon() // unarmed strikes?
-    {
-        this.weapon = null;
     }
 
     public void addStatusEffect(String statusEffect)
@@ -280,21 +227,6 @@ public class Entity // two child classes, Person and Monster
         statusEffects.clear();
     }
 
-    public void addWeakTypes(String weakTypes)
-    {
-        this.weakTypes.add(weakTypes);
-    }
-
-    public void addResTypes(String resTypes)
-    {
-        this.resTypes.add(resTypes);
-    }
-
-    public void setImmTypes(String immTypes)
-    {
-        this.immTypes.add(immTypes);
-    }
-
     public void addInvItem(Item item)
     {
         this.inv.add(item);
@@ -313,11 +245,6 @@ public class Entity // two child classes, Person and Monster
     public void addSpell(Spell spell)
     {
         this.spells.add(spell);
-    }
-
-    public void removeSpell(Spell spell)
-    {
-        this.spells.remove(spell);
     }
 
     // brain methods

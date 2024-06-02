@@ -17,22 +17,6 @@ public class AttackSpell extends Spell
         this.diceRolls = diceRolls;
     }
 
-    //getters
-    public String getDmgType()
-    {
-        return dmgType;
-    }
-
-    public Dice getDice()
-    {
-        return dice;
-    }
-
-    public int getDiceRolls()
-    {
-        return diceRolls;
-    }
-
     //brain methods
     public void cast(Entity caster, Entity target) // single target
     {

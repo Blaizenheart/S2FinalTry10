@@ -1,8 +1,8 @@
 public class Status // keeps track of status effects
 {
-    Entity target;
-    String status = "";
-    int endingTurn = 1; // turn # that the status will be removed upon
+    private Entity target;
+    private String status = "";
+    private int endingTurn = 1; // turn # that the status will be removed upon
 
     // constructor
     public Status (Entity target, String status, int duration)
@@ -26,7 +26,5 @@ public class Status // keeps track of status effects
     {
         return endingTurn;
     }
-
-    // getters
 
 }
