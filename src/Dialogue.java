@@ -19,7 +19,6 @@ public class Dialogue
     public static boolean knowDain = false;
     public static boolean knowSaltine = false;
     public static boolean knowSylvie = false;
-    public static boolean knowTodd = false;
     public static boolean knowEverest = false;
     public static boolean knowHenry = false;
     public static boolean waitInput = false;
