@@ -8,7 +8,9 @@ is determined by certain dialogues the player can experience), but the player is
 through the dungeon taking any path that they'd like.
 
 (Example of Class Composition)
+
 A **Person** or **Monster** have a **Weapon**, **Spell**s, and an inventory that can hold multiple **Item**s.
+
 A **Room** can contain **Person**s, **Item**s, and **Monster**s.
 
 -------------------------------------------------------------------------------------------------------
