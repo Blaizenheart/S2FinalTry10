@@ -7,6 +7,10 @@ which are entirely baesd on the player's decision in the ending scene (as well a
 is determined by certain dialogues the player can experience), but the player is allowed to free roam 
 through the dungeon taking any path that they'd like.
 
+(Example of Class Composition)
+A **Person** or **Monster** have a **Weapon**, **Spell**s, and an inventory that can hold multiple **Item**s.
+A **Room** can contain **Person**s, **Item**s, and **Monster**s.
+
 -------------------------------------------------------------------------------------------------------
 # HOW TO PLAY:
 
@@ -18,7 +22,7 @@ The player is given a set of commands that they can use to interact with rooms, 
 - use/eat/consume/drink/give: use an item or give to party member to use
 	> "eat pretzel"
 
- 	> "give pretzel to	sylvie"
+ 	> "give pretzel to sylvie"
 - attack: attacks enemies in a room
 - look: prints a description of the room
 - move north/south/east/west: move in that direction
