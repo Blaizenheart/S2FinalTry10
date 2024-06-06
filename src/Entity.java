@@ -213,7 +213,10 @@ public class Entity // two child classes, Person and Monster
                 }
             }
             Battle.removeBattleStatus(status);
-            Battle.addBattleStatus(new Status(this, statusEffect, status.getEndingTurn())); // reset counter on status effect
+            if (status != null)
+            {
+                Battle.addBattleStatus(new Status(this, statusEffect, status.getEndingTurn())); // reset counter on status effect
+            }
         }
     }
 
