@@ -297,9 +297,9 @@ What a loser.
 > Sylvie averts her gaze everytime you try to look at her, Henry has a blank expression plastered onto his face,
 > and Everest... looks rather unaffected by the loss of Dain.
 
-> "What's wrong with you?\" Amidst her tears, Saltine suddenly lashes out at Everest.
+> "What's wrong with you?" Amidst her tears, Saltine suddenly lashes out at Everest.
 
-> "Hm?\" Everest responds nonchalantly.
+> "Hm?" Everest responds nonchalantly.
 
 > "You're the worst, Everest," Saltine grits her teeth. "Don't you know that he... nevermind. You would never understand."
 > You can't help but wonder if this was the correct decision. Was there even a right decision, to begin with? As soon as
@@ -466,7 +466,7 @@ The player can choose between saying "I don't know" and "Everything's going to b
 
 > "W-W-What?!? No, OF COURSE NOT," Dain stammers. "I just think you have pretty eyes!"
 
-> "——a secret.\" Everest finishes, before staring at Dain. "Wait, what?"
+> "——a secret." Everest finishes, before staring at Dain. "Wait, what?"
 
 > What adventures will you embark on next?
 
