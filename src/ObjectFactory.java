@@ -44,7 +44,7 @@ public class ObjectFactory
 
     // SPELLS
     public static Spell cureWounds = new HealingSpell("Cure Wounds", "Heals a single target for 1d8 hp.",
-            5, d8, 1,false);
+            5, d8, 3,false);
     public static Spell massCureWounds = new HealingSpell("Mass Cure Wounds", "Heals the entire party for 1d8 hp.",
             15, d8, 1,true);
     public static Spell charm = new DebuffSpell("Charm Person", "Charms an enemy, making them immobile for 1d4 rounds.",

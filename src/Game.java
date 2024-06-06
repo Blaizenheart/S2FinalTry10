@@ -435,7 +435,7 @@ public class Game
             }
         }
 
-        if (input.contains("move") || input.contains("go"))
+        if (input.contains("move") || input.contains("go "))
         {
             boolean invalid = false;
             if (input.contains("north") || input.contains(" n"))
